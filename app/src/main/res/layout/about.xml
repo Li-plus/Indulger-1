@@ -10,18 +10,18 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:gravity="center_horizontal" android:orientation="vertical"
                       android:paddingBottom="25dp" android:paddingTop="70dp">
-            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
                        android:layout_marginTop="15dp" android:contentDescription="Logo"
-                       android:src="@mipmap/ic_launcher" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                       android:src="@mipmap/ic_launcher" android:layout_gravity="center_horizontal"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:id="@+id/version" android:layout_marginTop="15dp"
                       android:textColor="?attr/qmui_config_color_gray_3"
-                      android:textSize="16sp" />
+                      android:textSize="16sp" android:textAlignment="center"/>
             <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
-                android:id="@+id/about_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp" />
+                    android:id="@+id/about_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

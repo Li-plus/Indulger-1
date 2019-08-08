@@ -2,7 +2,6 @@
 <resources>
     <item name="qmuidemo" type="id"/>
     <item name="main_container" type="id"/>
-
     <item name="empty_button" type="id"/>
 
     <item name="topbar_right_about_button" type="id"/>

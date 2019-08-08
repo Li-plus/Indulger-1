@@ -25,9 +25,6 @@ public class AboutFragment extends QMUIFragment {
     public View onCreateView() {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.about, null);
         ButterKnife.bind(this, root);
-        mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
-            popBackStack();
-        });
         mTopBar.setTitle(getResources().getString(R.string.about_title));
         mVersionTextView.setText(QMUIPackageHelper.getAppVersion(getContext()));
         mCopyrightTextView.setText(getResources().getString(R.string.copyright));
