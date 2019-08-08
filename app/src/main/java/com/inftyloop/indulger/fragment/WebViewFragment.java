@@ -151,6 +151,7 @@ public class WebViewFragment extends QMUIFragment {
             classType = WebView.class;
             field = classType.getDeclaredField("mZoomButtonsController");
             field.setAccessible(true);
+            @SuppressWarnings("deprecation")
             ZoomButtonsController zoomButtonsController = new ZoomButtonsController(
                     webView);
             zoomButtonsController.getZoomControls().setVisibility(View.GONE);

@@ -4,4 +4,7 @@
     <string name="about_github" translatable="false">Github</string>
     <string name="github_url" translatable="false">https://github.com/zx1239856/</string>
     <string name="copyright">inftyloop.tech©2019, All Rights Reserved</string>
+    <string name="home">Home</string>
+    <string name="fav">Favorites</string>
+    <string name="personal">Me</string>
 </resources>
