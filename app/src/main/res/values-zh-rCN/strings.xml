@@ -3,6 +3,10 @@
     <string name="about_title">关于</string>
     <string name="copyright">inftyloop.tech©2019,保留所有权利</string>
 
+    <string name="home">主页</string>
+    <string name="fav">收藏</string>
+    <string name="personal">我</string>
+    
     <!-- begin settings fragment -->
     <string name="settings_title">设置</string>
     <string name="settings_night_mode">夜间模式</string>
