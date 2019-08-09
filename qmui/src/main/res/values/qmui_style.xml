@@ -17,6 +17,12 @@
 
 <resources>
 
+    <style name="SwitchButton">
+        <item name="sb_checked_color">#00A8E1</item>
+        <item name="sb_checkline_color">#8000A8E1</item>
+        <item name="sb_button_color">#00A8E1</item>
+    </style>
+
 
     <!--**********************************************
     *                  Dialog                        *

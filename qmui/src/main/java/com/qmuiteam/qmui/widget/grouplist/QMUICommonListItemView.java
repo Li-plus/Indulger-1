@@ -21,26 +21,17 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.v4.widget.Space;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 import com.qmuiteam.qmui.R;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUILangHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
+import com.suke.widget.SwitchButton;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -135,7 +126,7 @@ public class QMUICommonListItemView extends RelativeLayout {
     protected TextView mTextView;
     protected TextView mDetailTextView;
     protected Space mTextDetailSpace;
-    protected CheckBox mSwitch;
+    protected SwitchButton mSwitch;
     private ImageView mRedDot;
     private ViewStub mNewTipViewStub;
     private View mNewTip;
@@ -323,12 +314,14 @@ public class QMUICommonListItemView extends RelativeLayout {
             // switch开关
             case ACCESSORY_TYPE_SWITCH: {
                 if (mSwitch == null) {
-                    mSwitch = new CheckBox(getContext());
-                    mSwitch.setButtonDrawable(QMUIResHelper.getAttrDrawable(getContext(), R.attr.qmui_common_list_item_switch));
+                    mSwitch = new SwitchButton(getContext());
+                    //mSwitch = new CheckBox(getContext());
+                    //mSwitch.setButtonDrawable(QMUIResHelper.getAttrDrawable(getContext(), R.attr.qmui_common_list_item_switch));
                     mSwitch.setLayoutParams(getAccessoryLayoutParams());
+                    mSwitch.setShadowEffect(false);
                     // disable掉且不可点击，然后通过整个item的点击事件来toggle开关的状态
-                    mSwitch.setClickable(false);
-                    mSwitch.setEnabled(false);
+                    //mSwitch.setClickable(false);
+                    //mSwitch.setEnabled(false);
                 }
                 mAccessoryView.addView(mSwitch);
                 mAccessoryView.setVisibility(VISIBLE);
@@ -364,7 +357,7 @@ public class QMUICommonListItemView extends RelativeLayout {
         return mDetailTextView;
     }
 
-    public CheckBox getSwitch() {
+    public SwitchButton getSwitch() {
         return mSwitch;
     }
 

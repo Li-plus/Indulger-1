@@ -4,7 +4,7 @@
     <item
         android:drawable="@drawable/white_toggle_icon"
         android:right="2dp"
-        android:left="30dp"
+        android:left="18dp"
         android:bottom="2dp"
         android:top="2dp" />
 </layer-list>

@@ -17,6 +17,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.suke.widget.SwitchButton;
 
 public class SettingsFragment extends QMUIFragment {
     @BindView(R.id.topbar)
@@ -35,7 +36,7 @@ public class SettingsFragment extends QMUIFragment {
 
         QMUICommonListItemView itemNightMode = mSettingsGroupListView.createItemView(getString(R.string.settings_night_mode));
         itemNightMode.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
-        itemNightMode.getSwitch().setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+        itemNightMode.getSwitch().setOnCheckedChangeListener((SwitchButton buttonView, boolean isChecked) -> {
             Toast.makeText(getActivity(), "checked = " + isChecked, Toast.LENGTH_SHORT).show();
         });
         QMUICommonListItemView itemClearCache = mSettingsGroupListView.createItemView(getString(R.string.settings_clear_cache));
