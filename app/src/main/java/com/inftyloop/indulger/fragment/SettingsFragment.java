@@ -14,6 +14,7 @@ import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
@@ -27,10 +28,10 @@ public class SettingsFragment extends QMUIFragment {
     public View onCreateView() {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.settings, null);
         ButterKnife.bind(this, root);
-        mTopBar.addLeftBackImageButton().setOnClickListener(v -> {
+        mTopBar.setTitle(getString(R.string.settings_title));
+        mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> {
             popBackStack();
         });
-        mTopBar.setTitle(getString(R.string.settings_title));
 
         QMUICommonListItemView itemNightMode = mSettingsGroupListView.createItemView(getString(R.string.settings_night_mode));
         itemNightMode.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
@@ -46,7 +47,19 @@ public class SettingsFragment extends QMUIFragment {
                     })
                     .addAction(0, getString(R.string.settings_delete), QMUIDialogAction.ACTION_PROP_NEGATIVE,
                             (QMUIDialog dialog, int index) -> {
-                                Toast.makeText(getActivity(), R.string.settings_cache_all_cleared, Toast.LENGTH_SHORT).show();
+                                QMUITipDialog tipDialog = new QMUITipDialog.Builder(getContext())
+                                        .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                                        .setTipWord(getString(R.string.settings_cache_clearing))
+                                        .create();
+                                tipDialog.show();
+                                mSettingsGroupListView.postDelayed(()->{
+                                    tipDialog.dismiss();
+                                    QMUITipDialog tipDialog1 = new QMUITipDialog.Builder(getContext()).setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
+                                            .setTipWord(getString(R.string.settings_cache_all_cleared))
+                                            .create();
+                                    tipDialog1.show();
+                                    mSettingsGroupListView.postDelayed(tipDialog1::dismiss, 1000);
+                                }, 2000);
                                 dialog.dismiss();
                             })
                     .create(R.style.QMUI_Dialog).show();
@@ -109,6 +122,6 @@ public class SettingsFragment extends QMUIFragment {
 
     @Override
     public TransitionConfig onFetchTransitionConfig() {
-        return SCALE_TRANSITION_CONFIG;
+        return SLIDE_TRANSITION_CONFIG;
     }
 }
