@@ -20,4 +20,13 @@
 
     <dimen name="spanUtils_column_marginBottom">35dp</dimen>
     <dimen name="spanUtils_common_textSize">16sp</dimen>
+
+    <!-- begin favorite fragment -->
+    <dimen name="favorite_news_title_size">20sp</dimen>
+    <dimen name="favorite_news_image_height">80sp</dimen>
+    <dimen name="favorite_news_image_width">80sp</dimen>
+    <dimen name="favorite_relative_layout_padding">16sp</dimen>
+    <dimen name="favorite_image_margin_end">16sp</dimen>
+    <dimen name="favorite_date_margin_start">10sp</dimen>
+    <!-- end favorite fragment -->
 </resources>
