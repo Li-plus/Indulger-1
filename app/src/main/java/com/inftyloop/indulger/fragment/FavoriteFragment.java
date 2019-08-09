@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,9 +44,10 @@ public class FavoriteFragment extends QMUIFragment {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.favorite, null);
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getString(R.string.favorite_title));
-
-        Button btnAdd = mTopBar.addRightTextButton("add fav", 0);
-        btnAdd.setOnClickListener((View view) -> {
+        mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> {
+            popBackStack();
+        });
+        mTopBar.addRightTextButton("add fav", 0).setOnClickListener((View view) -> {
             Toast.makeText(getActivity(), "add", Toast.LENGTH_SHORT).show();
             addFavoriteItem(R.mipmap.ic_launcher, "news " + Math.random(), "plus-Li", "9102-08-08");
         });
@@ -83,7 +83,7 @@ public class FavoriteFragment extends QMUIFragment {
 
     @Override
     public TransitionConfig onFetchTransitionConfig() {
-        return SCALE_TRANSITION_CONFIG;
+        return SLIDE_TRANSITION_CONFIG;
     }
 
     public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapter.ViewHolder> {
