@@ -21,6 +21,9 @@
     <string name="settings_confirm_clear_cache">确定清空缓存吗？</string>
     <string name="settings_cancel">取消</string>
     <string name="settings_delete">删除</string>
+    <string name="me_title">我</string>
+    <string name="me_grouplist_settings">设置</string>
+    <string name="settings_cache_clearing">正在操作中</string>
     <!-- end settings fragment -->
 
     <!-- begin favorite fragment -->

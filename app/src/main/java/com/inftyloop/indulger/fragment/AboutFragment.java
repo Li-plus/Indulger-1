@@ -26,6 +26,9 @@ public class AboutFragment extends QMUIFragment {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.about, null);
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getResources().getString(R.string.about_title));
+        mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> {
+                popBackStack();
+        });
         mVersionTextView.setText(QMUIPackageHelper.getAppVersion(getContext()));
         mCopyrightTextView.setText(getResources().getString(R.string.copyright));
         QMUIGroupListView.newSection(getContext())
@@ -43,6 +46,6 @@ public class AboutFragment extends QMUIFragment {
 
     @Override
     public TransitionConfig onFetchTransitionConfig() {
-        return SCALE_TRANSITION_CONFIG;
+        return SLIDE_TRANSITION_CONFIG;
     }
 }
