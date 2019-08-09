@@ -3,7 +3,7 @@
     <string name="about_title">About</string>
     <string name="about_github" translatable="false">Github</string>
     <string name="github_url" translatable="false">https://github.com/zx1239856/</string>
-    <string name="copyright">inftyloop.tech©2019,保留所有权利</string>
+    <string name="copyright">Copyright inftyloop.tech©2019. All Rights Reserved.</string>
 
     <string name="home">Home</string>
     <string name="fav">Favorites</string>
@@ -26,4 +26,10 @@
     <string name="settings_cancel">Cancel</string>
     <string name="settings_delete">Delete</string>
     <!-- end settings fragment -->
+
+    <!-- begin favorite fragment -->
+    <string name="favorite_title">Favorites</string>
+    <string name="favorite_cancel">Cancel</string>
+    <string name="favorite_delete">Delete</string>
+    <!-- end favorite fragment -->
 </resources>

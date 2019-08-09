@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about_title">关于</string>
-    <string name="copyright">inftyloop.tech©2019,保留所有权利</string>
+    <string name="copyright">inftyloop.tech©2019. 保留所有权利.</string>
 
     <string name="home">主页</string>
     <string name="fav">收藏</string>
     <string name="personal">我</string>
-    
+
     <!-- begin settings fragment -->
     <string name="settings_title">设置</string>
     <string name="settings_night_mode">夜间模式</string>
@@ -22,4 +22,10 @@
     <string name="settings_cancel">取消</string>
     <string name="settings_delete">删除</string>
     <!-- end settings fragment -->
+
+    <!-- begin favorite fragment -->
+    <string name="favorite_title">收藏</string>
+    <string name="favorite_cancel">取消</string>
+    <string name="favorite_delete">删除</string>
+    <!-- end favorite fragment -->
 </resources>
