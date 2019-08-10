@@ -25,8 +25,10 @@
         <!-- App main theme -->
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
         <item name="app_content_bg_color">@color/qmui_config_color_white</item>
+
         <item name="qmui_config_color_background">?attr/app_content_bg_color</item>
         <item name="background_text_color">@color/qmui_config_color_white</item>
+
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">
@@ -69,6 +71,11 @@
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
 
         <item name="qmui_s_list_item_bg_with_border_none">@color/qmui_config_color_white</item>
+    </style>
+
+    <style name="dialogSlideAnim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_bottom_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_bottom_slide_out</item>
     </style>
 
 </resources>

@@ -3,7 +3,7 @@
     <item android:drawable="@drawable/toggle_bg_off" />
     <item android:drawable="@drawable/white_toggle_icon"
         android:left="2dp"
-        android:right="30dp"
+        android:right="18dp"
         android:bottom="2dp"
         android:top="2dp" />
 </layer-list>
