@@ -304,7 +304,6 @@
     <style name="Button" parent="ButtonBase"/>
 
     <style name="EditText" parent="EditTextBase">
-        <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
         <item name="android:textColorHint">?attr/qmui_config_color_gray_4</item>
         <!-- 光标颜色与textColor一致，若要自定义，应该用ShapeDrawable，不能简单指定一个color -->
         <item name="android:textCursorDrawable">@null</item>
@@ -318,8 +317,6 @@
     </style>
 
     <style name="AutoCompleteTextView" parent="AutoCompleteTextViewBase">
-        <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
-        <item name="android:textColorHint">?attr/qmui_config_color_gray_4</item>
         <!-- 光标颜色与textColor一致，若要自定义，应该用ShapeDrawable，不能简单指定一个color -->
         <item name="android:textCursorDrawable">@null</item>
     </style>
