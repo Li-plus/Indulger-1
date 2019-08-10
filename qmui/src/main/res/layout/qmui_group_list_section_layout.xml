@@ -25,6 +25,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/qmui_group_list_section_header_footer_text_size"
-        android:textColor="?attr/qmui_config_color_gray_3"
         android:gravity="left" />
 </merge>
