@@ -2,7 +2,7 @@
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/app_content_bg_color">
+    android:background="?attr/app_background_color">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:id="@+id/settings_group_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/app_content_bg_color" />
+                android:background="?attr/app_background_color" />
         </LinearLayout>
 
 

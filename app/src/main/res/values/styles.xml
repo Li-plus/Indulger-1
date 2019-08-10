@@ -24,9 +24,9 @@
 
         <!-- App main theme -->
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
-        <item name="app_content_bg_color">@color/qmui_config_color_white</item>
+        <item name="app_background_color">@color/qmui_config_color_white</item>
 
-        <item name="qmui_config_color_background">?attr/app_content_bg_color</item>
+        <item name="qmui_config_color_background">?attr/app_background_color</item>
         <item name="background_text_color">@color/qmui_config_color_white</item>
 
     </style>
@@ -59,7 +59,7 @@
         <item name="android:textAppearanceListItem">@style/QDtextAppearanceListItem</item>
 
         <item name="app_primary_color">@color/qmui_config_color_gray_1</item>
-        <item name="app_content_bg_color">@color/qmui_config_color_gray_2</item>
+        <item name="app_background_color">@color/qmui_config_color_gray_2</item>
         <item name="background_text_color">?android:textColor</item>
 
         <item name="qmui_config_color_blue">?attr/app_primary_color</item>
