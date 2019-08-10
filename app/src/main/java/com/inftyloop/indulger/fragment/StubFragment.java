@@ -8,6 +8,9 @@ import com.inftyloop.indulger.R;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
+/**
+ * Stub Fragment used for testing
+ */
 public class StubFragment extends QMUIFragment {
     @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
     @Override

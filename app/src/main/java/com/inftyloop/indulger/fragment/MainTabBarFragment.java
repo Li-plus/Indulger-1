@@ -83,7 +83,7 @@ public class MainTabBarFragment extends QMUIFragment {
         mTabSegment.addTab(home)
                 .addTab(fav)
                 .addTab(personal);
-        mPages.put(Pager.HOME, new StubFragment());
+        mPages.put(Pager.HOME, new HomeFragment());
         mPages.put(Pager.FAV, new FavoriteFragment());
         mPages.put(Pager.PERSONAL, new MeFragment());
         mPager.setAdapter(mPagerAdapter);
