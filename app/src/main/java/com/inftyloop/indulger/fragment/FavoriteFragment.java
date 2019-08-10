@@ -44,9 +44,6 @@ public class FavoriteFragment extends QMUIFragment {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.favorite, null);
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getString(R.string.favorite_title));
-        mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> {
-            popBackStack();
-        });
         mTopBar.addRightTextButton("add fav", 0).setOnClickListener((View view) -> {
             Toast.makeText(getActivity(), "add", Toast.LENGTH_SHORT).show();
             addFavoriteItem(R.mipmap.ic_launcher, "news " + Math.random(), "plus-Li", "9102-08-08");

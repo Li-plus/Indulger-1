@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rlItemView"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:orientation="horizontal"
-                android:layout_margin="5dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlItemView"
+    android:layout_width="wrap_content"
+    android:layout_height="45dp"
+    android:layout_margin="5dp"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_channel_shape"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        >
-
+        android:background="@drawable/bg_channel_shape">
 
         <TextView
             android:id="@+id/tvChannel"
@@ -23,10 +20,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/home_news_type_channel_edit"
-            android:textColor="@color/color_222222"
-            android:textSize="14sp"
-            />
-
+            android:background="?attr/app_background_color"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
@@ -36,9 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@mipmap/add_channels_close_small"
-        android:visibility="visible"
-        />
-
-
+        android:visibility="visible" />
 
 </RelativeLayout>

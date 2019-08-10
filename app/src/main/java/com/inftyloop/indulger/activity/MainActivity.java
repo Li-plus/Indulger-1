@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.MainTabBarFragment;
+import com.inftyloop.indulger.fragment.SettingsFragment;
 import com.inftyloop.indulger.fragment.WebViewFragment;
 import com.inftyloop.indulger.fragment.AboutFragment;
 import com.qmuiteam.qmui.arch.QMUIFragment;
@@ -32,6 +33,11 @@ public class MainActivity extends QMUIFragmentActivity {
         return R.id.qmuidemo;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(SettingsFragment.styleResId);
+    }
 
     public static Intent createWebExplorerIntent(Context context, String url, String title) {
         Bundle bundle = new Bundle();
