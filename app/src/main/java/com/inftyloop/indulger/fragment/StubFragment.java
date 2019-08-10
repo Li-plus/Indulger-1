@@ -12,6 +12,7 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
  * Stub Fragment used for testing
  */
 public class StubFragment extends QMUIFragment {
+    private static final String TAG = StubFragment.class.getSimpleName();
     @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
     @Override
     public View onCreateView() {

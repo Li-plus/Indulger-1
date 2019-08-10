@@ -10,6 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?attr/foreground_text_color"
         android:text="@string/home_news_type_my_channel"
         android:textSize="18sp" />
 

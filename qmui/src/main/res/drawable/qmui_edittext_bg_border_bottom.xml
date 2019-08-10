@@ -18,6 +18,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/qmui_config_color_link"/>
     <item
-        android:drawable="@color/qmui_config_color_white"
+        android:drawable="?attr/app_background_color"
         android:bottom="1dp"/>
 </layer-list>

@@ -16,12 +16,12 @@
 -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/qmui_config_color_white"/>
+    <item android:drawable="?attr/app_background_color"/>
     <item
-        android:drawable="@color/qmui_drawable_color_list_separator"
+        android:drawable="?attr/app_content_separator_color"
         android:left="@dimen/qmui_list_item_inset_left"
         android:right="@dimen/qmui_list_item_inset_left"/>
     <item
         android:bottom="@dimen/qmui_list_divider_height"
-        android:drawable="@color/qmui_config_color_white"/>
+        android:drawable="?attr/app_background_color"/>
 </layer-list>

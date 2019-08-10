@@ -16,6 +16,8 @@ import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_URL;
 import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_TITLE;
 
 public class AboutFragment extends QMUIFragment {
+    private final static String TAG = AboutFragment.class.getSimpleName();
+
     @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
     @BindView(R.id.version) TextView mVersionTextView;
     @BindView(R.id.about_list) QMUIGroupListView mAboutGroupListView;

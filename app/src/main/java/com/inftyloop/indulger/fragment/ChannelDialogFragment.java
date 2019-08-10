@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeDragListener {
+    private final static String TAG = ChannelDialogFragment.class.getSimpleName();
+
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     private List<NewsChannel> mData = new ArrayList<>();
     private NewsChannelAdapter mAdapter;

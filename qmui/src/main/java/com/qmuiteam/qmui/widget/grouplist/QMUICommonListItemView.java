@@ -315,6 +315,7 @@ public class QMUICommonListItemView extends RelativeLayout {
             case ACCESSORY_TYPE_SWITCH: {
                 if (mSwitch == null) {
                     mSwitch = new SwitchButton(getContext());
+                    mSwitch.setLayoutParams(getAccessoryLayoutParams());
                     mSwitch.setShadowEffect(false);
                 }
                 mAccessoryView.addView(mSwitch);
@@ -338,7 +339,7 @@ public class QMUICommonListItemView extends RelativeLayout {
 
     private ImageView getAccessoryImageView() {
         ImageView resultImageView = new ImageView(getContext());
-//        resultImageView.setLayoutParams(getAccessoryLayoutParams());
+        resultImageView.setLayoutParams(getAccessoryLayoutParams());
         resultImageView.setScaleType(ImageView.ScaleType.CENTER);
         return resultImageView;
     }

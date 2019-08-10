@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
+    private final static String TAG = HomeFragment.class.getSimpleName();
+
     @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
     @BindView(R.id.tabSegment) QMUITabSegment mTabChannel;
     @BindView(R.id.operationImageView) ImageView mAddChannelIV;

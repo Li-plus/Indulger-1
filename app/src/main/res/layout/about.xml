@@ -15,7 +15,7 @@
                        android:src="@mipmap/ic_launcher" android:layout_gravity="center_horizontal"/>
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:id="@+id/version" android:layout_marginTop="15dp"
-                      android:textColor="?attr/qmui_config_color_gray_3"
+                      android:textColor="?attr/foreground_text_color"
                       android:textSize="16sp" android:textAlignment="center"/>
             <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
                     android:id="@+id/about_list"

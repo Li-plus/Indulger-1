@@ -10,6 +10,7 @@ import com.inftyloop.indulger.util.BaseFragment;
 import com.inftyloop.indulger.util.BasePresenter;
 
 public class NewsListFragment extends BaseFragment {
+    private final static String TAG = NewsListFragment.class.getSimpleName();
     //TODO
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

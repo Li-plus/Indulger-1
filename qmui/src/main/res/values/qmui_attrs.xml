@@ -16,6 +16,8 @@
 -->
 
 <resources>
+    <attr name="app_background_color" format="color" />
+    <attr name="app_content_separator_color" format="color" />
 
     <attr name="qmui_backgroundColor" format="color"/>
     <attr name="qmui_borderColor" format="color"/>

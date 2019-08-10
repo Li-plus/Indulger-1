@@ -28,7 +28,9 @@
 
         <item name="qmui_config_color_background">?attr/app_background_color</item>
         <item name="background_text_color">@color/qmui_config_color_white</item>
-
+        <item name="app_content_separator_color">@color/qmui_config_color_separator</item>
+        <item name="button_edge_color">@color/color_e8e8e8</item>
+        <item name="foreground_text_color">@color/qmui_config_color_black</item>
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">
@@ -61,6 +63,9 @@
         <item name="app_primary_color">@color/qmui_config_color_gray_1</item>
         <item name="app_background_color">@color/qmui_config_color_gray_2</item>
         <item name="background_text_color">?android:textColor</item>
+        <item name="foreground_text_color">@color/qmui_config_color_75_white</item>
+        <item name="button_edge_color">@color/qmui_config_color_50_blue</item>
+        <item name="app_content_separator_color">@color/qmui_config_color_gray_4</item>
 
         <item name="qmui_config_color_blue">?attr/app_primary_color</item>
         <item name="qmui_round_btn_bg_color">@color/qmui_config_color_gray_2</item>
@@ -70,7 +75,7 @@
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
 
-        <item name="qmui_s_list_item_bg_with_border_none">@color/qmui_config_color_white</item>
+        <item name="qmui_s_list_item_bg_with_border_none">?attr/app_background_color</item>
     </style>
 
     <style name="dialogSlideAnim" mce_bogus="1" parent="android:Animation">

@@ -17,5 +17,5 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
         android:color="@color/qmui_drawable_color_list_pressed">
-    <item android:drawable="@color/qmui_config_color_white"/>
+    <item android:drawable="?attr/app_background_color"/>
 </ripple>

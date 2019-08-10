@@ -25,6 +25,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.suke.widget.SwitchButton;
 
 public class SettingsFragment extends QMUIFragment {
+    private static final String TAG = SettingsFragment.class.getSimpleName();
+
     public static int styleResId = R.style.AppTheme;
 
     @BindView(R.id.topbar)
@@ -51,11 +53,6 @@ public class SettingsFragment extends QMUIFragment {
         } else {
             itemNightMode.getSwitch().setChecked(true);
         }
-        Log.d(getContext().getClass().getName(), outValue + " jjjjjjjj");
-        Log.d(getContext().getClass().getName(), outValue.data + " jjjjjjjj");
-        Log.d(getContext().getClass().getName(), outValue.toString() + " jjjjjjjj");
-        Log.d(getContext().getClass().getName(), outValue.string + " jjjjjjjj");
-
         itemNightMode.getSwitch().setOnCheckedChangeListener((SwitchButton buttonView, boolean isChecked) -> {
             Toast.makeText(getActivity(), "checked = " + isChecked, Toast.LENGTH_SHORT).show();
             if (isChecked) {

@@ -52,8 +52,8 @@
     </style>
 
     <style name="QMUI.CommonListItemView">
-        <!--<item name="android:paddingLeft">?attr/qmui_content_padding_horizontal</item>-->
-        <!--<item name="android:paddingRight">?attr/qmui_content_padding_horizontal</item>-->
+        <item name="android:paddingLeft">?attr/qmui_content_padding_horizontal</item>
+        <item name="android:paddingRight">?attr/qmui_content_padding_horizontal</item>
         <item name="android:background">?attr/qmui_s_list_item_bg_with_border_none</item>
         <item name="qmui_commonList_titleColor">?android:textColor</item>
         <item name="qmui_commonList_detailColor">?android:textColor</item>

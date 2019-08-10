@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FavoriteFragment extends QMUIFragment {
+    private final static String TAG = FavoriteFragment.class.getSimpleName();
 
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;

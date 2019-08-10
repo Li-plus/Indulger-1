@@ -328,7 +328,7 @@
     <style name="DropDownListView" parent="DropDownListViewBase">
         <item name="android:divider">@drawable/qmui_divider_bottom_bitmap</item>
         <item name="android:dividerHeight">@dimen/qmui_list_divider_height</item>
-        <item name="android:background">@color/qmui_config_color_white</item>
+        <item name="android:background">?attr/app_background_color</item>
     </style>
 
 

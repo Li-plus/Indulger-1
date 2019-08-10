@@ -1,6 +1,7 @@
 package com.inftyloop.indulger.fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 public class MeFragment extends QMUIFragment {
+    private static final String TAG = MeFragment.class.getSimpleName();
+
     @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
     @BindView(R.id.avatar) ImageView mAvatar;
     @BindView(R.id.username) TextView mUsername;

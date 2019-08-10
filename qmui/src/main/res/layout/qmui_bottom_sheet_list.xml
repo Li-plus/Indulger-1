@@ -37,7 +37,7 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/qmui_config_color_white"
+        android:background="?attr/app_background_color"
         android:divider="@null"
         android:dividerHeight="0dp"/>
 </LinearLayout>

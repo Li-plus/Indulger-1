@@ -31,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WebViewFragment extends QMUIFragment {
+    private static final String TAG = WebViewFragment.class.getSimpleName();
+
     public static final String EXTRA_URL = "EXTRA_URL";
     public static final String EXTRA_TITLE = "EXTRA_TITLE";
     public static final String EXTRA_NEED_DECODE = "EXTRA_NEED_DECODE";

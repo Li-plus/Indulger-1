@@ -16,6 +16,6 @@
 -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@color/qmui_drawable_color_list_separator"/>
-    <item android:drawable="@color/qmui_config_color_white" android:top="@dimen/qmui_list_divider_height"/>
+    <item android:drawable="?attr/app_content_separator_color"/>
+    <item android:drawable="?attr/app_background_color" android:top="@dimen/qmui_list_divider_height"/>
 </layer-list>

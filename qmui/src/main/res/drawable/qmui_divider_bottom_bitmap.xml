@@ -18,4 +18,4 @@
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
        android:gravity="fill_horizontal|bottom"
        android:src="@drawable/qmui_divider"
-       android:tint="@color/qmui_drawable_color_list_separator" />
+       android:tint="?attr/app_content_separator_color" />
