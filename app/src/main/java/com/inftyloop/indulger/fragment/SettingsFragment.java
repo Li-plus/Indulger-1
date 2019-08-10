@@ -1,6 +1,11 @@
 package com.inftyloop.indulger.fragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,6 +24,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 public class SettingsFragment extends QMUIFragment {
+    public static int styleResId = R.style.AppTheme;
+
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
     @BindView(R.id.settings_group_list_view)
@@ -35,8 +42,28 @@ public class SettingsFragment extends QMUIFragment {
 
         QMUICommonListItemView itemNightMode = mSettingsGroupListView.createItemView(getString(R.string.settings_night_mode));
         itemNightMode.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.style_name, outValue, true);
+        if (outValue.string.equals(getString(R.string.day_theme_name))) {
+            itemNightMode.getSwitch().setChecked(false);
+        } else {
+            itemNightMode.getSwitch().setChecked(true);
+        }
+        Log.d(getContext().getClass().getName(), outValue + " jjjjjjjj");
+        Log.d(getContext().getClass().getName(), outValue.data + " jjjjjjjj");
+        Log.d(getContext().getClass().getName(), outValue.toString() + " jjjjjjjj");
+        Log.d(getContext().getClass().getName(), outValue.string + " jjjjjjjj");
         itemNightMode.getSwitch().setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
             Toast.makeText(getActivity(), "checked = " + isChecked, Toast.LENGTH_SHORT).show();
+            if (isChecked) {
+                getContext().setTheme(R.style.NightTheme);
+                styleResId = R.style.NightTheme;
+            } else {
+                getActivity().setTheme(R.style.AppTheme);
+                styleResId = R.style.AppTheme;
+            }
+            getActivity().recreate();
         });
         QMUICommonListItemView itemClearCache = mSettingsGroupListView.createItemView(getString(R.string.settings_clear_cache));
         itemClearCache.setOnClickListener((View v) -> {
@@ -52,7 +79,7 @@ public class SettingsFragment extends QMUIFragment {
                                         .setTipWord(getString(R.string.settings_cache_clearing))
                                         .create();
                                 tipDialog.show();
-                                mSettingsGroupListView.postDelayed(()->{
+                                mSettingsGroupListView.postDelayed(() -> {
                                     tipDialog.dismiss();
                                     QMUITipDialog tipDialog1 = new QMUITipDialog.Builder(getContext()).setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
                                             .setTipWord(getString(R.string.settings_cache_all_cleared))

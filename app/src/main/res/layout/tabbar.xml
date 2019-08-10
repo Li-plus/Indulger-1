@@ -12,7 +12,7 @@
     <com.qmuiteam.qmui.widget.QMUITabSegment
             android:id="@+id/tabs"
             android:layout_gravity="bottom"
-            android:background="?attr/qmui_list_item_bg_with_border_top"
+            android:background="?attr/app_content_bg_color"
             android:textSize="12sp"
             app:qmui_tab_icon_position="top"
             android:layout_width="match_parent"

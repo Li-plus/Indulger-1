@@ -59,8 +59,8 @@ public class MainTabBarFragment extends QMUIFragment {
             }
         };
         // init tabs
-        int normalColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.qmui_config_color_gray_6);
-        int selectedColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.qmui_config_color_blue);
+        int normalColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_normal_text_color);
+        int selectedColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_selected_text_color);
         mTabSegment.setDefaultNormalColor(normalColor);
         mTabSegment.setDefaultSelectedColor(selectedColor);
 

@@ -2,7 +2,7 @@
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="match_parent"
-                                                android:background="@color/qmui_config_color_white">
+                                                android:background="?attr/app_content_bg_color">
     <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
                 android:layout_marginTop="?attr/qmui_topbar_height"
                 android:fillViewport="true"
