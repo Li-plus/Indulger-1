@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.gson.Gson;
@@ -41,6 +42,15 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     private Gson mGson = new Gson();
     private NewsChannelPagerAdapter mPagerAdapter;
     private String[] mChannelCodes;
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(25, 25, 25, 25);
+        View view = getLayoutInflater().inflate(R.layout.searchbar_home, null);
+        mTopBar.addRightView(view, R.id.topbar_search, lp);
+    }
 
     @Override
     protected BasePresenter createPresenter() {

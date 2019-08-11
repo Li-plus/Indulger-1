@@ -2,6 +2,7 @@
 <resources>
     <attr name="app_primary_color" format="color" /> <!-- topbar -->
     <attr name="app_background_color" format="color" /> <!-- content-->
+    <attr name="app_background_dim_color" format="color" />
     <attr name="app_content_separator_color" format="color" />
     <attr name="foreground_text_color" format="color" />
     <attr name="foreground_text_color_dim" format="color" />
@@ -9,6 +10,7 @@
     <attr name="button_edge_color" format="color" />
     <attr name="tabbar_selected_text_color" format="color" />
     <attr name="tabbar_normal_text_color" format="color" />
+    <attr name="ic_search_color" format="color" />
     <attr name="style_name" format="string"/>
     <attr name="webview_progress_bar_color" format="color"/>
     <attr name="add_channel_button_mipmap" format="reference" />
