@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -29,8 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_toEndOf="@+id/img"
         android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/img"
         android:gravity="bottom" />
 
     <TextView
@@ -38,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_marginStart="@dimen/favorite_date_margin_start"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/favorite_date_margin_start"
         android:layout_toEndOf="@+id/press"
         android:gravity="bottom" />
 

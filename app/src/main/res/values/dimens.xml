@@ -28,5 +28,6 @@
     <dimen name="favorite_relative_layout_padding">16sp</dimen>
     <dimen name="favorite_image_margin_end">16sp</dimen>
     <dimen name="favorite_date_margin_start">10sp</dimen>
+    <dimen name="ic_clear_margin">16dp</dimen>
     <!-- end favorite fragment -->
 </resources>

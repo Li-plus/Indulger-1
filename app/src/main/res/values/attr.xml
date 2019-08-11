@@ -10,9 +10,10 @@
     <attr name="button_edge_color" format="color" />
     <attr name="tabbar_selected_text_color" format="color" />
     <attr name="tabbar_normal_text_color" format="color" />
+    <attr name="style_name" format="string" />
+    <attr name="webview_progress_bar_color" format="color" />
+    <attr name="swipe_delete_background" format="color" />
     <attr name="ic_search_color" format="color" />
-    <attr name="style_name" format="string"/>
-    <attr name="webview_progress_bar_color" format="color"/>
     <attr name="add_channel_button_mipmap" format="reference" />
     <attr name="add_channel_close_button_mipmap" format="reference" />
 </resources>
