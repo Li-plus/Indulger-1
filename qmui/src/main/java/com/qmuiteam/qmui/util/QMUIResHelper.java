@@ -35,6 +35,11 @@ import com.qmuiteam.qmui.R;
  * @date 2016-09-22
  */
 public class QMUIResHelper {
+    public static CharSequence getAttrString(Context ctx, int attrRes) {
+        TypedValue typedValue = new TypedValue();
+        ctx.getTheme().resolveAttribute(attrRes, typedValue, true);
+        return typedValue.string;
+    }
 
     public static float getAttrFloatValue(Context context, int attrRes){
         TypedValue typedValue = new TypedValue();

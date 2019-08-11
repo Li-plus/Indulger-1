@@ -10,6 +10,13 @@
         <item name="android:textAppearanceListItem">@style/QDtextAppearanceListItem</item>
         <item name="android:listPreferredItemHeight">?attr/qmui_list_item_height_higher</item>
         <item name="android:listPreferredItemHeightSmall">?attr/qmui_list_item_height</item>
+
+        <item name="android:navigationBarColor">?attr/app_primary_color</item>
+
+        <item name="add_channel_button_mipmap">@mipmap/add_channel</item>
+        <item name="add_channel_close_button_mipmap">@drawable/category_edit_close</item>
+
+        <!-- QMUI stuffs -->
         <item name="qmui_config_color_blue">@color/app_color_blue</item>
         <item name="qmui_round_btn_bg_color">@color/s_btn_blue_bg</item>
         <item name="qmui_round_btn_border_color">@color/s_btn_blue_border</item>
@@ -17,19 +24,22 @@
         <item name="qmui_content_spacing_horizontal">20dp</item>
         <item name="qmui_content_padding_horizontal">@dimen/qmui_content_spacing_horizontal</item>
 
+        <!-- styles for components -->
         <item name="QMUITopBarStyle">@style/QDTopBar</item>
+        <item name="QMUICommonListItemViewStyle">@style/QDCommonListItemView</item>
 
+        <!-- theme specific colors -->
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
         <item name="app_background_color">@color/qmui_config_color_white</item>
-
         <item name="qmui_config_color_background">?attr/app_background_color</item>
         <item name="background_text_color">@color/qmui_config_color_white</item>
         <item name="app_content_separator_color">@color/qmui_config_color_separator</item>
         <item name="button_edge_color">@color/color_e8e8e8</item>
         <item name="foreground_text_color">@color/qmui_config_color_black</item>
         <item name="webview_progress_bar_color">@color/app_color_theme_4</item>
+        <item name="foreground_text_color_dim">@color/qmui_config_color_gray_5</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
@@ -43,6 +53,12 @@
         <item name="qmui_topbar_text_btn_color_state_list">?attr/background_text_color</item>
         <item name="qmui_topbar_height">48dp</item>
         <item name="qmui_topbar_image_btn_height">48dp</item>
+        <item name="qmui_topbar_need_separator">false</item>
+    </style>
+
+    <style name="QDCommonListItemView" parent="QMUI.CommonListItemView">
+        <item name="qmui_commonList_titleColor">?attr/foreground_text_color</item>
+        <item name="qmui_commonList_detailColor">?attr/foreground_text_color_dim</item>
     </style>
 
     <style name="QDTextAppearanceListItemSmall">
@@ -63,10 +79,14 @@
         <item name="android:textAppearanceListItemSmall">@style/QDTextAppearanceListItemSmall</item>
         <item name="android:textAppearanceListItem">@style/QDtextAppearanceListItem</item>
 
+        <item name="add_channel_button_mipmap">@mipmap/add_channel_dark</item>
+        <item name="add_channel_close_button_mipmap">@drawable/category_edit_close_dark</item>
+
         <item name="app_primary_color">@color/qmui_config_color_gray_1</item>
         <item name="app_background_color">@color/qmui_config_color_gray_2</item>
         <item name="background_text_color">?android:textColor</item>
         <item name="foreground_text_color">@color/qmui_config_color_75_white</item>
+        <item name="foreground_text_color_dim">@color/qmui_config_color_gray_8</item>
         <item name="button_edge_color">@color/qmui_config_color_50_blue</item>
         <item name="app_content_separator_color">@color/qmui_config_color_gray_4</item>
 

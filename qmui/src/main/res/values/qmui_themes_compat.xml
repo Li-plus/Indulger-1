@@ -333,7 +333,7 @@
     <style name="Button.Compat" parent="ButtonBase.Compat"/>
 
     <style name="EditText.Compat" parent="EditTextBase.Compat">
-
+        <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
         <item name="android:textColorHint">?attr/qmui_config_color_gray_4</item>
         <!-- 光标颜色与textColor一致，若要自定义，应该用ShapeDrawable，不能简单指定一个color -->
         <item name="android:textCursorDrawable">@null</item>
@@ -347,6 +347,7 @@
     </style>
 
     <style name="AutoCompleteTextView.Compat" parent="AutoCompleteTextViewBase.Compat">
+        <item name="android:textColor">?attr/qmui_config_color_gray_1</item>
         <item name="android:textColorHint">?attr/qmui_config_color_gray_4</item>
         <!-- 光标颜色与textColor一致，若要自定义，应该用ShapeDrawable，不能简单指定一个color -->
         <item name="android:textCursorDrawable">@null</item>

@@ -18,6 +18,9 @@
 <resources>
     <attr name="app_background_color" format="color" />
     <attr name="app_content_separator_color" format="color" />
+    <attr name="foreground_text_color" format="color" />
+    <attr name="foreground_text_color_dim" format="color" />
+    <attr name="background_text_color" format="color" />
 
     <attr name="qmui_backgroundColor" format="color"/>
     <attr name="qmui_borderColor" format="color"/>

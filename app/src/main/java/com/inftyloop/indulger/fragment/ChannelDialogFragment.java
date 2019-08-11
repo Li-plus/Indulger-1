@@ -23,6 +23,7 @@ import com.inftyloop.indulger.listener.ItemDragHelperCb;
 import com.inftyloop.indulger.listener.OnNewsTypeDragListener;
 import com.inftyloop.indulger.listener.OnNewsTypeListener;
 import com.inftyloop.indulger.model.entity.NewsChannel;
+import com.qmuiteam.qmui.util.QMUIResHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,7 +61,12 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar);
+        CharSequence name = QMUIResHelper.getAttrString(getContext(), R.attr.style_name);
+        if(name.equals(getString(R.string.night_theme_name))) {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.NightTheme);
+        } else if(name.equals(getString(R.string.day_theme_name))) {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme);
+        }
     }
 
     @Nullable
