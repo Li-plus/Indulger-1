@@ -60,4 +60,14 @@
     <color name="color_4592C6">#4592C6</color>
     <color name="color_1affffff">#1affffff</color>
     <color name="color_E6E8E7">#E6E8E7</color>
+
+    <color name="color_red_0">#FF0000</color>
+    <color name="color_red_1">#FF1010</color>
+    <color name="color_red_2">#FF2020</color>
+    <color name="color_red_3">#FF3030</color>
+    <color name="color_red_4">#FF4040</color>
+    <color name="color_red_5">#FF5050</color>
+    <color name="color_red_6">#FF6060</color>
+    <color name="color_red_7">#FF7070</color>
+    <color name="color_red_8">#FF8080</color>
 </resources>

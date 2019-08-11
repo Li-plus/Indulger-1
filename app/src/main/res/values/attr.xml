@@ -8,6 +8,7 @@
     <attr name="button_edge_color" format="color" />
     <attr name="tabbar_selected_text_color" format="color" />
     <attr name="tabbar_normal_text_color" format="color" />
-    <attr name="style_name" format="string"/>
-    <attr name="webview_progress_bar_color" format="color"/>
+    <attr name="style_name" format="string" />
+    <attr name="webview_progress_bar_color" format="color" />
+    <attr name="swipe_delete_background" format="color" />
 </resources>
