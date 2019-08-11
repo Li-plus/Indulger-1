@@ -30,6 +30,8 @@
         <item name="button_edge_color">@color/color_e8e8e8</item>
         <item name="foreground_text_color">@color/qmui_config_color_black</item>
         <item name="webview_progress_bar_color">@color/app_color_theme_4</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">
@@ -75,11 +77,18 @@
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
 
         <item name="qmui_s_list_item_bg_with_border_none">?attr/app_background_color</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
     <style name="dialogSlideAnim" mce_bogus="1" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_bottom_slide_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_bottom_slide_out</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>
