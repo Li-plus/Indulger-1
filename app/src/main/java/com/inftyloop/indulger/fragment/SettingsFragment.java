@@ -1,33 +1,32 @@
 package com.inftyloop.indulger.fragment;
 
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.util.BaseFragmentActivity;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
+import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
-import com.suke.widget.SwitchButton;
 
 public class SettingsFragment extends QMUIFragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
-
-    public static int styleResId = R.style.AppTheme;
+    private int theme_checked_idx = -1;
+    private int lang_checked_idx = -1;
 
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
@@ -43,27 +42,54 @@ public class SettingsFragment extends QMUIFragment {
             popBackStack();
         });
 
-        QMUICommonListItemView itemNightMode = mSettingsGroupListView.createItemView(getString(R.string.settings_night_mode));
-        itemNightMode.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        /* Theme handler */
 
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.style_name, outValue, true);
-        if (outValue.string.equals(getString(R.string.day_theme_name))) {
-            itemNightMode.getSwitch().setChecked(false);
-        } else {
-            itemNightMode.getSwitch().setChecked(true);
+        theme_checked_idx = ConfigManager.getInt(Definition.SETTINGS_APP_THEME, -1);
+        if(theme_checked_idx < 0) {
+            ConfigManager.putIntNow(Definition.SETTINGS_APP_THEME, 0);
         }
-        itemNightMode.getSwitch().setOnCheckedChangeListener((SwitchButton buttonView, boolean isChecked) -> {
-            Toast.makeText(getActivity(), "checked = " + isChecked, Toast.LENGTH_SHORT).show();
-            if (isChecked) {
-                getContext().setTheme(R.style.NightTheme);
-                styleResId = R.style.NightTheme;
-            } else {
-                getActivity().setTheme(R.style.AppTheme);
-                styleResId = R.style.AppTheme;
-            }
-            getActivity().recreate();
+
+        QMUICommonListItemView itemTheme = mSettingsGroupListView.createItemView(getString(R.string.settings_theme));
+        itemTheme.setOnClickListener((View v) -> {
+            final String[] items = new String[]{
+                    getString(R.string.settings_theme_default),
+                    getString(R.string.settings_theme_auto),
+                    getString(R.string.settings_theme_night)
+            };
+            new QMUIDialog.CheckableDialogBuilder(getActivity())
+                    .setCheckedIndex(theme_checked_idx)
+                    .addItems(items, (DialogInterface dialog, int which) -> {
+                        ConfigManager.putIntNow(Definition.SETTINGS_APP_THEME, which);
+                        QMUIFragmentActivity activity = getBaseFragmentActivity();
+                        theme_checked_idx = which;
+                        if(activity instanceof BaseFragmentActivity) {
+                            // only recreate if mode changes
+                            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                            BaseFragmentActivity act = (BaseFragmentActivity) activity;
+                            switch (which) {
+                                case 0:
+                                    if(act.getCurStyleResId() != R.style.AppTheme)
+                                        act.recreate(); break;
+                                case 1:
+                                    if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                                        if(act.getCurStyleResId() != R.style.NightTheme)
+                                            act.recreate(); break;
+                                    } else {
+                                        if(act.getCurStyleResId() != R.style.AppTheme)
+                                            act.recreate(); break;
+                                    }
+                                case 2:
+                                    if(act.getCurStyleResId() != R.style.NightTheme)
+                                        act.recreate(); break;
+                            }
+                        } else activity.recreate();
+                        dialog.dismiss();
+                    })
+                    .create(R.style.QMUI_Dialog).show();
         });
+
+        /* Cache handler */
+
         QMUICommonListItemView itemClearCache = mSettingsGroupListView.createItemView(getString(R.string.settings_clear_cache));
         itemClearCache.setOnClickListener((View v) -> {
             new QMUIDialog.MessageDialogBuilder(getActivity())
@@ -91,6 +117,8 @@ public class SettingsFragment extends QMUIFragment {
                     .create(R.style.QMUI_Dialog).show();
         });
 
+        /* Font size handler */
+
         QMUICommonListItemView itemFontSize = mSettingsGroupListView.createItemView(getString(R.string.settings_font_size));
         itemFontSize.setOnClickListener((View v) -> {
             final String[] items = new String[]{
@@ -109,18 +137,27 @@ public class SettingsFragment extends QMUIFragment {
                     .create(R.style.QMUI_Dialog).show();
         });
 
+        /* Language handler */
+
+        lang_checked_idx = ConfigManager.getInt(Definition.SETTINGS_APP_LANG, -1);
+        if(lang_checked_idx < 0)
+            ConfigManager.putIntNow(Definition.SETTINGS_APP_LANG, 0);
+
         QMUICommonListItemView itemLanguage = mSettingsGroupListView.createItemView(getString(R.string.settings_language));
         itemLanguage.setOnClickListener((View v) -> {
             final String[] items = new String[]{
-                    getString(R.string.settings_chinese),
-                    getString(R.string.settings_english)
+                    getString(R.string.settings_lang_auto),
+                    getString(R.string.settings_lang_chn),
+                    getString(R.string.settings_lang_en)
             };
-            final int checkedIndex = 0;
-
             new QMUIDialog.CheckableDialogBuilder(getActivity())
-                    .setCheckedIndex(checkedIndex)
+                    .setCheckedIndex(lang_checked_idx)
                     .addItems(items, (DialogInterface dialog, int which) -> {
-                        Toast.makeText(getActivity(), "you clicked " + items[which], Toast.LENGTH_SHORT).show();
+                        if(lang_checked_idx != which) {
+                            lang_checked_idx = which;
+                            getActivity().recreate();
+                        }
+                        ConfigManager.putIntNow(Definition.SETTINGS_APP_LANG, which);
                         dialog.dismiss();
                     })
                     .create(R.style.QMUI_Dialog).show();
@@ -134,7 +171,7 @@ public class SettingsFragment extends QMUIFragment {
         });
 
         QMUIGroupListView.newSection(getContext())
-                .addItemView(itemNightMode, null)
+                .addItemView(itemTheme, null)
                 .addItemView(itemClearCache, null)
                 .addItemView(itemFontSize, null)
                 .addItemView(itemLanguage, null)

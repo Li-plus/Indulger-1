@@ -4,10 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
+import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.util.LocaleHelper;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import org.litepal.LitePal;
+
+import java.util.Locale;
 
 public class MainApplication extends Application {
     @SuppressLint("StaticFieldLeak")
@@ -17,27 +23,45 @@ public class MainApplication extends Application {
     private static Looper mMainLooper;
     private static Handler mHandler;
 
-    public static void setContext(Context ctx) { mContext = ctx; }
+    public static void setContext(Context ctx) {
+        mContext = ctx;
+    }
 
     public static Context getContext() {
         return mContext;
     }
 
-    public static void setMainThread(Thread t) { mMainThread = t; }
+    public static void setMainThread(Thread t) {
+        mMainThread = t;
+    }
 
-    public static Thread getMainThread() { return mMainThread; }
+    public static Thread getMainThread() {
+        return mMainThread;
+    }
 
-    public static void setMainThreadId(long id) { mMainThreadId = id; }
+    public static void setMainThreadId(long id) {
+        mMainThreadId = id;
+    }
 
-    public static long getMainThreadId() { return mMainThreadId; }
+    public static long getMainThreadId() {
+        return mMainThreadId;
+    }
 
-    public static void setMainLooper(Looper l) { mMainLooper = l; }
+    public static void setMainLooper(Looper l) {
+        mMainLooper = l;
+    }
 
-    public static Looper getMainThreadLooper() { return mMainLooper; }
+    public static Looper getMainThreadLooper() {
+        return mMainLooper;
+    }
 
-    public static void setMainHandler(Handler h) { mHandler = h; }
+    public static void setMainHandler(Handler h) {
+        mHandler = h;
+    }
 
-    public static Handler getMainHandler() { return mHandler; }
+    public static Handler getMainHandler() {
+        return mHandler;
+    }
 
     @Override
     public void onCreate() {

@@ -10,7 +10,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/app_color_theme_1"/>
+                <solid android:color="?attr/webview_progress_bar_color"/>
             </shape>
         </clip>
     </item>

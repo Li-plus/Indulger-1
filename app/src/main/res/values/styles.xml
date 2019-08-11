@@ -21,8 +21,6 @@
 
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
-
-        <!-- App main theme -->
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
         <item name="app_background_color">@color/qmui_config_color_white</item>
 
@@ -31,6 +29,7 @@
         <item name="app_content_separator_color">@color/qmui_config_color_separator</item>
         <item name="button_edge_color">@color/color_e8e8e8</item>
         <item name="foreground_text_color">@color/qmui_config_color_black</item>
+        <item name="webview_progress_bar_color">@color/app_color_theme_4</item>
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">

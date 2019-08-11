@@ -18,6 +18,7 @@ import com.inftyloop.indulger.model.entity.NewsChannel;
 import com.inftyloop.indulger.util.BaseFragment;
 import com.inftyloop.indulger.util.BasePresenter;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
@@ -45,10 +46,11 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
         return null;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void initData() {
-        String selectedChannelJson = ConfigManager.getString(Definition.SELECTED_CHANNEL_JSON, "");
-        String unselectedChannelJson = ConfigManager.getString(Definition.UNSELECTED_CHANNEL_JSON, "");
+        String selectedChannelJson = ConfigManager.getString(Definition.SETTINGS_SELECTED_CHANNEL_JSON, "");
+        String unselectedChannelJson = ConfigManager.getString(Definition.SETTINGS_UNSELECTED_CHANNEL_JSON, "");
         String[] channels = getResources().getStringArray(R.array.channel);
         String[] channelCodes = getResources().getStringArray(R.array.channel_code);
         HashMap<String, String> code2name = new HashMap<>();
@@ -59,7 +61,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             for(int i = 0; i < channelCodes.length; ++i)
                 mSelectedChannels.add(new NewsChannel(channels[i], channelCodes[i]));
             selectedChannelJson = mGson.toJson(mSelectedChannels);
-            ConfigManager.putString(Definition.SELECTED_CHANNEL_JSON, selectedChannelJson);
+            ConfigManager.putString(Definition.SETTINGS_SELECTED_CHANNEL_JSON, selectedChannelJson);
         } else {
             List<NewsChannel> selectedChannel = mGson.fromJson(selectedChannelJson, new TypeToken<List<NewsChannel>>(){}.getType());
             List<NewsChannel> unselectedChannel = mGson.fromJson(unselectedChannelJson, new TypeToken<List<NewsChannel>>(){}.getType());
@@ -72,8 +74,16 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             mSelectedChannels.addAll(selectedChannel);
             mUnselectedChannels.addAll(unselectedChannel);
         }
-        // TODO
-        // init channel fragments (set params according to type)
+        mChannelCodes = getResources().getStringArray(R.array.channel_code);
+        for(NewsChannel ch : mSelectedChannels) {
+            NewsListFragment frag = new NewsListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Definition.IS_RECOMMEND, ch.channelCode.equals(getString(R.string.channel_code_recommend)));
+            bundle.putString(Definition.CHANNEL_NAME, ch.title);
+            bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(getString(R.string.channel_code_video)));
+            frag.setArguments(bundle);
+            mFragments.add(frag);
+        }
     }
 
     @Override
@@ -88,8 +98,13 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     public void initListener() {
         mPagerAdapter = new NewsChannelPagerAdapter(mFragments, mSelectedChannels, getChildFragmentManager());
         mContentPager.setAdapter(mPagerAdapter);
+        mTabChannel.setHasIndicator(true);
+        mTabChannel.setMode(QMUITabSegment.MODE_SCROLLABLE);
+        int space = QMUIDisplayHelper.dp2px(getContext(), 16);
+        mTabChannel.setItemSpaceInScrollMode(space);
         mContentPager.setOffscreenPageLimit(mSelectedChannels.size());
         mTabChannel.setupWithViewPager(mContentPager);
+        mTabChannel.setPadding(space, 0, space, 0);
         mTabChannel.post(()->{
             ViewGroup vg = (ViewGroup) mTabChannel.getChildAt(0);
             vg.setMinimumWidth(vg.getMeasuredWidth() + mAddChannelIV.getMeasuredWidth());
@@ -117,8 +132,8 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
                     vg.setMinimumWidth(0);
                     vg.measure(0, 0);
                     vg.setMinimumWidth(vg.getMeasuredWidth() + mAddChannelIV.getMeasuredWidth());
-                    ConfigManager.putString(Definition.SELECTED_CHANNEL_JSON, mGson.toJson(mSelectedChannels));
-                    ConfigManager.putString(Definition.UNSELECTED_CHANNEL_JSON, mGson.toJson(mUnselectedChannels));
+                    ConfigManager.putString(Definition.SETTINGS_SELECTED_CHANNEL_JSON, mGson.toJson(mSelectedChannels));
+                    ConfigManager.putString(Definition.SETTINGS_UNSELECTED_CHANNEL_JSON, mGson.toJson(mUnselectedChannels));
                 });
                 break;
         }
@@ -127,25 +142,27 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     @Override
     public void onItemMove(int start, int end) {
         moveList(mSelectedChannels, start, end);
-        //moveList(mFragments, start, end);
+        moveList(mFragments, start, end);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void onMoveToMyChannel(int start, int end) {
-        mSelectedChannels.add(end, mUnselectedChannels.remove(start));
-        /*NewsListFragment f = new NewsListFragment();
+        NewsChannel ch = mUnselectedChannels.remove(start);
+        mSelectedChannels.add(end, ch);
+        NewsListFragment f = new NewsListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(Definition.CHANNEL_CODE, ch.channelCode);
-        bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(mChannelCodes[1]));
+        bundle.putBoolean(Definition.IS_RECOMMEND, ch.channelCode.equals(getString(R.string.channel_code_recommend)));
+        bundle.putString(Definition.CHANNEL_NAME, ch.title);
+        bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(getString(R.string.channel_code_video)));
         f.setArguments(bundle);
-        mFragments.add(f);*/
+        mFragments.add(f);
     }
 
     @Override
     public void onMoveToRecommendedChannel(int start, int end) {
         mUnselectedChannels.add(end, mSelectedChannels.remove(start));
-        // TODO
-        //mFragments.remove(start);
+        mFragments.remove(start);
     }
 
     @SuppressWarnings("unchecked")

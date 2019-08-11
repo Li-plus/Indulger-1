@@ -9,7 +9,7 @@
 
     <!-- begin settings fragment -->
     <string name="settings_title">设置</string>
-    <string name="settings_night_mode">夜间模式</string>
+    <string name="settings_theme">主题</string>
     <string name="settings_clear_cache">清空缓存</string>
     <string name="settings_cache_all_cleared">缓存已清空</string>
     <string name="settings_font_size">字体大小</string>
@@ -35,5 +35,10 @@
     <string name="home_news_type_channel_edit_complete">完成</string>
     <string name="home_news_type_channel_recommend">推荐</string>
     <string name="home_search_prompt">搜你想搜的</string>
+    <string name="setting_lang_system">跟随系统</string>
+    <string name="settings_theme_default">默认在题</string>
+    <string name="settings_theme_night">夜间模式</string>
+    <string name="settings_theme_auto">自动切换日/夜</string>
+    <string name="settings_lang_auto">自动</string>
     <!-- end favorite fragment -->
 </resources>

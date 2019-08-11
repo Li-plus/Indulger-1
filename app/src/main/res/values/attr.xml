@@ -9,4 +9,5 @@
     <attr name="tabbar_selected_text_color" format="color" />
     <attr name="tabbar_normal_text_color" format="color" />
     <attr name="style_name" format="string"/>
+    <attr name="webview_progress_bar_color" format="color"/>
 </resources>

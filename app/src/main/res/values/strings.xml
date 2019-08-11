@@ -11,7 +11,7 @@
 
     <!-- begin settings fragment -->
     <string name="settings_title">Settings</string>
-    <string name="settings_night_mode">Night Mode</string>
+    <string name="settings_theme">Theme</string>
     <string name="settings_clear_cache">Clear Cache</string>
     <string name="settings_cache_all_cleared">Cache All Cleared</string>
     <string name="settings_font_size">Font Size</string>
@@ -19,8 +19,8 @@
     <string name="settings_font_middle">Middle</string>
     <string name="settings_font_large">Large</string>
     <string name="settings_language">Language</string>
-    <string name="settings_chinese" translatable="false">中文</string>
-    <string name="settings_english" translatable="false">English</string>
+    <string name="settings_lang_chn" translatable="false">中文（简体）</string>
+    <string name="settings_lang_en" translatable="false">English</string>
     <string name="settings_about">About</string>
     <string name="settings_confirm_clear_cache">Confirm deletion of all cache?</string>
     <string name="settings_cancel">Cancel</string>
@@ -41,5 +41,12 @@
     <string name="home_news_type_channel_edit_complete">Complete</string>
     <string name="home_news_type_channel_recommend">Recommended</string>
     <string name="home_search_prompt">Search what you want</string>
+    <string name="channel_code_video" translatable="false">video</string>
+    <string name="channel_code_recommend" translatable="false">recommend</string>
+    <string name="setting_lang_system">Follow System</string>
+    <string name="settings_theme_default">Default</string>
+    <string name="settings_theme_night">Night Mode</string>
+    <string name="settings_theme_auto">Automatic Day/Night</string>
+    <string name="settings_lang_auto">Automatic</string>
     <!-- end favorite fragment -->
 </resources>

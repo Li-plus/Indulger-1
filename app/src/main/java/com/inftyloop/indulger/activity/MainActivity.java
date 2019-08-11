@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.MainTabBarFragment;
-import com.inftyloop.indulger.fragment.SettingsFragment;
 import com.inftyloop.indulger.fragment.WebViewFragment;
 import com.inftyloop.indulger.fragment.AboutFragment;
+import com.inftyloop.indulger.util.BaseFragmentActivity;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.arch.annotation.DefaultFirstFragment;
@@ -26,17 +26,11 @@ import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_URL;
         })
 @DefaultFirstFragment(MainTabBarFragment.class)
 @LatestVisitRecord
-public class MainActivity extends QMUIFragmentActivity {
+public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected int getContextViewId() {
         return R.id.qmuidemo;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setTheme(SettingsFragment.styleResId);
     }
 
     public static Intent createWebExplorerIntent(Context context, String url, String title) {

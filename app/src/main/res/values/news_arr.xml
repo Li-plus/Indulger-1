@@ -24,8 +24,8 @@
         <item>Essay</item>
     </string-array>
     <string-array name="channel_code">
-        <item>recommend</item>
-        <item>video</item>
+        <item>@string/channel_code_recommend</item>
+        <item>@string/channel_code_video</item>
         <item>news_hot</item>
         <item>news_society</item>
         <item>news_entertainment</item>
