@@ -14,7 +14,7 @@
         android:layout_marginTop="3.0dip"
         android:padding="10.0dip"
         android:scaleType="center"
-        android:src="@drawable/category_edit_close" />
+        android:src="?attr/add_channel_close_button_mipmap" />
 
     <FrameLayout
         android:layout_width="match_parent"

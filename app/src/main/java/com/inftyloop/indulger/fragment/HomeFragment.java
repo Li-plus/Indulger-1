@@ -19,6 +19,7 @@ import com.inftyloop.indulger.util.BaseFragment;
 import com.inftyloop.indulger.util.BasePresenter;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
@@ -98,7 +99,12 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     public void initListener() {
         mPagerAdapter = new NewsChannelPagerAdapter(mFragments, mSelectedChannels, getChildFragmentManager());
         mContentPager.setAdapter(mPagerAdapter);
+        int normalColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_normal_text_color);
+        int selectedColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_selected_text_color);
+        mTabChannel.setDefaultNormalColor(normalColor);
+        mTabChannel.setDefaultSelectedColor(selectedColor);
         mTabChannel.setHasIndicator(true);
+        mTabChannel.setIndicatorWidthAdjustContent(true);
         mTabChannel.setMode(QMUITabSegment.MODE_SCROLLABLE);
         int space = QMUIDisplayHelper.dp2px(getContext(), 16);
         mTabChannel.setItemSpaceInScrollMode(space);
