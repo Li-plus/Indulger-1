@@ -55,6 +55,8 @@ public class QMUITopBarLayout extends FrameLayout {
     private int mTopBarBgColor;
     private int mTopBarSeparatorHeight;
 
+    public QMUITopBar getTopBar() { return mTopBar; }
+
     public QMUITopBarLayout(Context context) {
         this(context, null);
     }
