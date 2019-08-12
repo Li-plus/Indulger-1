@@ -49,4 +49,12 @@
     <string name="remove_from_fav_success">取消收藏成功</string>
     <string name="search_empty_input_not_allowed">搜索内容不能为空哦</string>
     <!-- end favorite fragment -->
+
+    <!-- begin news list fragment -->
+    <string name="news_list_net_unavailable">无法连接到网络</string>
+    <string name="news_list_drag">下拉页面获取推荐</string>
+    <string name="news_list_drop">恢复</string>
+    <string name="news_list_refresh">刷新中...</string>
+    <string name="news_list_confirm_delete">确定删除这条新闻吗？</string>
+    <!-- end news list fragment -->
 </resources>

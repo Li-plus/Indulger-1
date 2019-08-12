@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:background="?attr/app_background_color">
-    <TextView
-            android:text="TextView"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content" android:id="@+id/textView" android:textAlignment="center"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tip_view"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="@string/news_list_net_unavailable"
+                android:visibility="gone" />
+
+            <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+                android:id="@+id/news_list_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:id="@+id/fl_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <!--<com.zjutkz.powerfulrecyclerview.ptr.PowerfulSimpleRecyclerView-->
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/news_list_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <!--app:dividerColor="@color/color_d8d8d8"-->
+                    <!--app:dividerMarginLeft="10dp"-->
+                    <!--app:dividerMarginRight="10dp"-->
+                    <!--app:dividerSize="0.5dp" />-->
+
+                </FrameLayout>
+
+            </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>
