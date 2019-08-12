@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.gson.Gson;
@@ -16,8 +17,8 @@ import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsTypeListener;
 import com.inftyloop.indulger.model.entity.NewsChannel;
 import com.inftyloop.indulger.util.BaseFragment;
-import com.inftyloop.indulger.util.BasePresenter;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
@@ -43,8 +44,16 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     private String[] mChannelCodes;
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    public void initView(View rootView) {
+        super.initView(rootView);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(25, 25, 25, 25);
+        View view = getLayoutInflater().inflate(R.layout.searchbar_home, null);
+        view.setOnClickListener( (v) -> {
+            QMUIFragment fragment = new HomeSearchFragment();
+            startFragment(fragment);
+        });
+        mTopBar.addRightView(view, R.id.topbar_search, lp);
     }
 
     @SuppressWarnings("Duplicates")

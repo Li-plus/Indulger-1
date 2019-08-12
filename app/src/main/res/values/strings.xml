@@ -14,10 +14,6 @@
     <string name="settings_theme">Theme</string>
     <string name="settings_clear_cache">Clear Cache</string>
     <string name="settings_cache_all_cleared">Cache All Cleared</string>
-    <string name="settings_font_size">Font Size</string>
-    <string name="settings_font_small">Small</string>
-    <string name="settings_font_middle">Middle</string>
-    <string name="settings_font_large">Large</string>
     <string name="settings_language">Language</string>
     <string name="settings_lang_chn" translatable="false">中文（简体）</string>
     <string name="settings_lang_en" translatable="false">English</string>
@@ -43,11 +39,23 @@
     <string name="home_search_prompt">Search what you want</string>
     <string name="channel_code_video" translatable="false">video</string>
     <string name="channel_code_recommend" translatable="false">recommend</string>
-    <string name="setting_lang_system">Follow System</string>
+    <string name="settings_lang_system">Follow System</string>
     <string name="settings_theme_default">Default</string>
     <string name="settings_theme_night">Night Mode</string>
-    <string name="settings_theme_auto">Automatic Day/Night</string>
+    <string name="settings_theme_auto">Follow System (Day/Night)</string>
     <string name="settings_lang_auto">Automatic</string>
+    <string name="home_search_submit">Submit</string>
+    <string name="search_history">Search History</string>
+    <string name="confirm_clear_search_history">Are you sure to clear all search history?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="share_wechat_moment">WeChat Moment</string>
+    <string name="share_wechat_friend">WeChat Friends</string>
+    <string name="share_weibo">Weibo</string>
+    <string name="share_email">Email</string>
+    <string name="add_to_fav_success">Added to favorites</string>
+    <string name="remove_from_fav_success">Removed from favorites</string>
+    <string name="search_empty_input_not_allowed">Search input should not be empty</string>
     <!-- end favorite fragment -->
 
     <!-- begin news list fragment -->

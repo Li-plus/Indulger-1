@@ -1,6 +1,7 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
+
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,6 +19,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.NewsListAdapter;
 import com.inftyloop.indulger.api.Definition;
+
 import com.inftyloop.indulger.model.entity.News;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 

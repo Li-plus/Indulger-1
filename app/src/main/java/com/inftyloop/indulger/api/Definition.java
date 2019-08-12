@@ -18,6 +18,7 @@ public class Definition {
    /** Fields for Configuration File **/
    public static final String SETTINGS_SELECTED_CHANNEL_JSON = "selected_channel_json";
    public static final String SETTINGS_UNSELECTED_CHANNEL_JSON = "unselected_channel_json";
+   public static final String SETTINGS_SEARCH_HISTORY = "search_history";
    public static final String SETTINGS_APP_THEME = "app_theme";
    public static final String SETTINGS_APP_LANG = "app_lang";
 }

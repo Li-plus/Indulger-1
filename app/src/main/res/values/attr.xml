@@ -3,8 +3,9 @@
     <attr name="app_primary_color" format="color" />
 
     <attr name="app_background_color" format="color" />
-    <attr name="app_background_color_dark" format="color"/>
+    <attr name="app_background_color_dark" format="color" />
     <attr name="app_background_selector" format="reference" />
+    <attr name="app_background_dim_color" format="color" />
 
     <attr name="app_content_separator_color" format="color" />
     <attr name="foreground_text_color" format="color" />
@@ -13,12 +14,23 @@
     <attr name="button_edge_color" format="color" />
     <attr name="tabbar_selected_text_color" format="color" />
     <attr name="tabbar_normal_text_color" format="color" />
-
     <attr name="style_name" format="string" />
     <attr name="webview_progress_bar_color" format="color" />
     <attr name="swipe_delete_background" format="color" />
-
+    <attr name="ic_search_color" format="color" />
     <attr name="add_channel_button_mipmap" format="reference" />
     <attr name="add_channel_close_button_mipmap" format="reference" />
 
+    <declare-styleable name="AutoWrapLayout">
+        <attr name="childTextColor" format="color" />
+        <attr name="childTextBackgroundColor" format="color" />
+        <attr name="childTextBackgroundResource" format="reference" />
+        <attr name="childTextSize" format="float" />
+        <attr name="childPadding" format="integer" />
+        <attr name="childLeftPadding" format="integer" />
+        <attr name="childRightPadding" format="integer" />
+        <attr name="childTopPadding" format="integer" />
+        <attr name="childBottomPadding" format="integer" />
+        <attr name="childSpacing" format="float" />
+    </declare-styleable>
 </resources>

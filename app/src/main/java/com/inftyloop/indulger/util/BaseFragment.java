@@ -10,15 +10,13 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import org.greenrobot.eventbus.EventBus;
 
-public abstract class BaseFragment<T extends BasePresenter> extends BaseLazyLoadFragment {
-    protected T mPresenter;
+public abstract class BaseFragment extends BaseLazyLoadFragment {
     private View rootView;
     protected Activity mActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = createPresenter();
     }
 
     @Override
@@ -59,14 +57,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends BaseLazyLoad
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mPresenter != null) {
-            mPresenter.detachView();
-            mPresenter = null;
-        }
         rootView = null;
     }
-
-    protected abstract T createPresenter();
 
     protected abstract int getLayoutId();
 

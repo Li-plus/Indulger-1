@@ -7,5 +7,6 @@
     <item name="topbar_right_about_button" type="id"/>
     <item name="topbar_right_change_button" type="id"/>
 
-    <item name="layout_for_test" type="id"/>
+    <item name="topbar_search" type="id"/>
+    <item name="topbar_search_input" type="id" />
 </resources>
