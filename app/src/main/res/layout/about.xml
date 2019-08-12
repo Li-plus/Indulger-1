@@ -14,7 +14,12 @@
                        android:layout_marginTop="15dp" android:contentDescription="Logo"
                        android:src="@mipmap/ic_launcher" android:layout_gravity="center_horizontal"/>
             <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:id="@+id/version" android:layout_marginTop="15dp"
+                      android:layout_marginTop="15dp"
+                      android:textColor="?attr/foreground_text_color"
+                      android:text="@string/app_name"
+                      android:textSize="20sp" android:textAlignment="center"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:id="@+id/version" android:layout_marginTop="5dp"
                       android:textColor="?attr/foreground_text_color"
                       android:textSize="16sp" android:textAlignment="center"/>
             <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView

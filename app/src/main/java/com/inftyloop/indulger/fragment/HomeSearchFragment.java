@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,12 +16,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.ui.AutoWrapLayout;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+
+import java.util.List;
 
 public class HomeSearchFragment extends QMUIFragment {
     private static final String TAG = HomeSearchFragment.class.getSimpleName();
@@ -32,12 +39,13 @@ public class HomeSearchFragment extends QMUIFragment {
     ImageButton mTopImgButton;
     ImageView mClearEditText;
     EditText mSearch;
+    Gson mGson = new Gson();
 
     @Override
     public void onDestroyView() {
         // ensure that the keyboard is properly hidden before closing this fragment
-        hideKeyboard();
         super.onDestroyView();
+        hideKeyboard();
     }
 
     public void hideKeyboard() {
@@ -52,8 +60,8 @@ public class HomeSearchFragment extends QMUIFragment {
 
     @Override
     public void onPause() {
-        hideKeyboard();
         super.onPause();
+        hideKeyboard();
     }
 
     @Override
@@ -99,30 +107,50 @@ public class HomeSearchFragment extends QMUIFragment {
         mSearch.setOnKeyListener((v, keyCode, evt) -> {
             if (evt.getAction() == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    // start search !
                     Toast.makeText(getContext(), mSearch.getText(), Toast.LENGTH_SHORT).show();
+                    mSearchHistory.pushFront(mSearch.getText().toString());
+                    String[] arr = mSearchHistory.getItemArray();
+                    String temp = mGson.toJson(arr);
+                    ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
+                    if(arr.length > 0)
+                        mSearchHistoryBar.setVisibility(View.VISIBLE);
                     return true;
                 }
             }
             return false;
         });
+        mSearchHistory.setSizeLimit(20); // search history limit
         mClearEditText.setVisibility(View.INVISIBLE);
         mClearEditText.setOnClickListener(v -> mSearch.setText(""));
         mSearch.setOnFocusChangeListener((v, hasFocus) -> {
             mClearEditText.setVisibility(hasFocus && !mSearch.getText().toString().isEmpty() ? View.VISIBLE : View.INVISIBLE);
+            if(hasFocus)
+                showKeyboard();
+            else
+                hideKeyboard();
         });
         mTopBar.addRightView(view, R.id.topbar_search_input, lp);
         // init search history stuffs
+        String historyJson = ConfigManager.getString(Definition.SETTINGS_SEARCH_HISTORY, "");
+        if(TextUtils.isEmpty(historyJson)) {
+            historyJson = mGson.toJson(new String[0]);
+            ConfigManager.putString(Definition.SETTINGS_SEARCH_HISTORY, historyJson);
+            mSearchHistoryBar.setVisibility(View.INVISIBLE);
+        } else {
+            String[] history = mGson.fromJson(historyJson, new TypeToken<String[]>(){}.getType());
+            if(history.length > 0) {
+                mSearchHistoryBar.setVisibility(View.VISIBLE);
+                mSearchHistory.loadData(history);
+            }
+            else {
+                mSearchHistoryBar.setVisibility(View.INVISIBLE);
+            }
+        }
         mSearchHistory.setItemListener((pos, v) -> {
             mSearch.setText(v.getText().toString());
             mSearch.setSelection(v.getText().length());
-            if(pos == mSearchHistory.getChildCount() - 1) {
-                mSearchHistory.removeAllViews();
-                String[] strings_more = {"EXTRA Longgggggggggggggggggggggggggggggggg", "value", "中文测试", "kkkkkkkkl"};
-                mSearchHistory.loadStringArray(strings_more);
-            }
         });
-        String[] strings = {"Val1", "val2", "test2", "extra longggggggggg", "value"};
-        mSearchHistory.loadStringArray(strings);
         mDelHistory.setOnClickListener(v-> {
             new QMUIDialog.MessageDialogBuilder(getActivity())
                     .setMessage(getString(R.string.confirm_clear_search_history))
@@ -133,7 +161,10 @@ public class HomeSearchFragment extends QMUIFragment {
                             (QMUIDialog dialog, int index) -> {
                                 // clear history
                                 mSearchHistoryBar.setVisibility(View.INVISIBLE);
-                                mSearchHistory.removeAllViews();
+                                mSearchHistory.clearAllItems();
+                                // save
+                                String temp = mGson.toJson(new String[0]);
+                                ConfigManager.putString(Definition.SETTINGS_SEARCH_HISTORY, temp);
                                 dialog.dismiss();
                             })
                     .create(R.style.QMUI_Dialog).show();
@@ -145,7 +176,6 @@ public class HomeSearchFragment extends QMUIFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSearch.requestFocus();
-        showKeyboard();
     }
 
     @Override

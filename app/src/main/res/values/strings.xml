@@ -14,10 +14,6 @@
     <string name="settings_theme">Theme</string>
     <string name="settings_clear_cache">Clear Cache</string>
     <string name="settings_cache_all_cleared">Cache All Cleared</string>
-    <string name="settings_font_size">Font Size</string>
-    <string name="settings_font_small">Small</string>
-    <string name="settings_font_middle">Middle</string>
-    <string name="settings_font_large">Large</string>
     <string name="settings_language">Language</string>
     <string name="settings_lang_chn" translatable="false">中文（简体）</string>
     <string name="settings_lang_en" translatable="false">English</string>

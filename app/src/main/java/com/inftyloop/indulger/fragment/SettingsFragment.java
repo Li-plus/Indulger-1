@@ -117,26 +117,6 @@ public class SettingsFragment extends QMUIFragment {
                     .create(R.style.QMUI_Dialog).show();
         });
 
-        /* Font size handler */
-
-        QMUICommonListItemView itemFontSize = mSettingsGroupListView.createItemView(getString(R.string.settings_font_size));
-        itemFontSize.setOnClickListener((View v) -> {
-            final String[] items = new String[]{
-                    getString(R.string.settings_font_small),
-                    getString(R.string.settings_font_middle),
-                    getString(R.string.settings_font_large)
-            };
-            final int checkedIndex = 1;
-
-            new QMUIDialog.CheckableDialogBuilder(getActivity())
-                    .setCheckedIndex(checkedIndex)
-                    .addItems(items, (DialogInterface dialog, int which) -> {
-                        Toast.makeText(getActivity(), "you clicked " + items[which], Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    })
-                    .create(R.style.QMUI_Dialog).show();
-        });
-
         /* Language handler */
 
         lang_checked_idx = ConfigManager.getInt(Definition.SETTINGS_APP_LANG, -1);
@@ -173,7 +153,6 @@ public class SettingsFragment extends QMUIFragment {
         QMUIGroupListView.newSection(getContext())
                 .addItemView(itemTheme, null)
                 .addItemView(itemClearCache, null)
-                .addItemView(itemFontSize, null)
                 .addItemView(itemLanguage, null)
                 .addTo(mSettingsGroupListView);
 
