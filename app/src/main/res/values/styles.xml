@@ -32,7 +32,10 @@
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
-        <item name="app_background_color">@color/qmui_config_color_white</item>
+        <item name="app_background_color">@color/color_gray_f</item>
+        <item name="app_background_selector">@drawable/selector_white</item>
+        <item name="app_background_color_dark">@color/color_gray_e</item>
+
         <item name="qmui_config_color_background">?attr/app_background_color</item>
         <item name="background_text_color">@color/qmui_config_color_white</item>
         <item name="app_content_separator_color">@color/qmui_config_color_separator</item>
@@ -44,6 +47,23 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
         <item name="swipe_delete_background">@color/color_red_5</item>
+
+    </style>
+
+    <style name="news_text_style">
+        <item name="android:textColor">?attr/background_text_color</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">0.0dip</item>
+    </style>
+
+    <style name="news_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">
@@ -73,6 +93,13 @@
         <item name="android:background">?attr/qmui_config_color_background</item>
     </style>
 
+    <declare-styleable name="TipView">
+        <attr name="tipBackgroundColor" format="color" />
+        <attr name="tipTextColor" format="color" />
+        <attr name="tipText" format="string" />
+        <attr name="tipTextSize" format="dimension" />
+    </declare-styleable>
+
     <style name="NightTheme" parent="AppTheme">
         <item name="style_name">@string/night_theme_name</item>
         <item name="android:textColor">@color/qmui_config_color_75_white</item>
@@ -82,8 +109,11 @@
         <item name="add_channel_button_mipmap">@mipmap/add_channel_dark</item>
         <item name="add_channel_close_button_mipmap">@drawable/category_edit_close_dark</item>
 
-        <item name="app_primary_color">@color/qmui_config_color_gray_1</item>
-        <item name="app_background_color">@color/qmui_config_color_gray_2</item>
+        <item name="app_primary_color">@color/color_gray_1</item>
+        <item name="app_background_color">@color/color_gray_2</item>
+        <item name="app_background_color_dark">@color/color_gray_3</item>
+        <item name="app_background_selector">@drawable/selector_black</item>
+
         <item name="background_text_color">?android:textColor</item>
         <item name="foreground_text_color">@color/qmui_config_color_75_white</item>
         <item name="foreground_text_color_dim">@color/qmui_config_color_gray_8</item>
