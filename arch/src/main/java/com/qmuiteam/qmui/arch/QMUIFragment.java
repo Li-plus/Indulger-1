@@ -75,6 +75,11 @@ public abstract class QMUIFragment extends Fragment implements
             R.anim.scale_enter, R.anim.slide_still,
             R.anim.slide_still, R.anim.scale_exit);
 
+    protected static final TransitionConfig FADE_TRANSITION_CONFIG = new TransitionConfig(
+            R.anim.fade_in, R.anim.fade_out,
+            R.anim.fade_in, R.anim.fade_out
+    );
+
 
     public static final int RESULT_CANCELED = Activity.RESULT_CANCELED;
     public static final int RESULT_OK = Activity.RESULT_OK;

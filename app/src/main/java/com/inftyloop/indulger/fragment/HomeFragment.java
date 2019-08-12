@@ -19,6 +19,7 @@ import com.inftyloop.indulger.model.entity.NewsChannel;
 import com.inftyloop.indulger.util.BaseFragment;
 import com.inftyloop.indulger.util.BasePresenter;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
@@ -49,6 +50,10 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(25, 25, 25, 25);
         View view = getLayoutInflater().inflate(R.layout.searchbar_home, null);
+        view.setOnClickListener( (v) -> {
+            QMUIFragment fragment = new HomeSearchFragment();
+            startFragment(fragment);
+        });
         mTopBar.addRightView(view, R.id.topbar_search, lp);
     }
 

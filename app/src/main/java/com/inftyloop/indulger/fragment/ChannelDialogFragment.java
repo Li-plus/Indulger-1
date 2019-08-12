@@ -19,7 +19,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.NewsChannelAdapter;
 import com.inftyloop.indulger.api.Definition;
-import com.inftyloop.indulger.listener.ItemDragHelperCb;
+import com.inftyloop.indulger.listener.ItemDragHelperCallback;
 import com.inftyloop.indulger.listener.OnNewsTypeDragListener;
 import com.inftyloop.indulger.listener.OnNewsTypeListener;
 import com.inftyloop.indulger.model.entity.NewsChannel;
@@ -105,7 +105,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
                 return t == NewsChannel.TYPE_MY_LIST || t == NewsChannel.TYPE_RECOMMENDED_LIST ? 1 : 4;
             }
         });
-        mHelper = new ItemTouchHelper(new ItemDragHelperCb(this));
+        mHelper = new ItemTouchHelper(new ItemDragHelperCallback(this));
         mAdapter.setOnNewsTypeDragListener(this);
         mHelper.attachToRecyclerView(mRecyclerView);
     }

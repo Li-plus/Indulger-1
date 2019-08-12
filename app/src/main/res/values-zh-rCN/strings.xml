@@ -35,10 +35,15 @@
     <string name="home_news_type_channel_edit_complete">完成</string>
     <string name="home_news_type_channel_recommend">推荐</string>
     <string name="home_search_prompt">搜你想搜的</string>
-    <string name="setting_lang_system">跟随系统</string>
+    <string name="settings_lang_system">跟随系统</string>
     <string name="settings_theme_default">默认主题</string>
     <string name="settings_theme_night">夜间模式</string>
-    <string name="settings_theme_auto">自动切换日/夜</string>
+    <string name="settings_theme_auto">跟随系统</string>
     <string name="settings_lang_auto">自动</string>
+    <string name="home_search_submit">提交</string>
+    <string name="search_history">搜索历史</string>
+    <string name="confirm_clear_search_history">确定清除所有搜索记录吗？</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
     <!-- end favorite fragment -->
 </resources>

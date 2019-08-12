@@ -16,4 +16,17 @@
     <attr name="ic_search_color" format="color" />
     <attr name="add_channel_button_mipmap" format="reference" />
     <attr name="add_channel_close_button_mipmap" format="reference" />
+
+    <declare-styleable name="AutoWrapLayout">
+        <attr name="childTextColor" format="color"/>
+        <attr name="childTextBackgroundColor" format="color"/>
+        <attr name="childTextBackgroundResource" format="reference"/>
+        <attr name="childTextSize" format="float"/>
+        <attr name="childPadding" format="integer"/>
+        <attr name="childLeftPadding" format="integer"/>
+        <attr name="childRightPadding" format="integer"/>
+        <attr name="childTopPadding" format="integer"/>
+        <attr name="childBottomPadding" format="integer"/>
+        <attr name="childSpacing" format="float"/>
+    </declare-styleable>
 </resources>

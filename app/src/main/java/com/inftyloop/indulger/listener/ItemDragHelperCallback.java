@@ -6,10 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-public class ItemDragHelperCb extends ItemTouchHelper.Callback {
+public class ItemDragHelperCallback extends ItemTouchHelper.Callback {
     private OnNewsTypeDragListener onNewsTypeDragListener;
 
-    public ItemDragHelperCb(OnNewsTypeDragListener l) { onNewsTypeDragListener = l; }
+    public ItemDragHelperCallback(OnNewsTypeDragListener l) { onNewsTypeDragListener = l; }
 
     public void setOnNewsTypeDragListener(OnNewsTypeDragListener l) { onNewsTypeDragListener = l; }
 
