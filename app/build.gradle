@@ -2,7 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        release
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
     compileSdkVersion parent.ext.compileSdkVersion
     buildToolsVersion parent.ext.buildToolsVersion
@@ -30,12 +33,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     Properties props = new Properties()
-    def propFile = new File('signing.properties')
+    def propFile = new File('app/signing.properties')
     if (propFile.canRead()){
         props.load(new FileInputStream(propFile))
-        println 'Successfully loaded signing file'
-        if (props!=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+        if (props !=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
                 props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+            println 'Successfully loaded signing file'
             android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
             android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
             android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
@@ -43,10 +46,12 @@ android {
         } else {
             println 'signing.properties found but some entries are missing'
             android.buildTypes.release.signingConfig = null
+            android.buildTypes.debug.signingConfig = null
         }
-    }else {
+    } else {
         println 'signing.properties not found'
         android.buildTypes.release.signingConfig = null
+        android.buildTypes.debug.signingConfig = null
     }
 }
 

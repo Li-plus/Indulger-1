@@ -1,4 +1,4 @@
-STORE_FILE="/path/to/keystore"
-STORE_PASSWORD="password"
-KEY_ALIAS="alias"
-KEY_PASSWORD="password"
+STORE_FILE=/path/to/keystore
+STORE_PASSWORD=password
+KEY_ALIAS=alias
+KEY_PASSWORD=password
