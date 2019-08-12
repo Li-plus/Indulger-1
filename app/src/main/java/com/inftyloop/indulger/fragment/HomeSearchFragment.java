@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
 import java.util.List;
 
@@ -107,6 +109,15 @@ public class HomeSearchFragment extends QMUIFragment {
         mSearch.setOnKeyListener((v, keyCode, evt) -> {
             if (evt.getAction() == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if(mSearch.getText().toString().isEmpty()) {
+                        QMUITipDialog dialog = new QMUITipDialog.Builder(getContext())
+                                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
+                                .setTipWord(getString(R.string.search_empty_input_not_allowed))
+                                .create();
+                        dialog.show();
+                        mTopBar.postDelayed(dialog::dismiss, 1000);
+                        return false;
+                    }
                     // start search !
                     Toast.makeText(getContext(), mSearch.getText(), Toast.LENGTH_SHORT).show();
                     mSearchHistory.pushFront(mSearch.getText().toString());
@@ -115,6 +126,8 @@ public class HomeSearchFragment extends QMUIFragment {
                     ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
                     if(arr.length > 0)
                         mSearchHistoryBar.setVisibility(View.VISIBLE);
+                    QMUIFragment res = new NewsDetailFragment();
+                    startFragment(res);
                     return true;
                 }
             }

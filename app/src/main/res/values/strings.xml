@@ -49,5 +49,12 @@
     <string name="confirm_clear_search_history">Are you sure to clear all search history?</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="share_wechat_moment">WeChat Moment</string>
+    <string name="share_wechat_friend">WeChat Friends</string>
+    <string name="share_weibo">Weibo</string>
+    <string name="share_email">Email</string>
+    <string name="add_to_fav_success">Added to favorites</string>
+    <string name="remove_from_fav_success">Removed from favorites</string>
+    <string name="search_empty_input_not_allowed">Search input should not be empty</string>
     <!-- end favorite fragment -->
 </resources>
