@@ -1,16 +1,12 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.BaseFragment;
-import com.inftyloop.indulger.util.BasePresenter;
 
 public class NewsListFragment extends BaseFragment {
     @BindView(R.id.textView) TextView tV;
@@ -30,11 +26,6 @@ public class NewsListFragment extends BaseFragment {
                 flag |= 0x02;
         }
         tV.setText("TextView " + name + " " + ((flag & 0x01) != 0 ? "IS_RECOMMEND " : " ") + ((flag & 0x02) != 0? "IS_VIDEO" : ""));
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @Override

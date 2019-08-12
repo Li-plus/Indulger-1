@@ -17,7 +17,6 @@ import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsTypeListener;
 import com.inftyloop.indulger.model.entity.NewsChannel;
 import com.inftyloop.indulger.util.BaseFragment;
-import com.inftyloop.indulger.util.BasePresenter;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -55,11 +54,6 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             startFragment(fragment);
         });
         mTopBar.addRightView(view, R.id.topbar_search, lp);
-    }
-
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
     }
 
     @SuppressWarnings("Duplicates")
