@@ -9,6 +9,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 
+@SuppressWarnings("Duplicates")
 public abstract class BaseFragmentActivity extends QMUIFragmentActivity {
     protected int curStyleResId;
 

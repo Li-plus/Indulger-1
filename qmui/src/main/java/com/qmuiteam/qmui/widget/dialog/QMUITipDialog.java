@@ -25,15 +25,12 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import com.qmuiteam.qmui.R;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUILoadingView;
@@ -61,6 +58,10 @@ public class QMUITipDialog extends Dialog {
     public QMUITipDialog(Context context, int themeResId) {
         super(context, themeResId);
         setCanceledOnTouchOutside(false);
+    }
+
+    public void allowCancelOnTouchOutside(boolean b) {
+        setCanceledOnTouchOutside(b);
     }
 
     @Override
@@ -107,6 +108,52 @@ public class QMUITipDialog extends Dialog {
          * 显示信息图标
          */
         public static final int ICON_TYPE_INFO = 4;
+
+        private static ImageView createImageViewWithIcon(Context mContext, @IconType int mCurrentIconType) {
+            ImageView imageView = new ImageView(mContext);
+            LinearLayout.LayoutParams imageViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            imageView.setLayoutParams(imageViewLP);
+
+            if (mCurrentIconType == ICON_TYPE_SUCCESS) {
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_done));
+            } else if (mCurrentIconType == ICON_TYPE_FAIL) {
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_error));
+            } else {
+                imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_info));
+            }
+            return imageView;
+        }
+
+        @SuppressWarnings("Duplicates")
+        public static Toast makeToast(Context ctx, @IconType int iconType, String prompt, int duration) {
+            Toast toast = Toast.makeText(ctx, prompt, duration);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            LinearLayout contentLayout = (LinearLayout) toast.getView();
+            contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            TextView tv = (TextView) contentLayout.getChildAt(0);
+            if (iconType == ICON_TYPE_SUCCESS || iconType == ICON_TYPE_FAIL || iconType == ICON_TYPE_INFO) {
+                ImageView img = createImageViewWithIcon(ctx, iconType);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, QMUIDisplayHelper.dp2px(ctx, 10), 0, 0);
+                img.setLayoutParams(lp);
+                contentLayout.addView(img, 0);
+            }
+            LinearLayout.LayoutParams textView_LP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            if (iconType != ICON_TYPE_NOTHING) {
+                textView_LP.topMargin = QMUIDisplayHelper.dp2px(ctx, 12);
+            }
+            textView_LP.leftMargin = QMUIDisplayHelper.dp2px(ctx, 25);
+            textView_LP.rightMargin = QMUIDisplayHelper.dp2px(ctx, 25);
+            textView_LP.bottomMargin = QMUIDisplayHelper.dp2px(ctx, 10);
+            tv.setLayoutParams(textView_LP);
+            tv.setEllipsize(TextUtils.TruncateAt.END);
+            tv.setGravity(Gravity.CENTER);
+            tv.setMaxLines(2);
+            tv.setTextColor(ContextCompat.getColor(ctx, R.color.qmui_config_color_white));
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            contentLayout.setBackgroundResource(R.drawable.qmui_tip_dialog_bg);
+            return toast;
+        }
 
         @IntDef({ICON_TYPE_NOTHING, ICON_TYPE_LOADING, ICON_TYPE_SUCCESS, ICON_TYPE_FAIL, ICON_TYPE_INFO})
         @Retention(RetentionPolicy.SOURCE)
@@ -166,20 +213,8 @@ public class QMUITipDialog extends Dialog {
                 contentWrap.addView(loadingView);
 
             } else if (mCurrentIconType == ICON_TYPE_SUCCESS || mCurrentIconType == ICON_TYPE_FAIL || mCurrentIconType == ICON_TYPE_INFO) {
-                ImageView imageView = new ImageView(mContext);
-                LinearLayout.LayoutParams imageViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                imageView.setLayoutParams(imageViewLP);
-
-                if (mCurrentIconType == ICON_TYPE_SUCCESS) {
-                    imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_done));
-                } else if (mCurrentIconType == ICON_TYPE_FAIL) {
-                    imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_error));
-                } else {
-                    imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.qmui_icon_notify_info));
-                }
-
+                ImageView imageView = createImageViewWithIcon(mContext, mCurrentIconType);
                 contentWrap.addView(imageView);
-
             }
 
             if (mTipWord != null && mTipWord.length() > 0) {

@@ -56,5 +56,10 @@
     <string name="news_list_drop">恢复</string>
     <string name="news_list_refresh">刷新中...</string>
     <string name="news_list_confirm_delete">确定删除这条新闻吗？</string>
+    <string name="follow">关注</string>
+    <string name="bigimage_network_exception">网络异常，请稍后重试</string>
+    <string name="image_pager_save">保存</string>
+    <string name="image_pager_failed_to_gain_write_access">获取存储空间写权限失败</string>
+    <string name="image_pager_save_success">保存成功,文件在%s</string>
     <!-- end news list fragment -->
 </resources>

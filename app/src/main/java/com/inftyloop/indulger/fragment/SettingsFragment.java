@@ -105,11 +105,9 @@ public class SettingsFragment extends QMUIFragment {
                                 tipDialog.show();
                                 mSettingsGroupListView.postDelayed(() -> {
                                     tipDialog.dismiss();
-                                    QMUITipDialog tipDialog1 = new QMUITipDialog.Builder(getContext()).setIconType(QMUITipDialog.Builder.ICON_TYPE_SUCCESS)
-                                            .setTipWord(getString(R.string.settings_cache_all_cleared))
-                                            .create();
-                                    tipDialog1.show();
-                                    mSettingsGroupListView.postDelayed(tipDialog1::dismiss, 1000);
+                                    Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.settings_cache_all_cleared),
+                                            Toast.LENGTH_SHORT);
+                                    toast.show();
                                 }, 2000);
                                 dialog.dismiss();
                             })

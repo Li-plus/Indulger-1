@@ -64,11 +64,9 @@ public class NewsDetailFragment extends QMUIFragment {
         mFavBtn.setOnClickListener(v -> {
             mFavBtn.setImageResource(isFav ? R.drawable.ic_favorite : R.drawable.ic_favorite_fill);
             isFav = !isFav;
-            QMUITipDialog dialog = new QMUITipDialog.Builder(getContext())
-                        .setTipWord(getString(isFav ? R.string.add_to_fav_success : R.string.remove_from_fav_success))
-                        .create();
-            dialog.show();
-            mFavBtn.postDelayed(dialog::dismiss, 1000);
+            Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(isFav ? R.string.add_to_fav_success : R.string.remove_from_fav_success),
+                    Toast.LENGTH_SHORT);
+            toast.show();
         });
         return root;
     }

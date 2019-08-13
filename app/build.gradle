@@ -78,6 +78,11 @@ dependencies {
     // event bus
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49'
+    // glide image
+    implementation 'com.sunfusheng:glideimageview:1.0.0'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

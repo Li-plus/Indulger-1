@@ -31,3 +31,14 @@
 -keep class * extends org.litepal.crud.LitePalSupport {
     *;
 }
+
+-keep class com.qmuiteam.qmui.arch.** {
+    *;
+}
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

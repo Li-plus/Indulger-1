@@ -1,11 +1,11 @@
 package com.inftyloop.indulger.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.activity.ImageViewPagerActivity;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.ui.AutoWrapLayout;
 import com.inftyloop.indulger.util.ConfigManager;
@@ -29,6 +30,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeSearchFragment extends QMUIFragment {
@@ -110,12 +112,8 @@ public class HomeSearchFragment extends QMUIFragment {
             if (evt.getAction() == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     if(mSearch.getText().toString().isEmpty()) {
-                        QMUITipDialog dialog = new QMUITipDialog.Builder(getContext())
-                                .setIconType(QMUITipDialog.Builder.ICON_TYPE_FAIL)
-                                .setTipWord(getString(R.string.search_empty_input_not_allowed))
-                                .create();
-                        dialog.show();
-                        mTopBar.postDelayed(dialog::dismiss, 1000);
+                        Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.search_empty_input_not_allowed), Toast.LENGTH_SHORT);
+                        toast.show();
                         return false;
                     }
                     // start search !
@@ -126,8 +124,15 @@ public class HomeSearchFragment extends QMUIFragment {
                     ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
                     if(arr.length > 0)
                         mSearchHistoryBar.setVisibility(View.VISIBLE);
-                    QMUIFragment res = new NewsDetailFragment();
-                    startFragment(res);
+                    List<String> mUrls = new ArrayList<>();
+                    mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555038&di=2710a60131cf092d7869e258954bc099&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2Fattachments2%2Fday_110120%2F11012008485012851f3b754fad.jpg");
+                    mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555042&di=8bdd3ab58e346c969e5f8b1a15cde3be&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2FImg%2F20120227%2F2012022709150416.jpg");
+                    Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
+                    intent.putExtra(ImageViewPagerActivity.POSITION, 0);
+                    intent.putStringArrayListExtra(ImageViewPagerActivity.IMG_URLS, (ArrayList<String>) mUrls);
+                    getContext().startActivity(intent);
+                    //QMUIFragment res = new NewsDetailFragment();
+                    //startFragment(res);
                     return true;
                 }
             }
