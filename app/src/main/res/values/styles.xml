@@ -13,6 +13,8 @@
 
         <item name="android:navigationBarColor">?attr/app_primary_color</item>
 
+        <item name="refresh_icon_color">?attr/button_edge_color</item>
+
         <item name="add_channel_button_mipmap">@mipmap/add_channel</item>
         <item name="add_channel_close_button_mipmap">@drawable/category_edit_close</item>
 

@@ -1,5 +1,6 @@
 package com.inftyloop.indulger.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FavoriteItemAdapter extends BaseRecyclerViewAdapter {
+public class FavoriteItemAdapter extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
     List<Map<String, Object>> mData;
 
     public FavoriteItemAdapter(List<Map<String, Object>> data) {
@@ -26,8 +27,7 @@ public class FavoriteItemAdapter extends BaseRecyclerViewAdapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        BaseRecyclerViewHolder viewHolder = (BaseRecyclerViewHolder) holder;
+    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder viewHolder, int position) {
         final Map<String, Object> item = mData.get(position);
 
         ((TextView) viewHolder.getView(R.id.date)).setText((String) item.get("date"));
@@ -41,15 +41,6 @@ public class FavoriteItemAdapter extends BaseRecyclerViewAdapter {
         return mData.size();
     }
 
-    @Override
-    public void remove(int position) {
-        Map<String, Object> item = mData.get(position);
-        if (mData.contains(item)) {
-            mData.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
     public void add(int imageSource, String title, String press, String date) {
         Map<String, Object> map = new HashMap<>();
         map.put("img", imageSource);
@@ -58,5 +49,9 @@ public class FavoriteItemAdapter extends BaseRecyclerViewAdapter {
         map.put("date", date);
         mData.add(map);
         notifyDataSetChanged();
+    }
+
+    public List<Map<String, Object>> getData() {
+        return mData;
     }
 }

@@ -21,36 +21,25 @@
                 android:text="@string/news_list_net_unavailable"
                 android:visibility="gone" />
 
-            <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+            <!--<cn.bingoogolapple.refreshlayout.BGARefreshLayout-->
+            <!--android:id="@+id/news_list_refresh_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1">-->
+            <com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout
                 android:id="@+id/news_list_refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/fl_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/news_list_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:overScrollMode="never" />
 
-                    <!--<com.zjutkz.powerfulrecyclerview.ptr.PowerfulSimpleRecyclerView-->
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/news_list_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                    <!--app:dividerColor="@color/color_d8d8d8"-->
-                    <!--app:dividerMarginLeft="10dp"-->
-                    <!--app:dividerMarginRight="10dp"-->
-                    <!--app:dividerSize="0.5dp" />-->
-
-                </FrameLayout>
-
-            </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
-
+            </com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout>
         </LinearLayout>
-
     </LinearLayout>
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

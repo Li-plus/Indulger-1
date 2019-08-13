@@ -18,6 +18,7 @@ package com.qmuiteam.qmui.widget.pullRefreshLayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -1091,7 +1092,8 @@ public class QMUIPullRefreshLayout extends ViewGroup implements NestedScrollingP
         public RefreshView(Context context) {
             super(context);
             mProgress = new CircularProgressDrawable(context);
-            setColorSchemeColors(QMUIResHelper.getAttrColor(context, R.attr.qmui_config_color_blue));
+//            setColorSchemeColors(QMUIResHelper.getAttrColor(context, R.attr.qmui_config_color_blue));
+            setColorSchemeColors(QMUIResHelper.getAttrColor(context, R.attr.refresh_icon_color));
             mProgress.setStyle(CircularProgressDrawable.LARGE);
             mProgress.setAlpha(MAX_ALPHA);
             mProgress.setArrowScale(0.8f);

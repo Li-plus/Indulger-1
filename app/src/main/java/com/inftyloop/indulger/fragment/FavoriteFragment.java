@@ -1,5 +1,6 @@
 package com.inftyloop.indulger.fragment;
 
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,6 @@ import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
-import com.inftyloop.indulger.listener.SwipeAnimationDecoration;
-import com.inftyloop.indulger.listener.SwipeCallback;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
@@ -48,9 +47,6 @@ public class FavoriteFragment extends QMUIFragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation()));
-        new ItemTouchHelper(new SwipeCallback(getContext(), mRecyclerView)).attachToRecyclerView(mRecyclerView);
-        mRecyclerView.addItemDecoration(new SwipeAnimationDecoration(getContext()));
-
         mAdapter.add(R.mipmap.ic_launcher, "Java Summer Semester", "Li-plus", "2019-08-08");
 
         return root;
