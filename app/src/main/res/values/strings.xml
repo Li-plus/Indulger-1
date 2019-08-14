@@ -70,5 +70,10 @@
     <string name="image_pager_save">Save</string>
     <string name="image_pager_failed_to_gain_write_access">Failed to get write access to storage</string>
     <string name="image_pager_save_success">Successfully saved to %s</string>
-    <!-- end news list fragment -->>
+
+    <string name="news_list_not_interested">Not interested</string>
+    <string name="news_list_fake_news">Fake news</string>
+    <string name="news_list_outdated">Outdated</string>
+    <string name="news_list_block_reason">Why block?</string>
+    <!-- end news list fragment -->
 </resources>

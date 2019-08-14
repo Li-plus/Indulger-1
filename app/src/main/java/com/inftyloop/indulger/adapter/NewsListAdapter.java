@@ -1,22 +1,30 @@
 package com.inftyloop.indulger.adapter;
 
-import android.content.Context;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.Touch;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.List;
 
@@ -27,10 +35,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<BaseRecyclerViewHolder
     private final int SINGLE_IMAGE_NEWS = 1;
     private final int THREE_IMAGES_NEWS = 2;
 
-    private Context mContext;
+    private Activity mContext;
     private List<News> mData;
 
-    public NewsListAdapter(Context context, @NonNull List<News> data) {
+    public NewsListAdapter(Activity context, @NonNull List<News> data) {
         mContext = context;
         mData = data;
     }
@@ -55,30 +63,62 @@ public class NewsListAdapter extends RecyclerView.Adapter<BaseRecyclerViewHolder
         }
 
         // init delete icon
-        ImageButton deleteButton = (ImageButton) vh.getView(R.id.news_list_clear_icon);
-        deleteButton.setOnClickListener((View view) -> {
-            new QMUIDialog.MessageDialogBuilder(mContext)
-                    .setMessage(mContext.getString(R.string.news_list_confirm_delete))
-                    .addAction(mContext.getString(R.string.settings_cancel), (QMUIDialog dialog, int index) -> {
-                        dialog.dismiss();
-                    })
-                    .addAction(0, mContext.getString(R.string.settings_delete), QMUIDialogAction.ACTION_PROP_NEGATIVE,
-                            (QMUIDialog dialog, int index) -> {
-                                mData.remove(vh.getAdapterPosition());
-                                notifyItemRemoved(vh.getAdapterPosition());
-                                dialog.dismiss();
-                            })
-                    .create(R.style.QMUI_Dialog).show();
+        ImageButton crossIcon = (ImageButton) vh.getView(R.id.news_list_clear_icon);
+        crossIcon.setOnClickListener((View view) -> {
+            Point size = new Point();
+            mContext.getWindowManager().getDefaultDisplay().getSize(size);
+            int width = size.x;
+            int height = size.y;
+
+            View popupView = LayoutInflater.from(mContext).inflate(R.layout.block_popup_layout, null, false);
+            PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//            popupWindow.setHeight(1);
+//            popupWindow.setWidth(1);
+            popupWindow.setTouchable(true);
+            popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return false;
+                }
+            });
+            final Window window = mContext.getWindow();
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.5f);
+            valueAnimator.setDuration(500);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    WindowManager.LayoutParams params = window.getAttributes();
+                    params.alpha = (Float) animation.getAnimatedValue();
+                    window.setAttributes(params);
+                }
+            });
+            valueAnimator.start();
+            popupWindow.setOnDismissListener(() -> {
+                WindowManager.LayoutParams params = window.getAttributes();
+                params.alpha = 1f;
+                valueAnimator.cancel();
+                window.setAttributes(params);
+            });
+            popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            popupWindow.showAsDropDown(crossIcon, 0, 0, Gravity.LEFT);
+
+            Button deleteButton = popupView.findViewById(R.id.popup_delete_button);
+            deleteButton.setOnClickListener((View v) -> {
+                popupWindow.dismiss();
+                mData.remove(vh.getAdapterPosition());
+                notifyItemRemoved(vh.getAdapterPosition());
+            });
         });
-        final View parent = (View) deleteButton.getParent();
+
+        final View parent = (View) crossIcon.getParent();
         parent.post(() -> {
             final Rect rect = new Rect();
-            deleteButton.getHitRect(rect);
+            crossIcon.getHitRect(rect);
             rect.top -= 50;    // increase top hit area
             rect.left -= 50;   // increase left hit area
             rect.bottom += 50; // increase bottom hit area
             rect.right += 50;  // increase right hit area
-            parent.setTouchDelegate(new TouchDelegate(rect, deleteButton));
+            parent.setTouchDelegate(new TouchDelegate(rect, crossIcon));
         });
         return vh;
     }
