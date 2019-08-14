@@ -74,7 +74,10 @@ public class NewsListFragment extends QMUIFragment {
         List<News> data = new ArrayList<>();
         mAdapter = new NewsListAdapter(getContext(), data);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation()));
+
+        DividerItemDecoration divider = new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation());
+        divider.setDrawable(getContext().getDrawable(R.drawable.content_divider));
+        mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
