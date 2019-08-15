@@ -70,11 +70,16 @@
     <string name="image_pager_save">Save</string>
     <string name="image_pager_failed_to_gain_write_access">Failed to get write access to storage</string>
     <string name="image_pager_save_success">Successfully saved to %s</string>
+    <string name="news_list_not_interested">Not interested</string>
+    <string name="news_list_fake_news">Fake news</string>
+    <string name="news_list_outdated">Outdated</string>
+    <string name="news_list_block_reason">Why block?</string>
+    <string name="news_list_notification">Updated 10 news</string>
+    <!-- end news list fragment -->
     <string name="short_time_just_now">Just now</string>
     <string name="short_time_minute_ago">minute ago</string>
     <string name="short_time_minutes_ago">minutes ago</string>
     <string name="short_time_hour_ago">hour ago</string>
     <string name="short_time_hours_ago">hours ago</string>
     <string name="short_time_yesterday">Yesterday</string>
-    <!-- end news list fragment -->>
 </resources>

@@ -34,7 +34,7 @@
     <color name="colorHelper_square_to_ratio_background">@color/app_color_theme_3</color>
     
     <color name="translucent">#aa000000</color>
-    <color name="transparent">#00000000</color>
+    <color name="color_transparent">#00000000</color>
 
     <color name="color_D33D3C">#D33D3C</color>
     <color name="color_BDBDBD">#BDBDBD</color>
@@ -72,6 +72,11 @@
     <color name="color_red_7">#FF7777</color>
     <color name="color_red_8">#FF8888</color>
     <color name="color_red_9">#FF9999</color>
+    <color name="color_red_a">#FFAAAA</color>
+    <color name="color_red_b">#FFBBBB</color>
+    <color name="color_red_c">#FFCCCC</color>
+    <color name="color_red_d">#FFDDDD</color>
+    <color name="color_red_e">#FFEEEE</color>
 
     <color name="color_blue_0">#0000FF</color>
     <color name="color_blue_1">#1111FF</color>
@@ -83,6 +88,11 @@
     <color name="color_blue_7">#7777FF</color>
     <color name="color_blue_8">#8888FF</color>
     <color name="color_blue_9">#9999FF</color>
+    <color name="color_blue_a">#AAAAFF</color>
+    <color name="color_blue_b">#BBBBFF</color>
+    <color name="color_blue_c">#CCCCFF</color>
+    <color name="color_blue_d">#DDDDFF</color>
+    <color name="color_blue_e">#EEEEFF</color>
 
     <color name="color_green_0">#00FF00</color>
     <color name="color_green_1">#11FF11</color>
@@ -94,6 +104,11 @@
     <color name="color_green_7">#77FF77</color>
     <color name="color_green_8">#88FF88</color>
     <color name="color_green_9">#99FF99</color>
+    <color name="color_green_a">#AAFFAA</color>
+    <color name="color_green_b">#BBFFBB</color>
+    <color name="color_green_c">#CCFFCC</color>
+    <color name="color_green_d">#DDFFDD</color>
+    <color name="color_green_e">#EEFFEE</color>
 
     <color name="color_gray_0">#000000</color>
     <color name="color_gray_1">#111111</color>

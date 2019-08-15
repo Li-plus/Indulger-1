@@ -72,9 +72,12 @@ public class NewsListFragment extends QMUIFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         List<News> data = new ArrayList<>();
-        mAdapter = new NewsListAdapter(getContext(), data);
+        mAdapter = new NewsListAdapter(getActivity(), data);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation()));
+
+        DividerItemDecoration divider = new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation());
+        divider.setDrawable(getContext().getDrawable(R.drawable.content_divider));
+        mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -104,7 +107,14 @@ public class NewsListFragment extends QMUIFragment {
         }
         int startPosition = (fromStart ? 0 : mAdapter.getData().size() - 10);
         mAdapter.notifyItemRangeInserted(startPosition, 10);
-        if (fromStart)
+        if (fromStart) {
+            mAdapter.getData().add(0, null);
+            mAdapter.notifyItemInserted(0);
+            mRecyclerView.postDelayed(() -> {
+                mAdapter.getData().remove(0);
+                mAdapter.notifyItemRemoved(0);
+            }, 2000);
             mRecyclerView.scrollToPosition(0);
+        }
     }
 }

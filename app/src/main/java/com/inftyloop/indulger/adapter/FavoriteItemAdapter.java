@@ -30,10 +30,10 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<BaseRecyclerViewHo
     public void onBindViewHolder(@NonNull BaseRecyclerViewHolder viewHolder, int position) {
         final Map<String, Object> item = mData.get(position);
 
-        ((TextView) viewHolder.getView(R.id.date)).setText((String) item.get("date"));
-        ((ImageView) viewHolder.getView(R.id.img)).setImageResource((int) item.get("img"));
-        ((TextView) viewHolder.getView(R.id.press)).setText((String) item.get("press"));
-        ((TextView) viewHolder.getView(R.id.title)).setText((String) item.get("title"));
+        ((TextView) viewHolder.findViewById(R.id.date)).setText((String) item.get("date"));
+        ((ImageView) viewHolder.findViewById(R.id.img)).setImageResource((int) item.get("img"));
+        ((TextView) viewHolder.findViewById(R.id.press)).setText((String) item.get("press"));
+        ((TextView) viewHolder.findViewById(R.id.title)).setText((String) item.get("title"));
     }
 
     @Override
