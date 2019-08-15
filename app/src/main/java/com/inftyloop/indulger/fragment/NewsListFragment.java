@@ -52,12 +52,10 @@ public class NewsListFragment extends QMUIFragment {
         mRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
             @Override
             public void onMoveTarget(int offset) {
-
             }
 
             @Override
             public void onMoveRefreshView(int offset) {
-
             }
 
             @Override
@@ -91,13 +89,19 @@ public class NewsListFragment extends QMUIFragment {
             }
         });
         onDataLoaded(true);
-        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER, null, null, null, null, null, null));
+        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
         return root;
     }
 
     public void onDataLoaded(boolean fromStart) {
-        if (!fromStart)
+        if (fromStart) {
+            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER) {
+                mAdapter.removeItemImmediately(0);
+            }
+        } else {
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+        }
+
         for (int i = 0; i < 10; i++) {
             double rand = Math.random();
             int position = (fromStart ? 0 : mAdapter.getData().size());
@@ -111,7 +115,8 @@ public class NewsListFragment extends QMUIFragment {
         if (fromStart) {
             mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
             mRecyclerView.postDelayed(() -> {
-                mAdapter.removeItemImmediately(0);
+                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER)
+                    mAdapter.removeItemImmediately(0);
             }, 2000);
             mRecyclerView.scrollToPosition(0);
         } else {
