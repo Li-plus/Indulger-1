@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
     android:background="?attr/app_background_color"
     android:orientation="vertical"
     android:padding="10dp">
@@ -15,10 +15,8 @@
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/toggle_button_selector"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:padding="10dp"
             android:textColor="@color/s_toggle_text"
             android:textOff="@string/news_list_not_interested"
@@ -27,10 +25,8 @@
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/toggle_button_selector"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:padding="10dp"
             android:textColor="@color/s_toggle_text"
             android:textOff="@string/news_list_fake_news"
@@ -39,10 +35,8 @@
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/toggle_button_selector"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
             android:padding="10dp"
             android:textColor="@color/s_toggle_text"
             android:textOff="@string/news_list_outdated"
