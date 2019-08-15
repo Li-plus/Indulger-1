@@ -61,5 +61,11 @@
     <string name="image_pager_save">保存</string>
     <string name="image_pager_failed_to_gain_write_access">获取存储空间写权限失败</string>
     <string name="image_pager_save_success">保存成功,文件在%s</string>
+    <string name="short_time_just_now">刚刚</string>
+    <string name="short_time_minute_ago">分钟前</string>
+    <string name="short_time_minutes_ago">分钟前</string>
+    <string name="short_time_hour_ago">小时前</string>
+    <string name="short_time_hours_ago">小时前</string>
+    <string name="short_time_yesterday">昨天</string>
     <!-- end news list fragment -->
 </resources>

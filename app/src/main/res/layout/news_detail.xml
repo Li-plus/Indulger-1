@@ -9,14 +9,14 @@
             android:background="?attr/app_background_color"
             android:fitsSystemWindows="true"
             android:orientation="vertical">
-        <FrameLayout
+        <com.inftyloop.indulger.ui.NewsDetailHeaderView
                 android:id="@+id/fl_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
         >
-        </FrameLayout>
+        </com.inftyloop.indulger.ui.NewsDetailHeaderView>
 
         <RelativeLayout
                 android:layout_width="match_parent"
