@@ -65,5 +65,6 @@
     <string name="news_list_fake_news">假新闻</string>
     <string name="news_list_outdated">旧闻</string>
     <string name="news_list_block_reason">选择理由 为您优化</string>
+    <string name="news_list_notification">推荐引擎有10条更新</string>
     <!-- end news list fragment -->
 </resources>

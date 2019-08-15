@@ -75,5 +75,6 @@
     <string name="news_list_fake_news">Fake news</string>
     <string name="news_list_outdated">Outdated</string>
     <string name="news_list_block_reason">Why block?</string>
+    <string name="news_list_notification">Updated 10 news</string>
     <!-- end news list fragment -->
 </resources>
