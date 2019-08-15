@@ -5,6 +5,12 @@
     android:gravity="center_horizontal"
     android:orientation="horizontal">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/news_list_loading" />
+
     <ProgressBar
         android:layout_width="40sp"
         android:layout_height="40sp"
