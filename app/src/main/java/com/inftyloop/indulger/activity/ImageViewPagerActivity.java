@@ -24,7 +24,8 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.BigImageFragment;
 import com.inftyloop.indulger.listener.PermissionListener;
 import com.inftyloop.indulger.ui.Eyes;
-import com.inftyloop.indulger.util.BaseActivity;
+import com.inftyloop.indulger.ui.ViewPagerBugFixed;
+import com.inftyloop.indulger.ui.BaseActivity;
 import com.inftyloop.indulger.util.FileUtils;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
@@ -37,7 +38,7 @@ public class ImageViewPagerActivity extends BaseActivity implements ViewPager.On
     public static final String IMG_URLS = "mImageUrls";
     public static final String POSITION = "position";
     @BindView(R.id.vp_pics)
-    ViewPager mVpPics;
+    ViewPagerBugFixed mVpPics;
     @BindView(R.id.tv_indicator)
     TextView mTvIndicator;
     @BindView(R.id.tv_save)

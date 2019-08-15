@@ -8,7 +8,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.MainTabBarFragment;
 import com.inftyloop.indulger.fragment.WebViewFragment;
 import com.inftyloop.indulger.fragment.AboutFragment;
-import com.inftyloop.indulger.util.BaseFragmentActivity;
+import com.inftyloop.indulger.ui.BaseFragmentActivity;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.arch.annotation.DefaultFirstFragment;

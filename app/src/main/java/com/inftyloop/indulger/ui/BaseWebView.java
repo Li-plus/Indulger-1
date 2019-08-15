@@ -1,4 +1,4 @@
-package com.inftyloop.indulger.util;
+package com.inftyloop.indulger.ui;
 
 import com.inftyloop.indulger.R;
 import android.annotation.SuppressLint;

@@ -1,12 +1,8 @@
 package com.inftyloop.indulger.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.GestureDetector;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,7 +28,7 @@ public class NewsDetailHeaderView extends FrameLayout {
     @BindView(R.id.tv_time)
     TextView mTime;
     @BindView(R.id.wv_content)
-    NativeWebView mContent;
+    NestedWebView mContent;
     @BindView(R.id.btn_fav)
     Button mFavBtn;
 

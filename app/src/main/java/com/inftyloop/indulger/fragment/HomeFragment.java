@@ -16,7 +16,7 @@ import com.inftyloop.indulger.adapter.NewsChannelPagerAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsTypeListener;
 import com.inftyloop.indulger.model.entity.NewsChannel;
-import com.inftyloop.indulger.util.BaseFragment;
+import com.inftyloop.indulger.ui.BaseFragment;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;

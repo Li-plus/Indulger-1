@@ -1,4 +1,4 @@
-package com.inftyloop.indulger.util;
+package com.inftyloop.indulger.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
