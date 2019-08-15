@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
-import com.inftyloop.indulger.util.BaseFragmentActivity;
+import com.inftyloop.indulger.ui.BaseFragmentActivity;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;

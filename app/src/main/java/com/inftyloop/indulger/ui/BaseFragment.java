@@ -1,4 +1,4 @@
-package com.inftyloop.indulger.util;
+package com.inftyloop.indulger.ui;
 
 import android.app.Activity;
 import android.content.Context;

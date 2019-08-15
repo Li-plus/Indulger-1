@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.ZoomButtonsController;
 
-import com.inftyloop.indulger.util.BaseWebView;
+import com.inftyloop.indulger.ui.BaseWebView;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUILangHelper;
 import com.qmuiteam.qmui.util.QMUIResHelper;

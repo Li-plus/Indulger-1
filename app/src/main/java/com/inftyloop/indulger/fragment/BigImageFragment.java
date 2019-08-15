@@ -15,7 +15,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.util.BaseFragment;
+import com.inftyloop.indulger.ui.BaseFragment;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.sunfusheng.glideimageview.GlideImageLoader;
 import com.sunfusheng.glideimageview.progress.CircleProgressView;

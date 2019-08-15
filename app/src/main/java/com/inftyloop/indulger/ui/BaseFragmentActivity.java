@@ -1,4 +1,4 @@
-package com.inftyloop.indulger.util;
+package com.inftyloop.indulger.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.util.LocaleHelper;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 
 @SuppressWarnings("Duplicates")
