@@ -5,8 +5,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +17,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
 
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.util.DisplayHelper;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
@@ -27,8 +30,6 @@ public class FavoriteFragment extends QMUIFragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
-    @BindView(R.id.favorite_nested_scroll_view)
-    NestedScrollView mNestedScrollView;
 
     FavoriteItemAdapter mAdapter;
 
@@ -51,9 +52,9 @@ public class FavoriteFragment extends QMUIFragment {
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mNestedScrollView.setOnScrollChangeListener((NestedScrollView nestedScrollView, int i, int i1, int i2, int i3) -> {
-            if (!nestedScrollView.canScrollVertically(1)) {
-                nestedScrollView.postDelayed(() -> {
+        mRecyclerView.setOnScrollChangeListener((View view, int i, int i1, int i2, int i3) -> {
+            if (!view.canScrollVertically(1)) {
+                view.postDelayed(() -> {
                     onDataLoaded();
                 }, 2000);
             }
