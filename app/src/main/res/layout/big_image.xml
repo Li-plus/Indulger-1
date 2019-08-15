@@ -26,6 +26,6 @@
             app:cpv_outerSize="1dp"
             app:cpv_progressNormalColor="@color/color_transparent"
             app:cpv_progressReachColor="#E5ffffff"
-            app:cpv_progressStyle="FillInnerArc"/>
+            app:cpv_progressStyle="FillInnerArc" />
 
 </RelativeLayout>

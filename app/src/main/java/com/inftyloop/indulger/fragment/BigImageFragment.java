@@ -41,12 +41,12 @@ public class BigImageFragment extends BaseFragment {
     @Override
     protected void loadData() {
         String imgUrl = getArguments().getString(IMG_URL);
-        GlideImageLoader imageLoader = new GlideImageLoader(mIvPic);
+        GlideImageLoader imageLoader = GlideImageLoader.create(mIvPic);
         imageLoader.setOnGlideImageViewListener(imgUrl, (int percent, boolean isDone, GlideException exception) -> {
             if (exception != null && !TextUtils.isEmpty(exception.getMessage())) {
                 QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.bigimage_network_exception), Toast.LENGTH_SHORT).show();
             }
-            mCircleProgressView.setVisibility(isDone ? View.GONE : View.INVISIBLE);
+            mCircleProgressView.setVisibility(isDone ? View.GONE : View.VISIBLE);
             mCircleProgressView.setProgress(percent);
         });
         RequestOptions options = imageLoader.requestOptions(R.color.placeholder_color)

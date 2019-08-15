@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.activity.ImageViewPagerActivity;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.model.entity.NewsDetail;
 import com.inftyloop.indulger.ui.AutoWrapLayout;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
@@ -124,15 +124,15 @@ public class HomeSearchFragment extends QMUIFragment {
                     ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
                     if(arr.length > 0)
                         mSearchHistoryBar.setVisibility(View.VISIBLE);
-                    List<String> mUrls = new ArrayList<>();
+                    /*List<String> mUrls = new ArrayList<>();
                     mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555038&di=2710a60131cf092d7869e258954bc099&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2Fattachments2%2Fday_110120%2F11012008485012851f3b754fad.jpg");
                     mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555042&di=8bdd3ab58e346c969e5f8b1a15cde3be&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2FImg%2F20120227%2F2012022709150416.jpg");
                     Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
                     intent.putExtra(ImageViewPagerActivity.POSITION, 0);
                     intent.putStringArrayListExtra(ImageViewPagerActivity.IMG_URLS, (ArrayList<String>) mUrls);
-                    getContext().startActivity(intent);
-                    //QMUIFragment res = new NewsDetailFragment();
-                    //startFragment(res);
+                    getContext().startActivity(intent);*/
+                    NewsDetailFragment res = new NewsDetailFragment();
+                    startFragment(res);
                     return true;
                 }
             }
