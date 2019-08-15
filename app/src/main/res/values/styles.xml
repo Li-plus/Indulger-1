@@ -66,6 +66,7 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingTop">8dp</item>
     </style>
+
     <style name="button_style_toggle" parent="android:Widget.Material.Light.Button.Toggle">
         <item name="android:textAllCaps">false</item>
         <item name="android:minWidth">0dp</item>

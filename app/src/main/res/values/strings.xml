@@ -32,6 +32,7 @@
     <string name="favorite_title">Favorites</string>
     <string name="favorite_cancel">Cancel</string>
     <string name="favorite_delete">Delete</string>
+    <string name="favorite_no_more">Nothing More</string>
     <string name="home_news_type_my_channel">My Channel</string>
     <string name="home_news_type_channel_edit">Edit</string>
     <string name="home_news_type_channel_edit_complete">Complete</string>

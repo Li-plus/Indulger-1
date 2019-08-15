@@ -91,30 +91,31 @@ public class NewsListFragment extends QMUIFragment {
             }
         });
         onDataLoaded(true);
+        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER, null, null, null, null, null, null));
         return root;
     }
 
     public void onDataLoaded(boolean fromStart) {
+        if (!fromStart)
+            mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         for (int i = 0; i < 10; i++) {
             double rand = Math.random();
             int position = (fromStart ? 0 : mAdapter.getData().size());
             if (rand < 0.33)
-                mAdapter.getData().add(position, new News("text news " + Math.random(), "author", "5 minutes ago", null, null, null));
+                mAdapter.insertItemImmediately(position, new News(News.TEXT_NEWS, "text news " + Math.random(), "author", "5 minutes ago", null, null, null));
             else if (rand < 0.66)
-                mAdapter.getData().add(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, null, null));
+                mAdapter.insertItemImmediately(position, new News(News.SINGLE_IMAGE_NEWS, "single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, null, null));
             else
-                mAdapter.getData().add(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+                mAdapter.insertItemImmediately(position, new News(News.THREE_IMAGES_NEWS, "three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
         }
-        int startPosition = (fromStart ? 0 : mAdapter.getData().size() - 10);
-        mAdapter.notifyItemRangeInserted(startPosition, 10);
         if (fromStart) {
-            mAdapter.getData().add(0, null);
-            mAdapter.notifyItemInserted(0);
+            mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
             mRecyclerView.postDelayed(() -> {
-                mAdapter.getData().remove(0);
-                mAdapter.notifyItemRemoved(0);
+                mAdapter.removeItemImmediately(0);
             }, 2000);
             mRecyclerView.scrollToPosition(0);
+        } else {
+            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
         }
     }
 }

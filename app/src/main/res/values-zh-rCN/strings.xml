@@ -26,6 +26,7 @@
     <string name="favorite_title">收藏</string>
     <string name="favorite_cancel">取消</string>
     <string name="favorite_delete">删除</string>
+    <string name="favorite_no_more">没有更多了</string>
     <string name="home_news_type_my_channel">我的频道</string>
     <string name="home_news_type_channel_edit">编辑</string>
     <string name="home_news_type_channel_edit_complete">完成</string>
