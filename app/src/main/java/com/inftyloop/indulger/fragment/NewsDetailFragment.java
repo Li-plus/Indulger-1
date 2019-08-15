@@ -69,6 +69,7 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
         mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> {
             popBackStack();
         });
+        mTopBar.setTitle(R.string.news_detail_title);
         mShareBtn.setOnClickListener(v -> showSharingView());
         mFavBtn.setOnClickListener(v -> {
             mFavBtn.setImageResource(isFav ? R.drawable.ic_favorite : R.drawable.ic_favorite_fill);

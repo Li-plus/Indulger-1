@@ -82,4 +82,6 @@
     <string name="short_time_hour_ago">hour ago</string>
     <string name="short_time_hours_ago">hours ago</string>
     <string name="short_time_yesterday">Yesterday</string>
+    <string name="followed">Followed</string>
+    <string name="news_detail_title">Details</string>
 </resources>

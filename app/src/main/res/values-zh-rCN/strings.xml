@@ -73,4 +73,6 @@
     <string name="short_time_hour_ago">小时前</string>
     <string name="short_time_hours_ago">小时前</string>
     <string name="short_time_yesterday">昨天</string>
+    <string name="followed">已关注</string>
+    <string name="news_detail_title">新闻详情</string>
 </resources>

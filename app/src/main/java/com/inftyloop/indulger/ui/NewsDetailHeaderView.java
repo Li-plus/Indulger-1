@@ -1,24 +1,23 @@
 package com.inftyloop.indulger.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.inftyloop.indulger.R;
-import android.widget.FrameLayout;
 import butterknife.BindView;
 import com.inftyloop.indulger.listener.ScrollingGestureDetector;
 import com.inftyloop.indulger.model.entity.NewsDetail;
-import com.inftyloop.indulger.util.DateUtils;
-import com.inftyloop.indulger.util.GlideUtils;
-import com.inftyloop.indulger.util.NativeWebView;
-import com.inftyloop.indulger.util.ShowPicJSBridge;
+import com.inftyloop.indulger.util.*;
 
 public class NewsDetailHeaderView extends FrameLayout {
     private static final String NICK = "Indulger";  // used to bind javascript
@@ -34,7 +33,10 @@ public class NewsDetailHeaderView extends FrameLayout {
     TextView mTime;
     @BindView(R.id.wv_content)
     NativeWebView mContent;
+    @BindView(R.id.btn_fav)
+    Button mFavBtn;
 
+    private boolean mHasFollowed;
     private Context mContext;
     private LoadWebListener mWebListener;
     private ScrollingGestureDetector mGestureDectector;
@@ -57,7 +59,7 @@ public class NewsDetailHeaderView extends FrameLayout {
     private void initView() {
         inflate(getContext(), R.layout.header_news_detail, this);
         ButterKnife.bind(this, this);
-        mGestureDectector = new ScrollingGestureDetector(new ScrollingGestureDetector.GestureListenerCallback() {
+        /*mGestureDectector = new ScrollingGestureDetector(new ScrollingGestureDetector.GestureListenerCallback() {
             @Override
             public void onShow() {
                 mTitle.setVisibility(VISIBLE);
@@ -70,7 +72,8 @@ public class NewsDetailHeaderView extends FrameLayout {
                 mllInfo.setVisibility(GONE);
             }
         });
-        mContent.setGestureDetector(new GestureDetector(mGestureDectector));
+        mContent.setGestureDetector(new GestureDetector(mGestureDectector));*/
+        mHasFollowed = false;
     }
 
     private void addJs(WebView wv) {
@@ -95,6 +98,10 @@ public class NewsDetailHeaderView extends FrameLayout {
             mContent.setVisibility(GONE);
         mContent.getSettings().setJavaScriptEnabled(true);
         mContent.addJavascriptInterface(new ShowPicJSBridge(mContext), NICK);
+        // change background according to theme
+        String bg_color = DisplayUtils.getColorStringFromAttr(mContext, R.attr.app_background_color);
+        String text_color = DisplayUtils.getColorStringFromAttr(mContext, R.attr.foreground_text_color);
+
         String htmlPart1 = "<!DOCTYPE HTML html>\n" +
                 "<head><meta charset=\"utf-8\"/>\n" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no\"/>\n" +
@@ -102,6 +109,7 @@ public class NewsDetailHeaderView extends FrameLayout {
                 "<body>\n" +
                 "<style> \n" +
                 "img{width:100%!important;height:auto!important}\n" +
+                "body{ background-color: " + bg_color + ";\n" + "color: " + text_color +  ";\n}" +
                 " </style>";
         String htmlPart2 = "</body></html>";
 
@@ -117,6 +125,13 @@ public class NewsDetailHeaderView extends FrameLayout {
                 }
             }
         });
+    }
+
+    @OnClick(R.id.btn_fav)
+    public void onFollowBtnClick(View view) {
+        mFavBtn.setText(getContext().getString(mHasFollowed ? R.string.follow : R.string.followed));
+        mHasFollowed = !mHasFollowed;
+        // TODO
     }
 
     public interface LoadWebListener {

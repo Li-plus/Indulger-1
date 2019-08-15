@@ -141,7 +141,8 @@ public class QMUITipDialog extends Dialog {
             LinearLayout.LayoutParams textView_LP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (iconType != ICON_TYPE_NOTHING) {
                 textView_LP.topMargin = QMUIDisplayHelper.dp2px(ctx, 12);
-            }
+            } else
+                textView_LP.topMargin = QMUIDisplayHelper.dp2px(ctx, 10);
             textView_LP.leftMargin = QMUIDisplayHelper.dp2px(ctx, 25);
             textView_LP.rightMargin = QMUIDisplayHelper.dp2px(ctx, 25);
             textView_LP.bottomMargin = QMUIDisplayHelper.dp2px(ctx, 10);

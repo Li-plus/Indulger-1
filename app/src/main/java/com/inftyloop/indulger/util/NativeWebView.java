@@ -23,7 +23,10 @@ public class NativeWebView extends WebView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+        if(gestureDetector != null)
+            return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+        else
+            return super.onTouchEvent(event);
     }
 
     public void setGestureDetector(GestureDetector g) {
