@@ -1,7 +1,5 @@
 package com.inftyloop.indulger.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 
 import butterknife.BindView;
@@ -23,17 +20,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
-import com.inftyloop.indulger.model.entity.NewsDetail;
 import com.inftyloop.indulger.ui.AutoWrapLayout;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.util.DisplayHelper;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeSearchFragment extends QMUIFragment {
     private static final String TAG = HomeSearchFragment.class.getSimpleName();
@@ -52,29 +46,6 @@ public class HomeSearchFragment extends QMUIFragment {
     Gson mGson = new Gson();
 
     public static String keyword = "";
-
-    @Override
-    public void onDestroyView() {
-        // ensure that the keyboard is properly hidden before closing this fragment
-        super.onDestroyView();
-        hideKeyboard();
-    }
-
-    public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
-    public void showKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        hideKeyboard();
-    }
 
     @Override
     public View onCreateView() {
@@ -98,7 +69,7 @@ public class HomeSearchFragment extends QMUIFragment {
         });
         mTopImgButton.setOnClickListener(v -> {
             popBackStack();
-            hideKeyboard();
+            DisplayHelper.hideKeyboard(getContext(), mSearch);
         });
         mTopImgButton.setEnabled(true);
         mSearch.addTextChangedListener(new TextWatcher() {
@@ -155,10 +126,10 @@ public class HomeSearchFragment extends QMUIFragment {
         mClearEditText.setOnClickListener(v -> mSearch.setText(""));
         mSearch.setOnFocusChangeListener((v, hasFocus) -> {
             mClearEditText.setVisibility(hasFocus && !mSearch.getText().toString().isEmpty() ? View.VISIBLE : View.INVISIBLE);
-            if (hasFocus)
-                showKeyboard();
+            if(hasFocus)
+                DisplayHelper.showKeyboard(getContext(), mSearch);
             else
-                hideKeyboard();
+                DisplayHelper.hideKeyboard(getContext(), mSearch);
         });
         mTopBar.addRightView(view, R.id.topbar_search_input, lp);
         // init search history stuffs
