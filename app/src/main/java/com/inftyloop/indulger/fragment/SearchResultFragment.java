@@ -55,8 +55,8 @@ public class SearchResultFragment extends QMUIFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setOnScrollChangeListener((View view, int i, int i1, int i2, int i3) -> {
-            if (!searchBar.canScrollVertically(1)) {
-                searchBar.postDelayed(() -> {
+            if (!view.canScrollVertically(1)) {
+                view.postDelayed(() -> {
                     onDataLoaded();
                 }, 2000);
             }

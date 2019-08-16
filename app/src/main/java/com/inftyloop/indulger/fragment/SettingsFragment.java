@@ -13,6 +13,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.ui.BaseFragmentActivity;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.util.ThemeManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -53,7 +54,9 @@ public class SettingsFragment extends QMUIFragment {
             final String[] items = new String[]{
                     getString(R.string.settings_theme_default),
                     getString(R.string.settings_theme_auto),
-                    getString(R.string.settings_theme_night)
+                    getString(R.string.settings_theme_night),
+                    getString(R.string.settings_theme_toutiao),
+                    getString(R.string.settings_theme_jiujing)
             };
             new QMUIDialog.CheckableDialogBuilder(getActivity())
                     .setCheckedIndex(theme_checked_idx)
@@ -61,27 +64,7 @@ public class SettingsFragment extends QMUIFragment {
                         ConfigManager.putIntNow(Definition.SETTINGS_APP_THEME, which);
                         QMUIFragmentActivity activity = getBaseFragmentActivity();
                         theme_checked_idx = which;
-                        if(activity instanceof BaseFragmentActivity) {
-                            // only recreate if mode changes
-                            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                            BaseFragmentActivity act = (BaseFragmentActivity) activity;
-                            switch (which) {
-                                case 0:
-                                    if(act.getCurStyleResId() != R.style.AppTheme)
-                                        act.recreate(); break;
-                                case 1:
-                                    if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                                        if(act.getCurStyleResId() != R.style.NightTheme)
-                                            act.recreate(); break;
-                                    } else {
-                                        if(act.getCurStyleResId() != R.style.AppTheme)
-                                            act.recreate(); break;
-                                    }
-                                case 2:
-                                    if(act.getCurStyleResId() != R.style.NightTheme)
-                                        act.recreate(); break;
-                            }
-                        } else activity.recreate();
+                        ThemeManager.changeTheme(activity, which);
                         dialog.dismiss();
                     })
                     .create(R.style.QMUI_Dialog).show();

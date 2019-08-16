@@ -26,6 +26,8 @@
     <string name="settings_cache_clearing">Clearing</string>
     <string name="night_theme_name" translatable="false">NightTheme</string>
     <string name="day_theme_name" translatable="false">DayTheme</string>
+    <string name="toutiao_theme_name" translatable="false">ToutiaoTheme</string>
+    <string name="jiujing_theme_name" translatable="false">JiujingTheme</string>
     <!-- end settings fragment -->
 
     <!-- begin favorite fragment -->
@@ -43,6 +45,8 @@
     <string name="settings_lang_system">Follow System</string>
     <string name="settings_theme_default">Default</string>
     <string name="settings_theme_night">Night Mode</string>
+    <string name="settings_theme_toutiao">Toutiao Red</string>
+    <string name="settings_theme_jiujing">9# Green</string>
     <string name="settings_theme_auto">Follow System (Day/Night)</string>
     <string name="settings_lang_auto">Automatic</string>
     <string name="home_search_submit">Submit</string>

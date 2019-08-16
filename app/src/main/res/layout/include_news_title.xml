@@ -3,4 +3,4 @@
     android:id="@+id/tv_title"
     style="@style/news_title"
     android:layout_width="match_parent"
-    android:text="this is a very long long long long long long long long long long title" />
+    android:text="Title placeholder" />

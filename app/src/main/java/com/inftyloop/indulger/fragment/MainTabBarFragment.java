@@ -65,19 +65,19 @@ public class MainTabBarFragment extends QMUIFragment {
         mTabSegment.setDefaultSelectedColor(selectedColor);
 
         QMUITabSegment.Tab home = new QMUITabSegment.Tab(
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_collect),
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_collect_fill),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_collect),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_collect_fill),
                 getActivity().getResources().getString(R.string.home), false
         );
 
         QMUITabSegment.Tab fav = new QMUITabSegment.Tab(
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_star),
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_star_fill),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_star),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_star_fill),
                 getActivity().getResources().getString(R.string.fav), false
         );
         QMUITabSegment.Tab personal = new QMUITabSegment.Tab(
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_signal),
-                ContextCompat.getDrawable(getContext(), R.mipmap.icon_signal_fill),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_signal),
+                ContextCompat.getDrawable(getContext(), R.drawable.icon_signal_fill),
                 getActivity().getResources().getString(R.string.personal), false
         );
         mTabSegment.addTab(home)
