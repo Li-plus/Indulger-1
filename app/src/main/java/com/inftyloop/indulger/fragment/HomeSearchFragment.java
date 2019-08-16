@@ -15,8 +15,10 @@ import android.view.TouchDelegate;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.inftyloop.indulger.R;
@@ -35,15 +37,21 @@ import java.util.List;
 
 public class HomeSearchFragment extends QMUIFragment {
     private static final String TAG = HomeSearchFragment.class.getSimpleName();
-    @BindView(R.id.topbar) QMUITopBarLayout mTopBar;
-    @BindView(R.id.img_delete) ImageView mDelHistory;
-    @BindView(R.id.search_history) AutoWrapLayout mSearchHistory;
-    @BindView(R.id.search_history_bar) LinearLayout mSearchHistoryBar;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout mTopBar;
+    @BindView(R.id.img_delete)
+    ImageView mDelHistory;
+    @BindView(R.id.search_history)
+    AutoWrapLayout mSearchHistory;
+    @BindView(R.id.search_history_bar)
+    LinearLayout mSearchHistoryBar;
     /* Top Bar stuffs */
     ImageButton mTopImgButton;
     ImageView mClearEditText;
     EditText mSearch;
     Gson mGson = new Gson();
+
+    public static String keyword = "";
 
     @Override
     public void onDestroyView() {
@@ -95,23 +103,25 @@ public class HomeSearchFragment extends QMUIFragment {
         mTopImgButton.setEnabled(true);
         mSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mSearch.hasFocus() && !mSearch.getText().toString().isEmpty())
+                if (mSearch.hasFocus() && !mSearch.getText().toString().isEmpty())
                     mClearEditText.setVisibility(View.VISIBLE);
                 else
                     mClearEditText.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
         mSearch.setOnKeyListener((v, keyCode, evt) -> {
             if (evt.getAction() == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if(mSearch.getText().toString().isEmpty()) {
+                    if (mSearch.getText().toString().isEmpty()) {
                         Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.search_empty_input_not_allowed), Toast.LENGTH_SHORT);
                         toast.show();
                         return false;
@@ -122,7 +132,7 @@ public class HomeSearchFragment extends QMUIFragment {
                     String[] arr = mSearchHistory.getItemArray();
                     String temp = mGson.toJson(arr);
                     ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
-                    if(arr.length > 0)
+                    if (arr.length > 0)
                         mSearchHistoryBar.setVisibility(View.VISIBLE);
                     /*List<String> mUrls = new ArrayList<>();
                     mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555038&di=2710a60131cf092d7869e258954bc099&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2Fattachments2%2Fday_110120%2F11012008485012851f3b754fad.jpg");
@@ -131,7 +141,9 @@ public class HomeSearchFragment extends QMUIFragment {
                     intent.putExtra(ImageViewPagerActivity.POSITION, 0);
                     intent.putStringArrayListExtra(ImageViewPagerActivity.IMG_URLS, (ArrayList<String>) mUrls);
                     getContext().startActivity(intent);*/
-                    NewsDetailFragment res = new NewsDetailFragment();
+
+                    keyword = mSearch.getText().toString();
+                    SearchResultFragment res = new SearchResultFragment();
                     startFragment(res);
                     return true;
                 }
@@ -143,7 +155,7 @@ public class HomeSearchFragment extends QMUIFragment {
         mClearEditText.setOnClickListener(v -> mSearch.setText(""));
         mSearch.setOnFocusChangeListener((v, hasFocus) -> {
             mClearEditText.setVisibility(hasFocus && !mSearch.getText().toString().isEmpty() ? View.VISIBLE : View.INVISIBLE);
-            if(hasFocus)
+            if (hasFocus)
                 showKeyboard();
             else
                 hideKeyboard();
@@ -151,17 +163,17 @@ public class HomeSearchFragment extends QMUIFragment {
         mTopBar.addRightView(view, R.id.topbar_search_input, lp);
         // init search history stuffs
         String historyJson = ConfigManager.getString(Definition.SETTINGS_SEARCH_HISTORY, "");
-        if(TextUtils.isEmpty(historyJson)) {
+        if (TextUtils.isEmpty(historyJson)) {
             historyJson = mGson.toJson(new String[0]);
             ConfigManager.putString(Definition.SETTINGS_SEARCH_HISTORY, historyJson);
             mSearchHistoryBar.setVisibility(View.INVISIBLE);
         } else {
-            String[] history = mGson.fromJson(historyJson, new TypeToken<String[]>(){}.getType());
-            if(history.length > 0) {
+            String[] history = mGson.fromJson(historyJson, new TypeToken<String[]>() {
+            }.getType());
+            if (history.length > 0) {
                 mSearchHistoryBar.setVisibility(View.VISIBLE);
                 mSearchHistory.loadData(history);
-            }
-            else {
+            } else {
                 mSearchHistoryBar.setVisibility(View.INVISIBLE);
             }
         }
@@ -169,7 +181,7 @@ public class HomeSearchFragment extends QMUIFragment {
             mSearch.setText(v.getText().toString());
             mSearch.setSelection(v.getText().length());
         });
-        mDelHistory.setOnClickListener(v-> {
+        mDelHistory.setOnClickListener(v -> {
             new QMUIDialog.MessageDialogBuilder(getActivity())
                     .setMessage(getString(R.string.confirm_clear_search_history))
                     .addAction(getString(R.string.cancel), (QMUIDialog dialog, int index) -> {
