@@ -24,6 +24,8 @@
     <attr name="add_channel_close_button_mipmap" format="reference" />
     <attr name="news_detail_follow_btn_color" format="color" />
 
+    <attr name="clicked_text_color" format="color" />
+
     <declare-styleable name="AutoWrapLayout">
         <attr name="childTextColor" format="color" />
         <attr name="childTextBackgroundColor" format="color" />

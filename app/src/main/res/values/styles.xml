@@ -57,6 +57,8 @@
 
         <item name="android:buttonStyleToggle">@style/button_style_toggle</item>
 
+        <item name="clicked_text_color">@color/color_gray_a</item>
+
         <item name="news_detail_follow_btn_color">#2a90d8</item>
     </style>
 
@@ -179,6 +181,8 @@
         <item name="qmui_s_list_item_bg_with_border_none">?attr/app_background_color</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
+        <item name="clicked_text_color">@color/color_gray_8</item>
     </style>
 
     <style name="dialogSlideAnim" mce_bogus="1" parent="android:Animation">

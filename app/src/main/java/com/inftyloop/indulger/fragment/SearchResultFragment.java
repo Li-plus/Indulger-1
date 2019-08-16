@@ -6,13 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
-
 import com.inftyloop.indulger.model.entity.News;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -20,22 +18,30 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class FavoriteFragment extends QMUIFragment {
-    @BindView(R.id.favorite_recycler_view)
-    RecyclerView mRecyclerView;
+public class SearchResultFragment extends QMUIFragment {
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
+    @BindView(R.id.search_result_recycler_view)
+    RecyclerView mRecyclerView;
 
     FavoriteItemAdapter mAdapter;
 
-    private final static String TAG = FavoriteFragment.class.getSimpleName();
-
     @Override
     protected View onCreateView() {
-        View root = LayoutInflater.from(getContext()).inflate(R.layout.favorite, null);
+        View root = LayoutInflater.from(getActivity()).inflate(R.layout.search_result, null);
         ButterKnife.bind(this, root);
-        mTopBar.setTitle(getString(R.string.favorite_title));
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(25, 25, 25, 25);
+        View searchBar = getLayoutInflater().inflate(R.layout.searchbar_home, null);
+        searchBar.setOnClickListener((View v) -> {
+            popBackStack();
+        });
+        ((TextView) searchBar.findViewById(R.id.txt_search)).setText(HomeSearchFragment.keyword);
+        mTopBar.addRightView(searchBar, R.id.topbar_search, lp);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -62,7 +68,7 @@ public class FavoriteFragment extends QMUIFragment {
         return root;
     }
 
-    public boolean canLoadMore() {
+    private boolean canLoadMore() {
         return mAdapter.getData().size() < 20;
     }
 
