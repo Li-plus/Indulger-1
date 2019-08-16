@@ -3,47 +3,29 @@
     <string-array name="channel">
         <item>Recommended</item>
         <item>Video</item>
-        <item>Hotspot</item>
         <item>Society</item>
         <item>Entertainment</item>
         <item>Tech</item>
         <item>Automobile</item>
         <item>Sports</item>
         <item>Finance</item>
+        <item>Health</item>
         <item>Military</item>
-        <item>International</item>
-        <item>Fashion</item>
-        <item>Game</item>
-        <item>Tourism</item>
-        <item>History</item>
-        <item>Explore</item>
-        <item>Food</item>
-        <item>Baby</item>
-        <item>Regimen</item>
-        <item>Story</item>
-        <item>Essay</item>
+        <item>Education</item>
+        <item>Culture</item>
     </string-array>
     <string-array name="channel_code">
         <item>@string/channel_code_recommend</item>
         <item>@string/channel_code_video</item>
-        <item>news_hot</item>
         <item>news_society</item>
         <item>news_entertainment</item>
         <item>news_tech</item>
-        <item>news_car</item>
+        <item>news_auto</item>
         <item>news_sports</item>
         <item>news_finance</item>
+        <item>news_health</item>
         <item>news_military</item>
-        <item>news_world</item>
-        <item>news_fashion</item>
-        <item>news_game</item>
-        <item>news_travel</item>
-        <item>news_history</item>
-        <item>news_discovery</item>
-        <item>news_food</item>
-        <item>news_baby</item>
-        <item>news_regimen</item>
-        <item>news_story</item>
-        <item>news_essay</item>
+        <item>news_education</item>
+        <item>news_culture</item>
     </string-array>
 </resources>

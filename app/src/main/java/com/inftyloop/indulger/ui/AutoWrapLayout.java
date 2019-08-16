@@ -109,6 +109,7 @@ public class AutoWrapLayout extends ViewGroup {
         } else {
             TextView tv = createTextView(data);
             addView(tv, getChildCount());
+            addItemListener();
         }
     }
 
@@ -122,6 +123,7 @@ public class AutoWrapLayout extends ViewGroup {
         } else {
             TextView tv = createTextView(data);
             addView(tv, 0);
+            addItemListener();
         }
     }
 
@@ -139,6 +141,7 @@ public class AutoWrapLayout extends ViewGroup {
         View v = getChildAt(0);
         if (v != null)
             removeView(v);
+        addItemListener();
     }
 
     public void removeBack() {
@@ -149,6 +152,7 @@ public class AutoWrapLayout extends ViewGroup {
         View v = getChildAt(getChildCount() - 1);
         if (v != null)
             removeView(v);
+        addItemListener();
     }
 
     public interface ItemListener {

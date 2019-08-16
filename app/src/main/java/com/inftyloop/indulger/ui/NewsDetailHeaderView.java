@@ -95,8 +95,8 @@ public class NewsDetailHeaderView extends FrameLayout {
         mContent.getSettings().setJavaScriptEnabled(true);
         mContent.addJavascriptInterface(new ShowPicJSBridge(mContext), NICK);
         // change background according to theme
-        String bg_color = DisplayUtils.getColorStringFromAttr(mContext, R.attr.app_background_color);
-        String text_color = DisplayUtils.getColorStringFromAttr(mContext, R.attr.foreground_text_color);
+        String bg_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.app_background_color);
+        String text_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.foreground_text_color);
 
         String htmlPart1 = "<!DOCTYPE HTML html>\n" +
                 "<head><meta charset=\"utf-8\"/>\n" +
