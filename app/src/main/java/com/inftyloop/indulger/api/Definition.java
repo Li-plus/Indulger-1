@@ -20,5 +20,7 @@ public class Definition {
    public static final String SETTINGS_UNSELECTED_CHANNEL_JSON = "unselected_channel_json";
    public static final String SETTINGS_SEARCH_HISTORY = "search_history";
    public static final String SETTINGS_APP_THEME = "app_theme";
+   public static final String SETTINGS_APP_NIGHT_MODE_ENABLED = "app_night_mode_enabled";
+   public static final String SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS = "app_night_mode_follow_sys";
    public static final String SETTINGS_APP_LANG = "app_lang";
 }

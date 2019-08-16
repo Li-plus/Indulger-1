@@ -72,6 +72,16 @@ public class MainApplication extends Application {
         mHandler = new Handler();
         QMUISwipeBackActivityManager.init(this);
         LitePal.initialize(this);
+        // init configs
+        if(!ConfigManager.contains(Definition.SETTINGS_APP_THEME)) {
+            ConfigManager.putIntNow(Definition.SETTINGS_APP_THEME, 0);
+        }
+        if(!ConfigManager.contains(Definition.SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS)) {
+            ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS, false);
+        }
+        if(!ConfigManager.contains(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED)) {
+            ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED, false);
+        }
     }
 
     public static void restart() {

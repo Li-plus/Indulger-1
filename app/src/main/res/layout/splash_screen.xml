@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/splash_container"
+                android:background="@color/qmui_config_color_white"
+                android:orientation="vertical">
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:id="@+id/main_splash"
+               android:layout_marginTop="-200dp"
+               android:src="@drawable/ic_splash_screen"/>
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="163dp"
+               android:layout_below="@id/main_splash"
+               android:id="@+id/main_splash_text"
+               android:src="@drawable/ic_splash_screen_extra_text" android:layout_marginTop="-262dp"/>
+</RelativeLayout>

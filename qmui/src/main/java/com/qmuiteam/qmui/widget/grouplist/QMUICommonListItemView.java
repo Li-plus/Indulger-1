@@ -179,7 +179,7 @@ public class QMUICommonListItemView extends RelativeLayout {
 
 
     public void updateImageViewLp(LayoutParamConfig lpConfig) {
-        if(lpConfig != null){
+        if (lpConfig != null) {
             LayoutParams lp = (LayoutParams) mImageView.getLayoutParams();
             mImageView.setLayoutParams(lpConfig.onConfig(lp));
         }
@@ -314,7 +314,8 @@ public class QMUICommonListItemView extends RelativeLayout {
             // switch开关
             case ACCESSORY_TYPE_SWITCH: {
                 if (mSwitch == null) {
-                    mSwitch = new SwitchButton(getContext());
+                    final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    mSwitch = (SwitchButton) inflater.inflate(R.layout.switch_button_layout, null);
                     mSwitch.setLayoutParams(getAccessoryLayoutParams());
                     mSwitch.setShadowEffect(false);
                 }

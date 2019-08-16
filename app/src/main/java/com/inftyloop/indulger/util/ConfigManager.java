@@ -104,4 +104,9 @@ public class ConfigManager {
         SharedPreferences sp = MainApplication.getContext().getSharedPreferences(CONFIG_FILE_NAME, Context.MODE_PRIVATE);
         return sp.getStringSet(key, defVal);
     }
+
+    public static boolean contains(String key) {
+        SharedPreferences sp = MainApplication.getContext().getSharedPreferences(CONFIG_FILE_NAME, Context.MODE_PRIVATE);
+        return sp.contains(key);
+    }
 }

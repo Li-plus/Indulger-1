@@ -17,6 +17,8 @@
 
         <item name="add_channel_button_mipmap">@mipmap/add_channel</item>
         <item name="add_channel_close_button_mipmap">@drawable/category_edit_close</item>
+        <item name="switch_button_color">?attr/app_primary_color</item>
+        <item name="switch_button_color_disabled">@color/qmui_config_color_blue_fade</item>
 
         <!-- QMUI stuffs -->
         <item name="qmui_config_color_blue">@color/app_color_blue</item>
@@ -137,6 +139,8 @@
         <item name="app_primary_color">#ed4040</item>
         <item name="webview_progress_bar_color">@color/app_color_theme_2</item>
 
+        <item name="switch_button_color_disabled">#ba7575</item>
+
         <item name="tabbar_selected_text_color">#cd4040</item>
 
         <item name="news_detail_follow_btn_color">#eecc00</item>
@@ -146,6 +150,9 @@
         <item name="style_name">@string/jiujing_theme_name</item>
         <item name="app_primary_color">#5ba326</item>
         <item name="webview_progress_bar_color">@color/qmui_config_color_blue</item>
+
+        <item name="switch_button_color_disabled">#abc995</item>
+
         <item name="tabbar_selected_text_color">#4b9326</item>
     </style>
 
@@ -164,6 +171,8 @@
         <item name="app_background_selector">@drawable/selector_black</item>
 
         <item name="app_background_dim_color">@color/qmui_config_color_gray_3</item>
+
+        <item name="switch_button_color">@color/qmui_config_color_blue</item>
 
         <item name="background_text_color">?android:textColor</item>
         <item name="foreground_text_color">@color/qmui_config_color_75_white</item>

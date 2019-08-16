@@ -51,7 +51,7 @@ dependencies {
     api "com.android.support:design:$supportVersion"
     api "com.android.support:support-vector-drawable:$supportVersion"
     api "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
-    api "com.github.zcweng:switch-button:0.0.3@aar"
+    api project (':switchButton')
     //test
     testImplementation 'junit:junit:4.12'
 }

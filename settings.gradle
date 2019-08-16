@@ -1,1 +1,1 @@
-include ':app', ':arch', ':arch-annotation', ':arch-compiler', ':qmui'
+include ':app', ':arch', ':arch-annotation', ':arch-compiler', ':switchButton', ':qmui'

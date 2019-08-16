@@ -44,10 +44,8 @@
     <string name="channel_code_recommend" translatable="false">recommend</string>
     <string name="settings_lang_system">Follow System</string>
     <string name="settings_theme_default">Default</string>
-    <string name="settings_theme_night">Night Mode</string>
     <string name="settings_theme_toutiao">Toutiao Red</string>
     <string name="settings_theme_jiujing">9# Green</string>
-    <string name="settings_theme_auto">Follow System (Day/Night)</string>
     <string name="settings_lang_auto">Automatic</string>
     <string name="home_search_submit">Submit</string>
     <string name="search_history">Search History</string>
@@ -90,4 +88,9 @@
     <string name="short_time_yesterday">Yesterday</string>
     <string name="followed">Followed</string>
     <string name="news_detail_title">Details</string>
+    <string name="settings_night_mode_follow_sys">Enable night mode automatically</string>
+    <string name="settings_night_mode_follow_sys_prompt">Require system-level support</string>
+    <string name="settings_night_mode_manual">Enable night mode manually</string>
+    <string name="settings_section_title_theme">Theme config</string>
+    <string name="settings_section_title_other">Other configs</string>
 </resources>

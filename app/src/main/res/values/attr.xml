@@ -6,7 +6,7 @@
     <attr name="app_background_color_dark" format="color" />
     <attr name="app_background_selector" format="reference" />
     <attr name="app_background_dim_color" format="color" />
-
+    <attr name="switch_button_color" format="color"/>
     <attr name="refresh_icon_color" format="color" />
 
     <attr name="app_content_separator_color" format="color" />

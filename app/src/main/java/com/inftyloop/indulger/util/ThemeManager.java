@@ -9,29 +9,30 @@ import com.inftyloop.indulger.api.Definition;
 
 public class ThemeManager {
     private static int mCurStyleResId;
+    private static boolean mEnableNightMode;
 
     public static int loadThemeFromConfig() {
         // get theme from config, if not set, default to 0
-        int theme_checked_idx = ConfigManager.getInt(Definition.SETTINGS_APP_THEME, -1);
-        if (theme_checked_idx < 0) {
-            theme_checked_idx = 0;
-            ConfigManager.putInt(Definition.SETTINGS_APP_THEME, theme_checked_idx);
-        }
-        return theme_checked_idx;
+        return ConfigManager.getInt(Definition.SETTINGS_APP_THEME, 0);
     }
 
     public static int getCurStyleFromContext(Context ctx) {
         int curStyleResId = 0;
         TypedValue outValue = new TypedValue();
-        ctx.getTheme().resolveAttribute(R.attr.style_name, outValue, true);
-        if (outValue.string.equals(ctx.getString(R.string.day_theme_name)))
-            curStyleResId = R.style.AppTheme;
-        else if (outValue.string.equals(ctx.getString(R.string.night_theme_name)))
-            curStyleResId = R.style.NightTheme;
-        else if(outValue.string.equals(ctx.getString(R.string.toutiao_theme_name)))
-            curStyleResId = R.style.ToutiaoTheme;
-        else if(outValue.string.equals(ctx.getString(R.string.jiujing_theme_name)))
-            curStyleResId = R.style.JiujingTheme;
+        try{
+            ctx.getTheme().resolveAttribute(R.attr.style_name, outValue, true);
+            if (outValue.string.equals(ctx.getString(R.string.day_theme_name)))
+                curStyleResId = R.style.AppTheme;
+            else if (outValue.string.equals(ctx.getString(R.string.night_theme_name)))
+                curStyleResId = R.style.NightTheme;
+            else if (outValue.string.equals(ctx.getString(R.string.toutiao_theme_name)))
+                curStyleResId = R.style.ToutiaoTheme;
+            else if (outValue.string.equals(ctx.getString(R.string.jiujing_theme_name)))
+                curStyleResId = R.style.JiujingTheme;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return curStyleResId;
     }
 
@@ -40,10 +41,37 @@ public class ThemeManager {
         return mCurStyleResId;
     }
 
+    public static boolean isSystemNightModeEnabled(Context ctx) {
+        int nightModeFlags = ctx.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public static boolean shouldUseNightMode(Context ctx) {
+        boolean isAuto = ConfigManager.getBoolean(Definition.SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS, false);
+        if(isAuto)
+            return isSystemNightModeEnabled(ctx);
+        else
+            return ConfigManager.getBoolean(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED, false);
+    }
+
+    /**
+     *
+     * @param ctx Context
+     * @param selection Theme number, note this is not resource id, and we use -1 to denote night mode
+     * @return
+     */
     public static boolean changeThemeNoReload(Context ctx, int selection) {
         getCurStyleResId(ctx);
-        int nightModeFlags = ctx.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         boolean reload = false;
+        if(shouldUseNightMode(ctx)) {
+            if(mCurStyleResId != R.style.NightTheme) {
+                ctx.setTheme(R.style.NightTheme);
+                reload = true;
+                mCurStyleResId = R.style.NightTheme;
+            }
+            return reload;
+        }
+        // we ignore selection if night mode is on
         switch (selection) {
             case 0:
                 // default
@@ -54,38 +82,14 @@ public class ThemeManager {
                 }
                 break;
             case 1:
-                // auto
-                if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                    if (mCurStyleResId != R.style.NightTheme) {
-                        ctx.setTheme(R.style.NightTheme);
-                        reload = true;
-                        mCurStyleResId = R.style.NightTheme;
-                    }
-                } else {
-                    if (mCurStyleResId != R.style.AppTheme) {
-                        ctx.setTheme(R.style.AppTheme);
-                        reload = true;
-                        mCurStyleResId = R.style.AppTheme;
-                    }
-                }
-                break;
-            case 2:
-                // night
-                if (mCurStyleResId != R.style.NightTheme) {
-                    ctx.setTheme(R.style.NightTheme);
-                    reload = true;
-                    mCurStyleResId = R.style.NightTheme;
-                }
-                break;
-            case 3:
-                if(mCurStyleResId != R.style.ToutiaoTheme) {
+                if (mCurStyleResId != R.style.ToutiaoTheme) {
                     ctx.setTheme(R.style.ToutiaoTheme);
                     reload = true;
                     mCurStyleResId = R.style.ToutiaoTheme;
                 }
                 break;
-            case 4:
-                if(mCurStyleResId != R.style.JiujingTheme) {
+            case 2:
+                if (mCurStyleResId != R.style.JiujingTheme) {
                     ctx.setTheme(R.style.JiujingTheme);
                     reload = true;
                     mCurStyleResId = R.style.JiujingTheme;
@@ -96,8 +100,8 @@ public class ThemeManager {
 
     public static void changeTheme(Context ctx, int selection) {
         boolean reload = changeThemeNoReload(ctx, selection);
-        if(reload && ctx instanceof Activity) {
-            ((Activity)ctx).recreate();
+        if (reload && ctx instanceof Activity) {
+            ((Activity) ctx).recreate();
         }
     }
 }
