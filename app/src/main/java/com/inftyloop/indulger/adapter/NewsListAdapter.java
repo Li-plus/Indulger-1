@@ -23,6 +23,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.util.DisplayHelper;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
+import com.qmuiteam.qmui.util.QMUIResHelper;
 
 import java.util.List;
 
@@ -64,8 +65,11 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<News, BaseRecyclerV
 
         // init onclick listener
         vh.getView().setOnClickListener((View view) -> {
-            if (vh.getAdapterPosition() >= getData().size() || getData().get(vh.getAdapterPosition()) == null)
+            News item = getData().get(vh.getAdapterPosition());
+            if (item.type != News.SINGLE_IMAGE_NEWS && item.type != News.TEXT_NEWS && item.type != News.THREE_IMAGES_NEWS)
                 return;
+
+            ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
             Toast.makeText(mContext, "displaying " + getData().get(vh.getAdapterPosition()).title, Toast.LENGTH_SHORT).show();
         });
 

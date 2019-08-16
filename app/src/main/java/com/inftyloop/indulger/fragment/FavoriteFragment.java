@@ -1,14 +1,11 @@
 package com.inftyloop.indulger.fragment;
 
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +14,6 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
 
 import com.inftyloop.indulger.model.entity.News;
-import com.inftyloop.indulger.util.DisplayHelper;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
