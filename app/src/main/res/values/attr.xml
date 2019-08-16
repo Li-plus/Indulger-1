@@ -22,6 +22,7 @@
     <attr name="ic_search_color" format="color" />
     <attr name="add_channel_button_mipmap" format="reference" />
     <attr name="add_channel_close_button_mipmap" format="reference" />
+    <attr name="news_detail_follow_btn_color" format="color" />
 
     <declare-styleable name="AutoWrapLayout">
         <attr name="childTextColor" format="color" />

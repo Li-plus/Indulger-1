@@ -56,6 +56,8 @@
         <item name="android:textAllCaps">false</item>
 
         <item name="android:buttonStyleToggle">@style/button_style_toggle</item>
+
+        <item name="news_detail_follow_btn_color">#2a90d8</item>
     </style>
 
     <style name="button_style" parent="android:Widget.Material.Light.Button">
@@ -127,6 +129,24 @@
         <attr name="tipTextSize" format="dimension" />
     </declare-styleable>
 
+    <style name="ToutiaoTheme" parent="AppTheme">
+        <item name="style_name">@string/toutiao_theme_name</item>
+
+        <item name="app_primary_color">#ed4040</item>
+        <item name="webview_progress_bar_color">@color/app_color_theme_2</item>
+
+        <item name="tabbar_selected_text_color">#cd4040</item>
+
+        <item name="news_detail_follow_btn_color">#eecc00</item>
+    </style>
+
+    <style name="JiujingTheme" parent="AppTheme">
+        <item name="style_name">@string/jiujing_theme_name</item>
+        <item name="app_primary_color">#5ba326</item>
+        <item name="webview_progress_bar_color">@color/qmui_config_color_blue</item>
+        <item name="tabbar_selected_text_color">#4b9326</item>
+    </style>
+
     <style name="NightTheme" parent="AppTheme">
         <item name="style_name">@string/night_theme_name</item>
         <item name="android:textColor">@color/qmui_config_color_75_white</item>
@@ -156,8 +176,6 @@
         <item name="qmui_round_btn_text_color">@color/qmui_config_color_gray_2</item>
 
         <item name="tabbar_normal_text_color">?android:textColor</item>
-        <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
-
         <item name="qmui_s_list_item_bg_with_border_none">?attr/app_background_color</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
