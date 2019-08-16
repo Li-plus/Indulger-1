@@ -93,4 +93,9 @@ public class SearchResultFragment extends QMUIFragment {
             mAdapter.insertItemImmediately(new News(News.NO_MORE_FOOTER));
         }
     }
+
+    @Override
+    public TransitionConfig onFetchTransitionConfig() {
+        return FADE_IN_SLIDE_OUT_TRANSITION_CONFIG;
+    }
 }
