@@ -42,9 +42,9 @@ public class SettingsFragment extends QMUIFragment {
     private void updateNightModeManualBtn() {
         if(mNightModeManualBtn != null) {
             if(night_mode_auto)
-                mNightModeManualBtn.setChecked(ThemeManager.isSystemNightModeEnabled(getContext()));
+                mNightModeManualBtn.setCheckedDirect(ThemeManager.isSystemNightModeEnabled(getContext()));
             else
-                mNightModeManualBtn.setChecked(night_mode_enabled);
+                mNightModeManualBtn.setCheckedDirect(night_mode_enabled);
             mNightModeManualBtn.setEnabled(!night_mode_auto);
         }
     }
@@ -88,7 +88,7 @@ public class SettingsFragment extends QMUIFragment {
         mNightModeManualBtn.setChecked(night_mode_enabled);
         mNightModeManualBtn.setOnCheckedChangeListener((v, checked) -> {
             // user has flipped btn, we do not need to update its status
-            if(night_mode_auto) return;  // ignore if automatic mode is set
+            if(night_mode_auto || getBaseFragmentActivity() == null) return;  // ignore if automatic mode is set
             night_mode_enabled = checked;
             ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED, checked);
             ThemeManager.changeTheme(getBaseFragmentActivity(), theme_checked_idx);
@@ -100,6 +100,7 @@ public class SettingsFragment extends QMUIFragment {
         itemEnableNightModeAuto.setDetailText(getString(R.string.settings_night_mode_follow_sys_prompt));
         itemEnableNightModeAuto.getSwitch().setChecked(night_mode_auto);
         itemEnableNightModeAuto.getSwitch().setOnCheckedChangeListener((v, checked) -> {
+            if(getBaseFragmentActivity() == null) return;
             night_mode_auto = checked;
             updateNightModeManualBtn();
             ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS, checked);

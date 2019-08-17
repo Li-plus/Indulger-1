@@ -89,8 +89,9 @@
     <string name="followed">Followed</string>
     <string name="news_detail_title">Details</string>
     <string name="settings_night_mode_follow_sys">Enable night mode automatically</string>
-    <string name="settings_night_mode_follow_sys_prompt">Require system-level support</string>
+    <string name="settings_night_mode_follow_sys_prompt">Require Android 9.0+</string>
     <string name="settings_night_mode_manual">Enable night mode manually</string>
     <string name="settings_section_title_theme">Theme config</string>
     <string name="settings_section_title_other">Other configs</string>
+    <string name="username_placeholder" translatable="false">Username Placeholder</string>
 </resources>

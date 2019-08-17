@@ -256,7 +256,7 @@ public class SwitchButton extends View implements Checkable {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        setCheckedViewState(viewState);
+        //setCheckedViewState(viewState);
     }
 
     /**
@@ -474,6 +474,14 @@ public class SwitchButton extends View implements Checkable {
         toggle(enableEffect, false);
     }
 
+    public void setCheckedDirect(boolean checked) {
+        if(checked == isChecked()) {
+            postInvalidate();
+            return;
+        }
+        toggleWithoutCheck(enableEffect, false);
+    }
+
     @Override
     public boolean isChecked() {
         return isChecked;
@@ -493,11 +501,7 @@ public class SwitchButton extends View implements Checkable {
         toggle(animate, true);
     }
 
-    private void toggle(boolean animate, boolean broadcast) {
-        if (!isEnabled()) {
-            return;
-        }
-
+    private void toggleWithoutCheck(boolean animate, boolean broadcast) {
         if (isEventBroadcast) {
             throw new RuntimeException("should NOT switch the state in method: [onCheckedChanged]!");
         }
@@ -537,6 +541,14 @@ public class SwitchButton extends View implements Checkable {
             setCheckedViewState(afterState);
         }
         valueAnimator.start();
+    }
+
+    private void toggle(boolean animate, boolean broadcast) {
+        if (!isEnabled()) {
+            return;
+        }
+
+        toggleWithoutCheck(animate, broadcast);
     }
 
     /**

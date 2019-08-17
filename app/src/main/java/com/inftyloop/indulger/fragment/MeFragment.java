@@ -32,7 +32,7 @@ public class MeFragment extends QMUIFragment {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.me, null);
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getResources().getString(R.string.me_title));
-        mUsername.setText("Username Placeholder"); // TODO
+        mUsername.setText(getString(R.string.username_placeholder)); // TODO
 
         QMUICommonListItemView itemSettings = mGroupListView.createItemView(getString(R.string.me_grouplist_settings));
         itemSettings.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);

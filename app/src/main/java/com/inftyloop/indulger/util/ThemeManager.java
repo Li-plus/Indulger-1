@@ -3,6 +3,7 @@ package com.inftyloop.indulger.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
@@ -99,6 +100,8 @@ public class ThemeManager {
     }
 
     public static void changeTheme(Context ctx, int selection) {
+        if(ctx == null)
+            return;
         boolean reload = changeThemeNoReload(ctx, selection);
         if (reload && ctx instanceof Activity) {
             ((Activity) ctx).recreate();

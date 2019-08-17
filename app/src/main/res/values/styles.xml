@@ -189,8 +189,6 @@
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="qmui_s_list_item_bg_with_border_none">?attr/app_background_color</item>
 
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-
         <item name="clicked_text_color">@color/color_gray_8</item>
     </style>
 

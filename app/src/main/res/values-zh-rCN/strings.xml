@@ -78,7 +78,7 @@
     <string name="settings_theme_jiujing">酒井绿</string>
     <string name="settings_theme_toutiao">头条红</string>
     <string name="settings_night_mode_follow_sys">跟随系统自动开启夜间模式</string>
-    <string name="settings_night_mode_follow_sys_prompt">需要系统支持</string>
+    <string name="settings_night_mode_follow_sys_prompt">需要安卓9.0及以上</string>
     <string name="settings_night_mode_manual">夜间模式手动开关</string>
     <string name="settings_section_title_theme">主题配置</string>
     <string name="settings_section_title_other">其他配置</string>
