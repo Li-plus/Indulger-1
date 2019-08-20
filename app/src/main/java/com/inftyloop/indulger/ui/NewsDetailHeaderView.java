@@ -55,20 +55,6 @@ public class NewsDetailHeaderView extends FrameLayout {
     private void initView() {
         inflate(getContext(), R.layout.header_news_detail, this);
         ButterKnife.bind(this, this);
-        /*mGestureDectector = new ScrollingGestureDetector(new ScrollingGestureDetector.GestureListenerCallback() {
-            @Override
-            public void onShow() {
-                mTitle.setVisibility(VISIBLE);
-                mllInfo.setVisibility(VISIBLE);
-            }
-
-            @Override
-            public void onHide() {
-                mTitle.setVisibility(GONE);
-                mllInfo.setVisibility(GONE);
-            }
-        });
-        mContent.setGestureDetector(new GestureDetector(mGestureDectector));*/
         mHasFollowed = false;
     }
 
@@ -112,7 +98,7 @@ public class NewsDetailHeaderView extends FrameLayout {
         String html = htmlPart1 + detail.content + htmlPart2;
 
         mContent.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
-        mContent.setWebViewClient(new WebViewClient(){
+        mContent.setWebViewClient(new ControlledWebViewClient(ControlledWebViewClient.DISABLE_ANY_LINK){
             @Override
             public void onPageFinished(WebView view, String url) {
                 addJs(view);

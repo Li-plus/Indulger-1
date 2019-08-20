@@ -3,6 +3,7 @@ package com.inftyloop.indulger.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -204,6 +206,14 @@ public class WebViewFragment extends QMUIFragment {
 
         public ExplorerWebViewClient(boolean needDispatchSafeAreaInset) {
             super(needDispatchSafeAreaInset, true);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            // DO NOT allow redirect inside the webview, instead call browser to handle it
+            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+            view.getContext().startActivity(intent);
+            return true;
         }
 
         @Override
