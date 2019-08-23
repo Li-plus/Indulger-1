@@ -4,5 +4,6 @@
     <version value="1" />
     <list>
         <!-- TODO: add entity class here -->
+        <mapping class="com.inftyloop.indulger.model.entity.NewsDetail" />
     </list>
 </litepal>

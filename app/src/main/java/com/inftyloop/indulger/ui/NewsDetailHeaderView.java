@@ -35,7 +35,6 @@ public class NewsDetailHeaderView extends FrameLayout {
     private boolean mHasFollowed;
     private Context mContext;
     private LoadWebListener mWebListener;
-    private ScrollingGestureDetector mGestureDectector;
 
     public NewsDetailHeaderView(Context ctx) {
         this(ctx, null);
@@ -67,16 +66,16 @@ public class NewsDetailHeaderView extends FrameLayout {
 
     public void setNewsDetail(NewsDetail detail, LoadWebListener listener) {
         mWebListener = listener;
-        mTitle.setText(detail.title);
-        if(detail.publisher == null)
+        mTitle.setText(detail.getTitle());
+        if(detail.getPublisher() == null)
             mllInfo.setVisibility(GONE);
         else {
-            if(!TextUtils.isEmpty(detail.publisher.avatarUrl))
-                GlideUtils.loadRound(mContext, detail.publisher.avatarUrl, mAvatar, R.mipmap.ic_circle_default);
-            mAuthor.setText(detail.publisher.displayName);
-            mTime.setText(DateUtils.getShortTime(mContext, detail.publishTime * 1000L));
+            if(!TextUtils.isEmpty(detail.getPublisher().getAvatarUrl()))
+                GlideUtils.loadRound(mContext, detail.getPublisher().getAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
+            mAuthor.setText(detail.getPublisher().getDisplayName());
+            mTime.setText(DateUtils.getShortTime(mContext, detail.getPublishTime() * 1000L));
         }
-        if(TextUtils.isEmpty(detail.content))
+        if(TextUtils.isEmpty(detail.getContent()))
             mContent.setVisibility(GONE);
         mContent.getSettings().setJavaScriptEnabled(true);
         mContent.addJavascriptInterface(new ShowPicJSBridge(mContext), NICK);
@@ -95,7 +94,7 @@ public class NewsDetailHeaderView extends FrameLayout {
                 " </style>";
         String htmlPart2 = "</body></html>";
 
-        String html = htmlPart1 + detail.content + htmlPart2;
+        String html = htmlPart1 + detail.getContent() + htmlPart2;
 
         mContent.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
         mContent.setWebViewClient(new ControlledWebViewClient(ControlledWebViewClient.DISABLE_ANY_LINK){

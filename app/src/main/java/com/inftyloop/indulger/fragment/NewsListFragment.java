@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.NewsListAdapter;
+import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 
 import com.inftyloop.indulger.model.entity.News;
@@ -31,13 +32,18 @@ public class NewsListFragment extends QMUIFragment {
     RecyclerView mRecyclerView;
 
     NewsListAdapter mAdapter;
+    DefaultNewsApiAdapter mApi;
     private final static String TAG = NewsListFragment.class.getSimpleName();
 
     @Override
     protected View onCreateView() {
         View root = LayoutInflater.from(getContext()).inflate(R.layout.news_list, null);
         ButterKnife.bind(this, root);
-
+        mApi = new DefaultNewsApiAdapter();
+        mApi.updateNewsList("news_auto");
+        root.postDelayed(() -> {
+            mApi.loadMoreNewsList("news_auto");
+        }, 10000);
         Bundle bundle = getArguments();
         String name = "";
         int flag = 0;

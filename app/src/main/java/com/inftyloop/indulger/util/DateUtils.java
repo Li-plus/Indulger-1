@@ -14,6 +14,10 @@ public class DateUtils {
     public static final long ONE_HOUR_MILLIONS = 60 * ONE_MINUTE_MILLIONS;
     public static final long ONE_DAY_MILLIONS = 24 * ONE_HOUR_MILLIONS;
 
+    public static String formatDateTime(Date date, String fmt) {
+        return DateFormat.format(fmt, date).toString();
+    }
+
     public static String getShortTime(Context ctx, String date) {
         String str = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
