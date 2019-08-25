@@ -93,7 +93,7 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
                 }
             }
         });
-        api.loadMoreNewsList(mChannelCode);
+
         mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
         return root;
     }
@@ -104,7 +104,8 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
                 mAdapter.removeItemImmediately(0);
             }
         } else {
-            mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+            if (mAdapter.getData().size() > 0)
+                mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }
 
         for (int i = 0; i < 10; i++) {

@@ -59,6 +59,7 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
             if (item.type != News.SINGLE_IMAGE_NEWS && item.type != News.TEXT_NEWS && item.type != News.THREE_IMAGES_NEWS)
                 return;
 
+            item.isRead = true;
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
 
             NewsDetailFragment fragment = new NewsDetailFragment();
@@ -77,6 +78,11 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         if (item.type != News.TEXT_NEWS && item.type != News.THREE_IMAGES_NEWS && item.type != News.SINGLE_IMAGE_NEWS)
             return;
 
+        if (item.isRead) {
+            ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
+        } else {
+            ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.foreground_text_color));
+        }
         ((TextView) vh.findViewById(R.id.tv_title)).setText(item.title);
         ((TextView) vh.findViewById(R.id.tv_author)).setText(item.author);
         ((TextView) vh.findViewById(R.id.tv_time)).setText(item.time);

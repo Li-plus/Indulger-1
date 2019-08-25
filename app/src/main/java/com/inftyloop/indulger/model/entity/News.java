@@ -17,6 +17,7 @@ public class News {
     public String image1;
     public String image2;
     public String image3;
+    public boolean isRead = false;
 
     public News(int type) {
         this.type = type;
