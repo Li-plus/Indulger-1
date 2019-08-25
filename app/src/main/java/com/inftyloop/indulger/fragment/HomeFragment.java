@@ -90,6 +90,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             Bundle bundle = new Bundle();
             bundle.putBoolean(Definition.IS_RECOMMEND, ch.channelCode.equals(getString(R.string.channel_code_recommend)));
             bundle.putString(Definition.CHANNEL_NAME, ch.title);
+            bundle.putString(Definition.CHANNEL_CODE, ch.channelCode);
             bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(getString(R.string.channel_code_video)));
             frag.setArguments(bundle);
             mFragments.add(frag);

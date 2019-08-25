@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.activity.MainActivity;
 import com.inftyloop.indulger.fragment.NewsDetailFragment;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
@@ -82,12 +82,12 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         ((TextView) vh.findViewById(R.id.tv_time)).setText(item.time);
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
-                ((ImageView) vh.findViewById(R.id.iv_img)).setImageResource(item.image1);
+                Glide.with(vh.getView()).load(item.image1).into((ImageView) vh.findViewById(R.id.iv_img));
                 break;
             case News.THREE_IMAGES_NEWS:
-                ((ImageView) vh.findViewById(R.id.iv_img1)).setImageResource(item.image1);
-                ((ImageView) vh.findViewById(R.id.iv_img2)).setImageResource(item.image2);
-                ((ImageView) vh.findViewById(R.id.iv_img3)).setImageResource(item.image3);
+                Glide.with(vh.getView()).load(item.image1).into((ImageView) vh.findViewById(R.id.iv_img1));
+                Glide.with(vh.getView()).load(item.image2).into((ImageView) vh.findViewById(R.id.iv_img2));
+                Glide.with(vh.getView()).load(item.image3).into((ImageView) vh.findViewById(R.id.iv_img3));
                 break;
             default: // text news
                 break;

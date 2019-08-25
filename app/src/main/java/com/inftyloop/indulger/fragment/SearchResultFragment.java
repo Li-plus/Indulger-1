@@ -80,12 +80,12 @@ public class SearchResultFragment extends QMUIFragment {
         for (int i = 0; i < loadSize; i++) {
             double rand = Math.random();
             int position = mAdapter.getData().size();
-            if (rand < 0.33)
-                mAdapter.insertItemImmediately(position, new News(News.TEXT_NEWS, "text news " + Math.random(), "author", "5 minutes ago", null, null, null));
-            else if (rand < 0.66)
-                mAdapter.insertItemImmediately(position, new News(News.SINGLE_IMAGE_NEWS, "single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, null, null));
-            else
-                mAdapter.insertItemImmediately(position, new News(News.THREE_IMAGES_NEWS, "three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+//            if (rand < 0.33)
+            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
+//            else if (rand < 0.66)
+//                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
+//            else
+//                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
         }
         if (canLoadMore()) {
             mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
