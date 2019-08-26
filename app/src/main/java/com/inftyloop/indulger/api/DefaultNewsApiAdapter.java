@@ -6,10 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.DateUtils;
 import org.litepal.LitePal;
+
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -32,25 +34,27 @@ interface DefaultNewsApiService {
 public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     public final static String TAG = DefaultNewsApiAdapter.class.getSimpleName();
 
+    private OnNewsListRefreshListener mRefreshListener;
+
     private DefaultNewsApiService mApiService = null;
     private final int NUM_ELEM_PER_PAGE = 35;
-    private static final Map<String, String> CHANNEL_NAME_MAPPER = Collections.unmodifiableMap(new HashMap<String, String>()
-    {{
-        put("news_society","社会");
-        put("news_entertainment","娱乐");
-        put("news_tech","科技");
-        put("news_auto","汽车");
-        put("news_sports","体育");
-        put("news_finance","财经");
-        put("news_health","健康");
-        put("news_military","军事");
-        put("news_education","教育");
-        put("news_culture","文化");
+    private static final Map<String, String> CHANNEL_NAME_MAPPER = Collections.unmodifiableMap(new HashMap<String, String>() {{
+        put("news_society", "社会");
+        put("news_entertainment", "娱乐");
+        put("news_tech", "科技");
+        put("news_auto", "汽车");
+        put("news_sports", "体育");
+        put("news_finance", "财经");
+        put("news_health", "健康");
+        put("news_military", "军事");
+        put("news_education", "教育");
+        put("news_culture", "文化");
     }});
 
-    public DefaultNewsApiAdapter() {
+    public DefaultNewsApiAdapter(OnNewsListRefreshListener refreshListener) {
         mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.CACHE_INTERCEPTOR,
                 ApiRetrofit.LOG_INTERCEPTOR, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
+        mRefreshListener = refreshListener;
     }
 
     private NewsLoadRecord getNewsLoadRecord(String channel) {
@@ -80,7 +84,8 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 endTime == null ? "" : DateUtils.formatDateTime(endTime, "yyyy-MM-dd hh:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
                 new Subscriber<JsonObject>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {

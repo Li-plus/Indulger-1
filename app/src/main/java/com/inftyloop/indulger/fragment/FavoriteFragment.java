@@ -7,18 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
-
 import com.inftyloop.indulger.model.entity.News;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class FavoriteFragment extends QMUIFragment {
@@ -74,12 +73,12 @@ public class FavoriteFragment extends QMUIFragment {
         for (int i = 0; i < loadSize; i++) {
             double rand = Math.random();
             int position = mAdapter.getData().size();
-            if (rand < 0.33)
-                mAdapter.insertItemImmediately(position, new News(News.TEXT_NEWS, "text news " + Math.random(), "author", "5 minutes ago", null, null, null));
-            else if (rand < 0.66)
-                mAdapter.insertItemImmediately(position, new News(News.SINGLE_IMAGE_NEWS, "single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, null, null));
-            else
-                mAdapter.insertItemImmediately(position, new News(News.THREE_IMAGES_NEWS, "three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+//            if (rand < 0.33)
+            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
+//            else if (rand < 0.66)
+//                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
+//            else
+//                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
         }
         if (canLoadMore()) {
             mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
