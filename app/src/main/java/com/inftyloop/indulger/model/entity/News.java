@@ -1,5 +1,7 @@
 package com.inftyloop.indulger.model.entity;
 
+import android.support.annotation.NonNull;
+
 public class News {
     public static final int NO_MORE_FOOTER = -4;
     public static final int NOTIFICATION_HEADER = -2;
@@ -12,15 +14,28 @@ public class News {
     public String title;
     public String author;
     public String time;
-    public Integer image1;
-    public Integer image2;
-    public Integer image3;
+    public String image1;
+    public String image2;
+    public String image3;
+    public boolean isRead = false;
 
     public News(int type) {
         this.type = type;
     }
 
-    public News(int type, String title, String author, String time, Integer image1, Integer image2, Integer image3) {
+    public News(@NonNull String title, @NonNull String author, @NonNull String time) {
+        this(TEXT_NEWS, title, author, time, null, null, null);
+    }
+
+    public News(@NonNull String title, @NonNull String author, @NonNull String time, @NonNull String image1) {
+        this(SINGLE_IMAGE_NEWS, title, author, time, image1, null, null);
+    }
+
+    public News(@NonNull String title, @NonNull String author, @NonNull String time, @NonNull String image1, @NonNull String image2, @NonNull String image3) {
+        this(THREE_IMAGES_NEWS, title, author, time, image1, image2, image3);
+    }
+
+    private News(int type, String title, String author, String time, String image1, String image2, String image3) {
         this.type = type;
         this.title = title;
         this.author = author;
