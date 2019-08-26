@@ -66,24 +66,24 @@ public class FavoriteFragment extends QMUIFragment {
     }
 
     public void onDataLoaded() {
-        if (!canLoadMore())
-            return;
-        mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
-        int loadSize = 10;
-        for (int i = 0; i < loadSize; i++) {
-            double rand = Math.random();
-            int position = mAdapter.getData().size();
-//            if (rand < 0.33)
-            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
-//            else if (rand < 0.66)
-//                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
-//            else
-//                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-        }
-        if (canLoadMore()) {
-            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-        } else {
-            mAdapter.insertItemImmediately(new News(News.NO_MORE_FOOTER));
-        }
+//        if (!canLoadMore())
+//            return;
+//        mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+//        int loadSize = 10;
+//        for (int i = 0; i < loadSize; i++) {
+//            double rand = Math.random();
+//            int position = mAdapter.getData().size();
+////            if (rand < 0.33)
+//            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
+////            else if (rand < 0.66)
+////                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
+////            else
+////                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+//        }
+//        if (canLoadMore()) {
+//            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
+//        } else {
+//            mAdapter.insertItemImmediately(new News(News.NO_MORE_FOOTER));
+//        }
     }
 }

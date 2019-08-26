@@ -2,24 +2,31 @@ package com.inftyloop.indulger.api;
 
 import android.text.TextUtils;
 import android.util.Log;
-import com.google.gson.Gson;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
+import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.DateUtils;
+
 import org.litepal.LitePal;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.Subscriber;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 interface DefaultNewsApiService {
     String BASE_URL = "https://api2.newsminer.net/";
@@ -59,7 +66,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
 
     private NewsLoadRecord getNewsLoadRecord(String channel) {
         List<NewsLoadRecord> res = LitePal.where("channelCode = ?", channel).find(NewsLoadRecord.class);
-        if(res.size() == 0)
+        if (res.size() == 0)
             return null;
         else
             return res.get(0);
@@ -69,11 +76,11 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     public void obtainNewsList(String channel, boolean isLoadingMore) {
         Date startTime = null, endTime = null;
         NewsLoadRecord record = getNewsLoadRecord(channel);
-        if(record == null) {
+        if (record == null) {
             // load some initial data
             endTime = new Date();
         } else {
-            if(isLoadingMore) {
+            if (isLoadingMore) {
                 endTime = new Date(record.getLastLoadMoreTime());
             } else {
                 startTime = new Date(record.getLastUpdatedTime());
@@ -100,31 +107,36 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                         long newest_time = 0;
                         long oldest_time = Long.MAX_VALUE;
                         List<NewsEntry> news_entries = new ArrayList<>();
-                        for(JsonElement d : data) {
+                        for (JsonElement d : data) {
                             JsonObject dd = d.getAsJsonObject();
                             long pubTime = DateUtils.getTimeStamp(dd.get("publishTime").getAsString(), "yyyy-MM-dd HH:mm:ss");
-                            if(pubTime > 0) {
-                                if(pubTime > newest_time)
+                            if (pubTime > 0) {
+                                if (pubTime > newest_time)
                                     newest_time = pubTime;
-                                if(pubTime < oldest_time)
+                                if (pubTime < oldest_time)
                                     oldest_time = pubTime;
                                 NewsEntry entry = new NewsEntry();
                                 entry.setPublishTime(pubTime);
                                 entry.setTitle(dd.get("title").getAsString());
-                                entry.setContent(dd.get("content").getAsString());
+
+                                String content = dd.get("content").getAsString();
+                                content = "<p>" + content + "</p>";
+                                content = content.replaceAll("\\n", "</p><p>");
+                                entry.setContent(content);
+                                
                                 entry.setUrl(dd.get("url").getAsString());
                                 entry.setUuid(dd.get("newsID").getAsString());
                                 entry.setCategory(channel);
                                 entry.setPublisherName(dd.get("publisher").getAsString());
                                 String imgStr = dd.get("image").getAsString();
-                                if(!TextUtils.isEmpty(imgStr)) {
+                                if (!TextUtils.isEmpty(imgStr)) {
                                     Matcher matcher = pat.matcher(imgStr);
-                                    if(matcher.find()) {
+                                    if (matcher.find()) {
                                         String arr = matcher.group(1);
-                                        if(!arr.isEmpty()) {
-                                            String[] urls = arr.split(",");
-                                            for(String url: urls) {
-                                                if(!url.trim().isEmpty())
+                                        if (!arr.isEmpty()) {
+                                            String[] urls = arr.split("\\s*,\\s*");
+                                            for (String url : urls) {
+                                                if (!url.trim().isEmpty())
                                                     entry.getImageUrls().add(url);
                                             }
                                         }
@@ -132,8 +144,8 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 }
                                 JsonArray keywords = dd.getAsJsonArray("keywords");
                                 int curr = 0;
-                                for(JsonElement w : keywords) {
-                                    if(curr >= 5) break;
+                                for (JsonElement w : keywords) {
+                                    if (curr >= 5) break;
                                     JsonObject ww = w.getAsJsonObject();
                                     entry.getKeywords().add(ww.get("word").getAsString());
                                     ++curr;
@@ -142,9 +154,9 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 news_entries.add(entry);
                             }
                         }
-                        if(newest_time != 0 && oldest_time != 0) {
+                        if (newest_time != 0 && oldest_time != 0) {
                             NewsLoadRecord record = getNewsLoadRecord(channel);
-                            if(record == null) {
+                            if (record == null) {
                                 record = new NewsLoadRecord();
                                 record.setChannelCode(channel);
                                 record.setLastLoadMoreTime(Long.MAX_VALUE);
@@ -152,7 +164,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 record.setLastLoadMoreTime(oldest_time);
                                 record.setLastUpdatedTime(newest_time);
                             } else {
-                                if(isLoadingMore) {
+                                if (isLoadingMore) {
                                     record.setLastLoadMoreTime(Math.min(record.getLastLoadMoreTime(), oldest_time));
                                 } else {
                                     record.setLastUpdatedTime(newest_time);
@@ -161,6 +173,11 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             }
                             record.save();
                         }
+                        List<News> newsList = new ArrayList<>();
+                        for (NewsEntry newsEntry : news_entries)
+                            newsList.add(new News(newsEntry));
+                        mRefreshListener.onNewsListRefresh(newsList);
+                        Log.d("hey", news_entries.get(0).getContent());
                     }
                 });
     }
