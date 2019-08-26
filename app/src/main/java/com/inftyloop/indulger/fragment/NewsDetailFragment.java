@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.listener.OnNewsDetailCallback;
-import com.inftyloop.indulger.model.entity.NewsDetail;
+import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.ui.NewsDetailHeaderView;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -85,10 +85,9 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        NewsDetail detail = new NewsDetail();
-        detail.getPublisher().setId("0");
-        detail.getPublisher().setDisplayName("Stub publisher");
-        detail.getPublisher().setAvatarUrl("http://p1.pstatp.com/thumb/411000674c8942528d2");
+        NewsEntry detail = new NewsEntry();
+        detail.setPublisherName("Stub publisher");
+        detail.setPublisherAvatarUrl("http://p1.pstatp.com/thumb/411000674c8942528d2");
         detail.setTitle("Lorem ipsum dolor sit amet, consectetur adipiscing elit");
         detail.setPublishTime(1493509672);
         detail.setContent("<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Libero justo laoreet sit amet cursus sit amet dictum sit. Mattis rhoncus urna neque viverra justo nec. Senectus et netus et malesuada fames ac turpis egestas. Orci a scelerisque purus semper eget. Nibh tortor id aliquet lectus proin nibh nisl condimentum id. Vehicula ipsum a arcu cursus vitae congue. Mauris pharetra et ultrices neque ornare. Enim neque volutpat ac tincidunt. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Sagittis id consectetur purus ut faucibus pulvinar elementum integer enim. Euismod quis viverra nibh cras pulvinar mattis. Eget arcu dictum varius duis at. Tellus in hac habitasse platea dictumst vestibulum. Quis hendrerit dolor magna eget est lorem ipsum dolor sit. Duis ultricies lacus sed turpis tincidunt id. In ornare quam viverra orci sagittis eu volutpat. Senectus et netus et malesuada. Posuere lorem ipsum dolor sit.\n" +
@@ -110,7 +109,7 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
     }
 
     @Override
-    public void onGetNewsDetailSuccess(NewsDetail detail) {
+    public void onGetNewsDetailSuccess(NewsEntry detail) {
         mHeaderView.setNewsDetail(detail, new NewsDetailHeaderView.LoadWebListener() {
             @Override
             public void onLoaded() {

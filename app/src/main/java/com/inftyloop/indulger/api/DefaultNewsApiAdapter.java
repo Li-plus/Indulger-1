@@ -1,14 +1,23 @@
 package com.inftyloop.indulger.api;
 
+import android.text.TextUtils;
 import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.DateUtils;
+import org.litepal.LitePal;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.Subscriber;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 interface DefaultNewsApiService {
     String BASE_URL = "https://api2.newsminer.net/";
@@ -24,10 +33,6 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     public final static String TAG = DefaultNewsApiAdapter.class.getSimpleName();
 
     private DefaultNewsApiService mApiService = null;
-    private Date lastRefreshedTime = null;
-    private Date lastLoadedMoreTime = null;
-    private int curPage = -1;
-    private int numElements = 0;
     private final int NUM_ELEM_PER_PAGE = 35;
     private static final Map<String, String> CHANNEL_NAME_MAPPER = Collections.unmodifiableMap(new HashMap<String, String>()
     {{
@@ -48,14 +53,31 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 ApiRetrofit.LOG_INTERCEPTOR, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
     }
 
+    private NewsLoadRecord getNewsLoadRecord(String channel) {
+        List<NewsLoadRecord> res = LitePal.where("channelCode = ?", channel).find(NewsLoadRecord.class);
+        if(res.size() == 0)
+            return null;
+        else
+            return res.get(0);
+    }
+
     @Override
-    public void updateNewsList(String channel) {
-        // TODO - save last refreshed timestamp to settings, when clearing cache, delete it
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.DATE, -1);
-        addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, DateUtils.formatDateTime(lastRefreshedTime == null ? c.getTime() : lastRefreshedTime, "yyyy-MM-dd hh:mm:ss"),
-                DateUtils.formatDateTime(new Date(), "yyyy-MM-dd hh:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
+    public void obtainNewsList(String channel, boolean isLoadingMore) {
+        Date startTime = null, endTime = null;
+        NewsLoadRecord record = getNewsLoadRecord(channel);
+        if(record == null) {
+            // load some initial data
+            endTime = new Date();
+        } else {
+            if(isLoadingMore) {
+                endTime = new Date(record.getLastLoadMoreTime());
+            } else {
+                startTime = new Date(record.getLastUpdatedTime());
+                endTime = new Date();
+            }
+        }
+        addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, startTime == null ? "" : DateUtils.formatDateTime(startTime, "yyyy-MM-dd hh:mm:ss"),
+                endTime == null ? "" : DateUtils.formatDateTime(endTime, "yyyy-MM-dd hh:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
                 new Subscriber<JsonObject>() {
                     @Override
                     public void onCompleted() {}
@@ -68,63 +90,73 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
 
                     @Override
                     public void onNext(JsonObject jsonObject) {
-                        if(lastRefreshedTime == null) { // initial state
-                            lastLoadedMoreTime = c.getTime();
-                            curPage = 1;
+                        Pattern pat = Pattern.compile("\\[(.*?)\\]");
+                        JsonArray data = jsonObject.getAsJsonArray("data");
+                        long newest_time = 0;
+                        long oldest_time = Long.MAX_VALUE;
+                        List<NewsEntry> news_entries = new ArrayList<>();
+                        for(JsonElement d : data) {
+                            JsonObject dd = d.getAsJsonObject();
+                            long pubTime = DateUtils.getTimeStamp(dd.get("publishTime").getAsString(), "yyyy-MM-dd HH:mm:ss");
+                            if(pubTime > 0) {
+                                if(pubTime > newest_time)
+                                    newest_time = pubTime;
+                                if(pubTime < oldest_time)
+                                    oldest_time = pubTime;
+                                NewsEntry entry = new NewsEntry();
+                                entry.setPublishTime(pubTime);
+                                entry.setTitle(dd.get("title").getAsString());
+                                entry.setContent(dd.get("content").getAsString());
+                                entry.setUrl(dd.get("url").getAsString());
+                                entry.setUuid(dd.get("newsID").getAsString());
+                                entry.setCategory(channel);
+                                entry.setPublisherName(dd.get("publisher").getAsString());
+                                String imgStr = dd.get("image").getAsString();
+                                if(!TextUtils.isEmpty(imgStr)) {
+                                    Matcher matcher = pat.matcher(imgStr);
+                                    if(matcher.find()) {
+                                        String arr = matcher.group(1);
+                                        if(!arr.isEmpty()) {
+                                            String[] urls = arr.split(",");
+                                            for(String url: urls) {
+                                                if(!url.trim().isEmpty())
+                                                    entry.getImageUrls().add(url);
+                                            }
+                                        }
+                                    }
+                                }
+                                JsonArray keywords = dd.getAsJsonArray("keywords");
+                                int curr = 0;
+                                for(JsonElement w : keywords) {
+                                    if(curr >= 5) break;
+                                    JsonObject ww = w.getAsJsonObject();
+                                    entry.getKeywords().add(ww.get("word").getAsString());
+                                    ++curr;
+                                }
+                                entry.save();
+                                news_entries.add(entry);
+                            }
                         }
-                        lastRefreshedTime = new Date();
-                        numElements = jsonObject.get("total").getAsInt();
-                        Log.i(TAG, "success");
-                        // TODO - save this time
-                        // TODO - notify view
+                        if(newest_time != 0 && oldest_time != 0) {
+                            NewsLoadRecord record = getNewsLoadRecord(channel);
+                            if(record == null) {
+                                record = new NewsLoadRecord();
+                                record.setChannelCode(channel);
+                                record.setLastLoadMoreTime(Long.MAX_VALUE);
+                                record.setLastUpdatedTime(0);
+                                record.setLastLoadMoreTime(oldest_time);
+                                record.setLastUpdatedTime(newest_time);
+                            } else {
+                                if(isLoadingMore) {
+                                    record.setLastLoadMoreTime(Math.min(record.getLastLoadMoreTime(), oldest_time));
+                                } else {
+                                    record.setLastUpdatedTime(newest_time);
+                                    record.setLastLoadMoreTime(oldest_time);
+                                }
+                            }
+                            record.save();
+                        }
                     }
                 });
     }
-
-    @Override
-    public void loadMoreNewsList(String channel) {
-        if(lastRefreshedTime == null) {
-            updateNewsList(channel);
-            return;
-        }
-        Calendar c = Calendar.getInstance();
-        c.setTime(lastLoadedMoreTime);
-        // if the whole page is loaded, just push back time for one day
-        boolean pageChanged = false;
-        if(curPage * NUM_ELEM_PER_PAGE >= numElements) {
-            c.add(Calendar.DATE, -1);
-            pageChanged = true;
-        }
-        addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, pageChanged ? 1 : curPage + 1, DateUtils.formatDateTime(c.getTime(), "yyyy-MM-dd hh:mm:ss"), DateUtils.formatDateTime(lastLoadedMoreTime, "yyyy-MM-dd hh:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
-                new Subscriber<JsonObject>() {
-                    @Override
-                    public void onCompleted() {}
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, e.getMessage());
-                        // TODO - notify view
-                    }
-
-                    @Override
-                    public void onNext(JsonObject jsonObject) {
-                        curPage = (c.getTime().compareTo(lastLoadedMoreTime) != 0) ? 1 : curPage + 1;
-                        lastLoadedMoreTime = c.getTime();
-                        Log.i(TAG, "success");
-                        // TODO - save this time
-                        // TODO - notify view
-                    }
-                });
-    }
-
-    @Override
-    public void loadDetailedNews(String news_id) {
-        // TODO - obtain from database
-    }
-
-    @Override
-    public void updateRecommendedList() {}
-
-    @Override
-    public void loadMoreRecommendedList() {}
 }

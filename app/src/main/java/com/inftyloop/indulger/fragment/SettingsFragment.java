@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.ThemeManager;

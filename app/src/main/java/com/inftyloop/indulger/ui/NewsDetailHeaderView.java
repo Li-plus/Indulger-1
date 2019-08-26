@@ -5,14 +5,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.*;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.inftyloop.indulger.R;
 import butterknife.BindView;
-import com.inftyloop.indulger.listener.ScrollingGestureDetector;
-import com.inftyloop.indulger.model.entity.NewsDetail;
+import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.util.*;
 
 public class NewsDetailHeaderView extends FrameLayout {
@@ -64,15 +62,15 @@ public class NewsDetailHeaderView extends FrameLayout {
                 " Indulger.getImgArray(imgList);})()");
     }
 
-    public void setNewsDetail(NewsDetail detail, LoadWebListener listener) {
+    public void setNewsDetail(NewsEntry detail, LoadWebListener listener) {
         mWebListener = listener;
         mTitle.setText(detail.getTitle());
-        if(detail.getPublisher() == null)
+        if(detail.getPublisherName() == null)
             mllInfo.setVisibility(GONE);
         else {
-            if(!TextUtils.isEmpty(detail.getPublisher().getAvatarUrl()))
-                GlideUtils.loadRound(mContext, detail.getPublisher().getAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
-            mAuthor.setText(detail.getPublisher().getDisplayName());
+            if(!TextUtils.isEmpty(detail.getPublisherAvatarUrl()))
+                GlideUtils.loadRound(mContext, detail.getPublisherAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
+            mAuthor.setText(detail.getPublisherName());
             mTime.setText(DateUtils.getShortTime(mContext, detail.getPublishTime() * 1000L));
         }
         if(TextUtils.isEmpty(detail.getContent()))

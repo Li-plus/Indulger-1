@@ -30,6 +30,17 @@ public class DateUtils {
         return str;
     }
 
+    public static long getTimeStamp(String dateStr, String fmt) {
+        SimpleDateFormat format = new SimpleDateFormat(fmt);
+        try {
+            Date date = format.parse(dateStr);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static String getShortTime(Context ctx, long millis) {
 
         Date date = new Date(millis);

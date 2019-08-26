@@ -1,8 +1,8 @@
 package com.inftyloop.indulger.listener;
 
-import com.inftyloop.indulger.model.entity.NewsDetail;
+import com.inftyloop.indulger.model.entity.NewsEntry;
 
 public interface OnNewsDetailCallback {
-    void onGetNewsDetailSuccess(NewsDetail detail);
+    void onGetNewsDetailSuccess(NewsEntry detail);
     void onError();
 }

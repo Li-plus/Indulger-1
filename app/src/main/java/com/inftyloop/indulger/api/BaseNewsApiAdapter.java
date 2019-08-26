@@ -9,11 +9,7 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class BaseNewsApiAdapter {
     private CompositeSubscription mCompositeSubscription;
 
-    public abstract void updateNewsList(String channel);
-    public abstract void loadMoreNewsList(String channel);
-    public abstract void updateRecommendedList();
-    public abstract void loadMoreRecommendedList();
-    public abstract void loadDetailedNews(String news_id);
+    public abstract void obtainNewsList(String channel, boolean isLoadingMore);
 
     @SuppressWarnings("unchecked")
     public void addSubscription(Observable observable, Subscriber subscriber) {
