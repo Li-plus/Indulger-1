@@ -59,7 +59,7 @@ public class FileUtils {
             sb.append(getCachePath());
         }
         sb.append(name);
-        if(!name.isEmpty())
+        if (!name.isEmpty())
             sb.append(File.separator);
         String path = sb.toString();
         if (createDirs(path)) {
@@ -245,5 +245,37 @@ public class FileUtils {
             builder.append(hv);
         }
         return builder.toString();
+    }
+
+    public static long getDirSize(File dir) {
+        long size = 0;
+        for (File file : dir.listFiles()) {
+            if (file != null && file.isDirectory())
+                size += getDirSize(file);
+            else if (file != null && file.isFile())
+                size += file.length();
+        }
+        return size;
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 }

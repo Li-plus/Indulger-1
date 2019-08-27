@@ -94,4 +94,5 @@
     <string name="settings_section_title_theme">Theme config</string>
     <string name="settings_section_title_other">Other configs</string>
     <string name="username_placeholder" translatable="false">Username Placeholder</string>
+    <string name="settings_cache_size">Cache Size: %s</string>
 </resources>

@@ -117,7 +117,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 StringBuffer contentBuf = new StringBuffer();
                 if (0 < entry.getImageUrls().size()) {
                     contentBuf.append("<img src=\"" + entry.getImageUrls().get(0) + "\" " +
-                            "inline=\"0\" alt=\"placeholder\" onerror=\"javascript:errorimg.call(this);\">");
+                            "inline=\"0\" alt=\"placeholder\" onerror=\"javascript:this.style.display='none';\">");
                 }
                 contentBuf.append("<p>");
                 Matcher contentMatcher = patCr.matcher(content);
@@ -205,14 +205,13 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 int total = jsonObject.get("total").getAsInt();
                                 if(total > 0) {
                                     Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
-                                    List<NewsEntry> entries;
+                                    List<NewsEntry> entries = res.first;
                                     if(record != null && total < 15) {
-                                        entries = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15 - total).find(NewsEntry.class);
+                                        entries.addAll(LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15 - total).find(NewsEntry.class));
                                         // merge with existing record
                                         record.setStartTime(res.second.first);
                                         record.save();
                                     } else {
-                                        entries = res.first;
                                         // create a new segment
                                         NewsLoadRecord record = new NewsLoadRecord();
                                         record.setChannelCode(channel);

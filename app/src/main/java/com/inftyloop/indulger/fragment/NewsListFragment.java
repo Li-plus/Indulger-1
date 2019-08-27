@@ -55,8 +55,6 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
             if (bundle.getBoolean(Definition.IS_VIDEO_LIST, false))
                 flag |= 0x02;
         }
-
-        Log.w(TAG, "NewsListFragment oncreate, channel: " + mChannelCode);
     }
 
     @Override

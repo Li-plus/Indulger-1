@@ -1,9 +1,12 @@
 package com.inftyloop.indulger.ui;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.*;
 import butterknife.ButterKnife;
@@ -12,6 +15,7 @@ import com.inftyloop.indulger.R;
 import butterknife.BindView;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.util.*;
+import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
 
 public class NewsDetailHeaderView extends FrameLayout {
     private static final String NICK = "Indulger";  // used to bind javascript
@@ -104,6 +108,19 @@ public class NewsDetailHeaderView extends FrameLayout {
                 if (mWebListener != null){
                     mWebListener.onLoaded();
                 }
+            }
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return WebViewCacheInterceptorInst.getInstance().interceptRequest(request);
+            }
+
+            @SuppressWarnings("deprecation")
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
             }
         });
     }
