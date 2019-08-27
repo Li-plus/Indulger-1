@@ -62,8 +62,8 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     }});
 
     // indicates start and end time of channels in memory
-    private Map<String, Long> channelStartTime = new HashMap<>();
-    private Map<String, Long> channelEndTime = new HashMap<>();
+    private static Map<String, Long> channelStartTime = new HashMap<>();
+    private static Map<String, Long> channelEndTime = new HashMap<>();
 
     public DefaultNewsApiAdapter(OnNewsListRefreshListener refreshListener) {
         mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.CACHE_INTERCEPTOR,
