@@ -6,7 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.inftyloop.indulger.R;
@@ -17,21 +16,21 @@ import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.ui.BaseFragment;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
-import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.jzvd.Jzvd;
 
 
-public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshListener {
+public class NewsListFragment extends BaseFragment implements OnNewsListRefreshListener {
     @BindView(R.id.news_list_refresh_layout)
     QMUIPullRefreshLayout mRefreshLayout;
     @BindView(R.id.news_list_recycler_view)
@@ -41,14 +40,19 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
 
     private final static String TAG = NewsListFragment.class.getSimpleName();
     private boolean mInsertFromTop = false;
+    private boolean isLoadingInProgress = false;
 
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
-    String mChannelCode;
+    private String mChannelCode;
 
     @Override
-    protected View onCreateView() {
-        View root = LayoutInflater.from(getContext()).inflate(R.layout.news_list, null);
-        ButterKnife.bind(this, root);
+    protected int getLayoutId() {
+        return R.layout.news_list;
+    }
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
         Bundle bundle = getArguments();
 
         int flag = 0;
@@ -59,13 +63,40 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
             if (bundle.getBoolean(Definition.IS_VIDEO_LIST, false))
                 flag |= 0x02;
         }
+
         List<News> data = new ArrayList<>();
         if (mChannelCode.equals(getString(R.string.channel_code_video))) {
             mAdapter = new VideoListAdapter(getActivity(), data);
         } else {
             mAdapter = new NewsListAdapter(getActivity(), data);
         }
+    }
 
+    @Override
+    protected void loadData() {
+        mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress) {
+                    mInsertFromTop = false;
+                    mRecyclerView.post(() -> {
+                        isLoadingInProgress = true;
+                        api.obtainNewsList(mChannelCode, true);
+                    });
+                }
+            }
+        });
+
+        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
+    @Override
+    public void initListener() {
         mRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
             @Override
             public void onMoveTarget(int offset) {
@@ -79,8 +110,11 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
             public void onRefresh() {
                 mInsertFromTop = true;
                 mRefreshLayout.post(() -> {
-                    api.obtainNewsList(mChannelCode, false);
-                    mRefreshLayout.finishRefresh();
+                    if (!isLoadingInProgress) {
+                        isLoadingInProgress = true;
+                        api.obtainNewsList(mChannelCode, false);
+                        mRefreshLayout.finishRefresh();
+                    }
                 });
             }
         });
@@ -92,18 +126,6 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
         divider.setDrawable(getContext().getDrawable(R.drawable.content_divider));
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if (!mRecyclerView.canScrollVertically(1)) {
-                    mInsertFromTop = false;
-                    mRecyclerView.post(() -> {
-                        api.obtainNewsList(mChannelCode, true);
-                    });
-                }
-            }
-        });
 
         if (mChannelCode.equals(getString(R.string.channel_code_video))) {
             mRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
@@ -125,45 +147,30 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
                 }
             });
         }
-
-        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-        return root;
-    }
-
-    public void onDataLoaded(boolean fromStart) {
-//        if (fromStart) {
-//            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
-//                mAdapter.removeItemImmediately(0);
-//            }
-//        } else {
-//            if (mAdapter.getData().size() > 0)
-//                mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//            double rand = Math.random();
-//            int position = (fromStart ? 0 : mAdapter.getData().size());
-////            if (rand < 0.33)
-////            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
-////            else if (rand < 0.66)
-////                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
-////            else
-////                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-//        }
-//        if (fromStart) {
-//            mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
-//            mRecyclerView.postDelayed(() -> {
-//                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER)
-//                    mAdapter.removeItemImmediately(0);
-//            }, 2000);
-//            mRecyclerView.scrollToPosition(0);
-//        } else {
-//            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-//        }
     }
 
     @Override
     public void onNewsListRefresh(List<News> newsList) {
+        String[] videoUrls = {
+                "http://vfx.mtime.cn/Video/2017/03/31/mp4/170331093811717750.mp4",
+                "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
+                "https://www.w3school.com.cn/example/html5/mov_bbb.mp4",
+                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                "https://www.w3schools.com/html/movie.mp4"
+        };
+
+        if (mChannelCode.equals("video")) {
+            newsList = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                NewsEntry newsEntry = new NewsEntry();
+                newsEntry.setTitle("Title");
+                newsEntry.setPublisherName("Publisher");
+                newsEntry.setVideoUrl(videoUrls[i % videoUrls.length]);
+                newsList.add(new News(newsEntry));
+            }
+        }
+
+        isLoadingInProgress = false;
         if (mInsertFromTop) {
             if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
                 mAdapter.removeItemImmediately(0);

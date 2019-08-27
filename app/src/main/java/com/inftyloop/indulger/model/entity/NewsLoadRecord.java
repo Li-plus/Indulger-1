@@ -4,25 +4,25 @@ import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
 public class NewsLoadRecord extends LitePalSupport {
-    private long lastUpdatedTime;
-    private long lastLoadMoreTime;
-    @Column(nullable = false, unique = true)
+    private long startTime;
+    private long endTime;
+    @Column(nullable = false)
     private String channelCode;
 
-    public long getLastUpdatedTime() {
-        return lastUpdatedTime;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public void setLastUpdatedTime(long lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
-    public long getLastLoadMoreTime() {
-        return lastLoadMoreTime;
+    public long getEndTime() {
+        return endTime;
     }
 
-    public void setLastLoadMoreTime(long lastLoadMoreTime) {
-        this.lastLoadMoreTime = lastLoadMoreTime;
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public String getChannelCode() {

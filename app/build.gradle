@@ -77,6 +77,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'io.reactivex:rxandroid:1.2.0'
+    implementation 'ren.yale.android:cachewebviewlib:2.1.8'
     // event bus
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49'

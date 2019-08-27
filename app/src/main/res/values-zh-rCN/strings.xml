@@ -82,4 +82,5 @@
     <string name="settings_night_mode_manual">夜间模式手动开关</string>
     <string name="settings_section_title_theme">主题配置</string>
     <string name="settings_section_title_other">其他配置</string>
+    <string name="settings_cache_size">缓存大小: %s</string>
 </resources>

@@ -8,10 +8,14 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.util.FileUtils;
 import com.inftyloop.indulger.util.ThemeManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
@@ -22,6 +26,9 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.suke.widget.SwitchButton;
+import org.litepal.LitePal;
+
+import java.io.File;
 
 public class SettingsFragment extends QMUIFragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
@@ -113,6 +120,8 @@ public class SettingsFragment extends QMUIFragment {
         /* Cache handler */
 
         QMUICommonListItemView itemClearCache = mSettingsGroupListView.createItemView(getString(R.string.settings_clear_cache));
+        itemEnableNightModeAuto.setOrientation(QMUICommonListItemView.VERTICAL);
+        itemClearCache.setDetailText(FileUtils.humanReadableByteCount(FileUtils.getDirSize(new File(MainApplication.getContext().getCacheDir().toString())), true));
         itemClearCache.setOnClickListener((View v) -> {
             new QMUIDialog.MessageDialogBuilder(getActivity())
                     .setMessage(getString(R.string.settings_confirm_clear_cache))
@@ -126,11 +135,17 @@ public class SettingsFragment extends QMUIFragment {
                                         .setTipWord(getString(R.string.settings_cache_clearing))
                                         .create();
                                 tipDialog.show();
+                                // delete cache
+                                LitePal.deleteAll(NewsEntry.class, "1");
+                                LitePal.deleteAll(NewsLoadRecord.class, "1");
+                                boolean res = FileUtils.deleteDir(new File(MainApplication.getContext().getCacheDir().toString()));
                                 mSettingsGroupListView.postDelayed(() -> {
                                     tipDialog.dismiss();
+                                    itemClearCache.setDetailText(FileUtils.humanReadableByteCount(FileUtils.getDirSize(new File(MainApplication.getContext().getCacheDir().toString())), true));
                                     Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.settings_cache_all_cleared),
                                             Toast.LENGTH_SHORT);
                                     toast.show();
+                                    MainApplication.restart();
                                 }, 2000);
                                 dialog.dismiss();
                             })

@@ -1,9 +1,12 @@
 package com.inftyloop.indulger.ui;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.*;
 import butterknife.ButterKnife;
@@ -12,6 +15,7 @@ import com.inftyloop.indulger.R;
 import butterknife.BindView;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.util.*;
+import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
 
 public class NewsDetailHeaderView extends FrameLayout {
     private static final String NICK = "Indulger";  // used to bind javascript
@@ -56,27 +60,29 @@ public class NewsDetailHeaderView extends FrameLayout {
     }
 
     private void addJs(WebView wv) {
-        wv.loadUrl("javascript:(function pic(){ var imgList=\"\"; var imgs = document.getElementsByTagName(\"img\");" +
-                "for(var i = 0; i < imgs.length; ++i) { var img = imgs[i]; imgList = imgList + img.src + \";\";" +
+        wv.loadUrl("javascript:(function pic(){ var imgs = document.getElementsByTagName(\"img\");" +
+                "for(var i = 0; i < imgs.length; ++i) { var img = imgs[i];" +
                 "img.onclick=function(){ Indulger.openImg(this.src);} }" +
-                " Indulger.getImgArray(imgList);})()");
+                " })()");
     }
 
     public void setNewsDetail(NewsEntry detail, LoadWebListener listener) {
         mWebListener = listener;
         mTitle.setText(detail.getTitle());
-        if(detail.getPublisherName() == null)
+        if(detail.getPublisherName().isEmpty())
             mllInfo.setVisibility(GONE);
         else {
             if(!TextUtils.isEmpty(detail.getPublisherAvatarUrl()))
                 GlideUtils.loadRound(mContext, detail.getPublisherAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
+            else
+                mAvatar.setVisibility(GONE);
             mAuthor.setText(detail.getPublisherName());
             mTime.setText(DateUtils.getShortTime(mContext, detail.getPublishTime()));
         }
         if(TextUtils.isEmpty(detail.getContent()))
             mContent.setVisibility(GONE);
         mContent.getSettings().setJavaScriptEnabled(true);
-        mContent.addJavascriptInterface(new ShowPicJSBridge(mContext), NICK);
+        mContent.addJavascriptInterface(new ShowPicJSBridge(mContext, detail.getImageUrls()), NICK);
         // change background according to theme
         String bg_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.app_background_color);
         String text_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.foreground_text_color);
@@ -102,6 +108,19 @@ public class NewsDetailHeaderView extends FrameLayout {
                 if (mWebListener != null){
                     mWebListener.onLoaded();
                 }
+            }
+
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return WebViewCacheInterceptorInst.getInstance().interceptRequest(request);
+            }
+
+            @SuppressWarnings("deprecation")
+            @Nullable
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
             }
         });
     }
