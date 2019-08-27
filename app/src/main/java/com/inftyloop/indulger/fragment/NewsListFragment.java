@@ -99,41 +99,41 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
     }
 
     public void onDataLoaded(boolean fromStart) {
-        if (fromStart) {
-            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER) {
-                mAdapter.removeItemImmediately(0);
-            }
-        } else {
-            if (mAdapter.getData().size() > 0)
-                mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            double rand = Math.random();
-            int position = (fromStart ? 0 : mAdapter.getData().size());
-//            if (rand < 0.33)
-            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
-//            else if (rand < 0.66)
-//                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
-//            else
-//                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-        }
-        if (fromStart) {
-            mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
-            mRecyclerView.postDelayed(() -> {
-                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER)
-                    mAdapter.removeItemImmediately(0);
-            }, 2000);
-            mRecyclerView.scrollToPosition(0);
-        } else {
-            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-        }
+//        if (fromStart) {
+//            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
+//                mAdapter.removeItemImmediately(0);
+//            }
+//        } else {
+//            if (mAdapter.getData().size() > 0)
+//                mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+//        }
+//
+//        for (int i = 0; i < 10; i++) {
+//            double rand = Math.random();
+//            int position = (fromStart ? 0 : mAdapter.getData().size());
+////            if (rand < 0.33)
+////            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
+////            else if (rand < 0.66)
+////                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
+////            else
+////                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+//        }
+//        if (fromStart) {
+//            mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
+//            mRecyclerView.postDelayed(() -> {
+//                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER)
+//                    mAdapter.removeItemImmediately(0);
+//            }, 2000);
+//            mRecyclerView.scrollToPosition(0);
+//        } else {
+//            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
+//        }
     }
 
     @Override
     public void onNewsListRefresh(List<News> newsList) {
         if (mInsertFromTop) {
-            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER) {
+            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
                 mAdapter.removeItemImmediately(0);
             }
         } else {
@@ -146,7 +146,7 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
         if (mInsertFromTop) {
             mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
             mRecyclerView.postDelayed(() -> {
-                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).type == News.NOTIFICATION_HEADER)
+                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER)
                     mAdapter.removeItemImmediately(0);
             }, 2000);
             mRecyclerView.scrollToPosition(0);

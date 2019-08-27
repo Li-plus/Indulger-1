@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.NewsDetailFragment;
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.util.DateUtils;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.util.QMUIResHelper;
@@ -19,6 +20,7 @@ import com.qmuiteam.qmui.util.QMUIResHelper;
 import java.util.List;
 
 abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> {
+    public static NewsEntry currentNewsEntry = new NewsEntry();
     protected Activity mContext;
 
     public BaseNewsAdapter(Activity context, List<News> data) {
@@ -56,15 +58,15 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         // init onclick listener
         vh.getView().setOnClickListener((View view) -> {
             News item = getData().get(vh.getAdapterPosition());
-            if (item.type != News.SINGLE_IMAGE_NEWS && item.type != News.TEXT_NEWS && item.type != News.THREE_IMAGES_NEWS)
+            if (item.getType() != News.SINGLE_IMAGE_NEWS && item.getType() != News.TEXT_NEWS && item.getType() != News.THREE_IMAGES_NEWS)
                 return;
 
-            item.isRead = true;
+            item.setIsRead(true);
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
+            currentNewsEntry = item.getNewsEntry();
 
             NewsDetailFragment fragment = new NewsDetailFragment();
             ((QMUIFragmentActivity) mContext).startFragment(fragment);
-            Toast.makeText(mContext, "displaying " + getData().get(vh.getAdapterPosition()).title, Toast.LENGTH_SHORT).show();
         });
 
         return vh;
@@ -75,25 +77,25 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
 
         News item = getData().get(position);
 
-        if (item.type != News.TEXT_NEWS && item.type != News.THREE_IMAGES_NEWS && item.type != News.SINGLE_IMAGE_NEWS)
+        if (item.getType() != News.TEXT_NEWS && item.getType() != News.THREE_IMAGES_NEWS && item.getType() != News.SINGLE_IMAGE_NEWS)
             return;
 
-        if (item.isRead) {
+        if (item.getIsRead()) {
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
         } else {
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.foreground_text_color));
         }
-        ((TextView) vh.findViewById(R.id.tv_title)).setText(item.title);
-        ((TextView) vh.findViewById(R.id.tv_author)).setText(item.author);
-        ((TextView) vh.findViewById(R.id.tv_time)).setText(item.time);
+        ((TextView) vh.findViewById(R.id.tv_title)).setText(item.getNewsEntry().getTitle());
+        ((TextView) vh.findViewById(R.id.tv_author)).setText(item.getNewsEntry().getPublisherName());
+        ((TextView) vh.findViewById(R.id.tv_time)).setText(DateUtils.getShortTime(mContext, item.getNewsEntry().getPublishTime()));
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
-                Glide.with(vh.getView()).load(item.image1).into((ImageView) vh.findViewById(R.id.iv_img));
+                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(0)).into((ImageView) vh.findViewById(R.id.iv_img));
                 break;
             case News.THREE_IMAGES_NEWS:
-                Glide.with(vh.getView()).load(item.image1).into((ImageView) vh.findViewById(R.id.iv_img1));
-                Glide.with(vh.getView()).load(item.image2).into((ImageView) vh.findViewById(R.id.iv_img2));
-                Glide.with(vh.getView()).load(item.image3).into((ImageView) vh.findViewById(R.id.iv_img3));
+                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(0)).into((ImageView) vh.findViewById(R.id.iv_img1));
+                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(1)).into((ImageView) vh.findViewById(R.id.iv_img2));
+                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(2)).into((ImageView) vh.findViewById(R.id.iv_img3));
                 break;
             default: // text news
                 break;
@@ -109,6 +111,6 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
 
     @Override
     public int getItemViewType(int position) {
-        return getData().get(position).type;
+        return getData().get(position).getType();
     }
 }
