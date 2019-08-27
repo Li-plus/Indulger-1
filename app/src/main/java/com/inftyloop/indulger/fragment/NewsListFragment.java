@@ -5,7 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 
 import com.inftyloop.indulger.R;
@@ -14,17 +14,16 @@ import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
-import com.qmuiteam.qmui.arch.QMUIFragment;
+import com.inftyloop.indulger.ui.BaseFragment;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
-public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshListener {
+public class NewsListFragment extends BaseFragment implements OnNewsListRefreshListener {
     @BindView(R.id.news_list_refresh_layout)
     QMUIPullRefreshLayout mRefreshLayout;
     @BindView(R.id.news_list_recycler_view)
@@ -33,14 +32,19 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
     NewsListAdapter mAdapter;
     private final static String TAG = NewsListFragment.class.getSimpleName();
     private boolean mInsertFromTop = false;
+    private boolean isLoadingInProgress = false;
 
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
-    String mChannelCode;
+    private String mChannelCode;
 
     @Override
-    protected View onCreateView() {
-        View root = LayoutInflater.from(getContext()).inflate(R.layout.news_list, null);
-        ButterKnife.bind(this, root);
+    protected int getLayoutId() {
+        return R.layout.news_list;
+    }
+
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
         Bundle bundle = getArguments();
 
         int flag = 0;
@@ -52,6 +56,34 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
                 flag |= 0x02;
         }
 
+        Log.w(TAG, "NewsListFragment oncreate, channel: " + mChannelCode);
+    }
+
+    @Override
+    protected void loadData() {
+        mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress) {
+                    mInsertFromTop = false;
+                    mRecyclerView.post(() -> {
+                        isLoadingInProgress = true;
+                        api.obtainNewsList(mChannelCode, true);
+                    });
+                }
+            }
+        });
+
+        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
+    @Override
+    public void initListener() {
         mRefreshLayout.setOnPullListener(new QMUIPullRefreshLayout.OnPullListener() {
             @Override
             public void onMoveTarget(int offset) {
@@ -65,8 +97,11 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
             public void onRefresh() {
                 mInsertFromTop = true;
                 mRefreshLayout.post(() -> {
-                    api.obtainNewsList(mChannelCode, false);
-                    mRefreshLayout.finishRefresh();
+                    if(!isLoadingInProgress) {
+                        isLoadingInProgress = true;
+                        api.obtainNewsList(mChannelCode, false);
+                        mRefreshLayout.finishRefresh();
+                    }
                 });
             }
         });
@@ -81,21 +116,6 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
         divider.setDrawable(getContext().getDrawable(R.drawable.content_divider));
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        mRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                if (!mRecyclerView.canScrollVertically(1)) {
-                    mInsertFromTop = false;
-                    mRecyclerView.post(() -> {
-                        api.obtainNewsList(mChannelCode, true);
-                    });
-                }
-            }
-        });
-
-        mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-        return root;
     }
 
     public void onDataLoaded(boolean fromStart) {
@@ -132,6 +152,7 @@ public class NewsListFragment extends QMUIFragment implements OnNewsListRefreshL
 
     @Override
     public void onNewsListRefresh(List<News> newsList) {
+        isLoadingInProgress = false;
         if (mInsertFromTop) {
             if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
                 mAdapter.removeItemImmediately(0);

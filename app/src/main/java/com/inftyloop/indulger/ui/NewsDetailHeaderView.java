@@ -56,27 +56,29 @@ public class NewsDetailHeaderView extends FrameLayout {
     }
 
     private void addJs(WebView wv) {
-        wv.loadUrl("javascript:(function pic(){ var imgList=\"\"; var imgs = document.getElementsByTagName(\"img\");" +
-                "for(var i = 0; i < imgs.length; ++i) { var img = imgs[i]; imgList = imgList + img.src + \";\";" +
+        wv.loadUrl("javascript:(function pic(){ var imgs = document.getElementsByTagName(\"img\");" +
+                "for(var i = 0; i < imgs.length; ++i) { var img = imgs[i];" +
                 "img.onclick=function(){ Indulger.openImg(this.src);} }" +
-                " Indulger.getImgArray(imgList);})()");
+                " })()");
     }
 
     public void setNewsDetail(NewsEntry detail, LoadWebListener listener) {
         mWebListener = listener;
         mTitle.setText(detail.getTitle());
-        if(detail.getPublisherName() == null)
+        if(detail.getPublisherName().isEmpty())
             mllInfo.setVisibility(GONE);
         else {
             if(!TextUtils.isEmpty(detail.getPublisherAvatarUrl()))
                 GlideUtils.loadRound(mContext, detail.getPublisherAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
+            else
+                mAvatar.setVisibility(GONE);
             mAuthor.setText(detail.getPublisherName());
             mTime.setText(DateUtils.getShortTime(mContext, detail.getPublishTime()));
         }
         if(TextUtils.isEmpty(detail.getContent()))
             mContent.setVisibility(GONE);
         mContent.getSettings().setJavaScriptEnabled(true);
-        mContent.addJavascriptInterface(new ShowPicJSBridge(mContext), NICK);
+        mContent.addJavascriptInterface(new ShowPicJSBridge(mContext, detail.getImageUrls()), NICK);
         // change background according to theme
         String bg_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.app_background_color);
         String text_color = DisplayHelper.getColorStringFromAttr(mContext, R.attr.foreground_text_color);

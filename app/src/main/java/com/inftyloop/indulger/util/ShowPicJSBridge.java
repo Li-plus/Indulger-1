@@ -12,10 +12,11 @@ import java.util.List;
 public class ShowPicJSBridge {
     private static final String TAG = ShowPicJSBridge.class.getSimpleName();
     private Context mContext;
-    private List<String> mUrls = new ArrayList<>();
+    private List<String> mUrls;
 
-    public ShowPicJSBridge(Context ctx) {
+    public ShowPicJSBridge(Context ctx, List<String> imgUrls) {
         mContext = ctx;
+        mUrls = imgUrls;
     }
 
     @JavascriptInterface
@@ -24,11 +25,5 @@ public class ShowPicJSBridge {
         intent.putExtra(ImageViewPagerActivity.POSITION, mUrls.indexOf(url));
         intent.putStringArrayListExtra(ImageViewPagerActivity.IMG_URLS, (ArrayList<String>)mUrls);
         mContext.startActivity(intent);
-    }
-
-    @JavascriptInterface
-    public void getImgArray(String urlArray) {
-        String[] urls = urlArray.split(";");
-        Collections.addAll(mUrls, urls);
     }
 }
