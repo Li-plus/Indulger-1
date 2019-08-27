@@ -6,7 +6,7 @@ import org.litepal.crud.LitePalSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsEntry extends LitePalSupport{
+public class NewsEntry extends LitePalSupport {
     public long getPublishTime() {
         return publishTime;
     }
@@ -87,6 +87,14 @@ public class NewsEntry extends LitePalSupport{
         this.keywords = keywords;
     }
 
+    public String getVideoUrl() {
+        return this.videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     private String publisherName;
     private String publisherAvatarUrl;
     private long publishTime;
@@ -96,6 +104,7 @@ public class NewsEntry extends LitePalSupport{
     private String category;
     private List<String> imageUrls = new ArrayList<>();
     private List<String> keywords = new ArrayList<>();
+    private String videoUrl;
     @Column(nullable = false, unique = true)
     private String uuid;
 }

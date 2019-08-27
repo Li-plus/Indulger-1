@@ -1,19 +1,23 @@
 package com.inftyloop.indulger.activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.fragment.AboutFragment;
 import com.inftyloop.indulger.fragment.MainTabBarFragment;
 import com.inftyloop.indulger.fragment.WebViewFragment;
-import com.inftyloop.indulger.fragment.AboutFragment;
 import com.inftyloop.indulger.ui.BaseFragmentActivity;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.arch.annotation.DefaultFirstFragment;
 import com.qmuiteam.qmui.arch.annotation.FirstFragments;
 import com.qmuiteam.qmui.arch.annotation.LatestVisitRecord;
+
+import cn.jzvd.Jzvd;
 
 import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_TITLE;
 import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_URL;
@@ -49,5 +53,12 @@ public class MainActivity extends BaseFragmentActivity {
                             @NonNull Class<? extends QMUIFragment> firstFragment,
                             @Nullable Bundle fragmentArgs) {
         return QMUIFragmentActivity.intentOf(context, MainActivity.class, firstFragment, fragmentArgs);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Jzvd.backPress())
+            return;
+        super.onBackPressed();
     }
 }

@@ -32,14 +32,14 @@
                     android:layout_marginEnd="10dp"
                     android:layout_toStartOf="@id/iv_share"
                     android:src="@drawable/ic_favorite"/>
+
             <ImageView
-                    android:id="@+id/iv_share"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_share"/>
+                android:id="@+id/iv_share"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_share" />
         </RelativeLayout>
     </LinearLayout>
     <com.qmuiteam.qmui.widget.QMUITopBarLayout

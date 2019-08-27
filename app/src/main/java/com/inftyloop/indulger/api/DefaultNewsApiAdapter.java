@@ -123,7 +123,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 content = "<p>" + content + "</p>";
                                 content = content.replaceAll("\\n", "</p><p>");
                                 entry.setContent(content);
-                                
+
                                 entry.setUrl(dd.get("url").getAsString());
                                 entry.setUuid(dd.get("newsID").getAsString());
                                 entry.setCategory(channel);
@@ -173,11 +173,25 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             }
                             record.save();
                         }
+                        String[] videoUrls = {
+                                "http://vfx.mtime.cn/Video/2017/03/31/mp4/170331093811717750.mp4",
+                                "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
+                                "https://www.w3school.com.cn/example/html5/mov_bbb.mp4",
+                                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                                "https://www.w3schools.com/html/movie.mp4"
+                        };
                         List<News> newsList = new ArrayList<>();
-                        for (NewsEntry newsEntry : news_entries)
-                            newsList.add(new News(newsEntry));
-                        mRefreshListener.onNewsListRefresh(newsList);
-                        Log.d("hey", news_entries.get(0).getContent());
+                        if (!channel.equals("video")) {
+                            for (NewsEntry newsEntry : news_entries)
+                                newsList.add(new News(newsEntry));
+                            mRefreshListener.onNewsListRefresh(newsList);
+                        } else {
+                            for (int i = 0; i < Math.min(10, news_entries.size()); i++) {
+                                news_entries.get(i).setVideoUrl(videoUrls[i % videoUrls.length]);
+                                newsList.add(new News(news_entries.get(i)));
+                            }
+                            mRefreshListener.onNewsListRefresh(newsList);
+                        }
                     }
                 });
     }
