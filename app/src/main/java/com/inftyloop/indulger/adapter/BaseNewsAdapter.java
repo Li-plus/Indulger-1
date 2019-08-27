@@ -12,6 +12,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.NewsDetailFragment;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.DateUtils;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
@@ -47,6 +48,7 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
                 return vh;
             case News.NOTIFICATION_HEADER:
                 vh = new BaseRecyclerViewHolder(viewGroup, R.layout.notification_header);
+                ((TextView) vh.findViewById(R.id.notification_header_text)).setText(String.format(mContext.getString(R.string.news_list_notification), ConfigManager.getInt("update_news_num", 35)));
                 return vh;
             default: // footer no more
                 vh = new BaseRecyclerViewHolder(viewGroup, R.layout.no_more_footer);
@@ -58,8 +60,6 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         // init onclick listener
         vh.getView().setOnClickListener((View view) -> {
             News item = getData().get(vh.getAdapterPosition());
-            if (item.getType() != News.SINGLE_IMAGE_NEWS && item.getType() != News.TEXT_NEWS && item.getType() != News.THREE_IMAGES_NEWS)
-                return;
 
             item.setIsRead(true);
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
@@ -103,11 +103,6 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
     }
 
     abstract protected void initCrossIcon(BaseRecyclerViewHolder vh);
-
-    @Override
-    public int getItemCount() {
-        return getData().size();
-    }
 
     @Override
     public int getItemViewType(int position) {

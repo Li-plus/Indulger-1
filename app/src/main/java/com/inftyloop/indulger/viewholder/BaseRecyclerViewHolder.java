@@ -12,7 +12,7 @@ public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
         super(LayoutInflater.from(parent.getContext()).inflate(layoutResId, parent, false));
     }
 
-    public View findViewById(int resId) {
+    public <T extends View> T findViewById(int resId) {
         return itemView.findViewById(resId);
     }
 

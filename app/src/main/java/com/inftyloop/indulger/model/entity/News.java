@@ -9,6 +9,7 @@ public class News {
     public static final int TEXT_NEWS = 0;
     public static final int SINGLE_IMAGE_NEWS = 1;
     public static final int THREE_IMAGES_NEWS = 2;
+    public static final int VIDEO_NEWS = 3;
 
     private int mType;
     private boolean mIsRead = false;
@@ -21,7 +22,9 @@ public class News {
     public News(NewsEntry newsEntry) {
         this.mEntry = newsEntry;
         List<String> imageUrls = newsEntry.getImageUrls();
-        if (imageUrls.size() >= 3) {
+        if (newsEntry.getVideoUrl() != null) {
+            this.mType = VIDEO_NEWS;
+        } else if (imageUrls.size() >= 3) {
             this.mType = THREE_IMAGES_NEWS;
         } else if (imageUrls.size() >= 1) {
             this.mType = SINGLE_IMAGE_NEWS;
