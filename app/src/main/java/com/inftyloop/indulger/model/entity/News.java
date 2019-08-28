@@ -4,7 +4,6 @@ import java.util.List;
 
 public class News {
     public static final int NO_MORE_FOOTER = -4;
-    public static final int NOTIFICATION_HEADER = -2;
     public static final int LOAD_MORE_FOOTER = -1;
     public static final int TEXT_NEWS = 0;
     public static final int SINGLE_IMAGE_NEWS = 1;
