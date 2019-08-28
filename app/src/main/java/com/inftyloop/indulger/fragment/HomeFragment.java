@@ -1,13 +1,11 @@
 package com.inftyloop.indulger.fragment;
 
-import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import androidx.viewpager2.widget.ViewPager2;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.gson.Gson;
@@ -39,11 +37,9 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
 
     private List<NewsChannel> mSelectedChannels = new ArrayList<>();
     private List<NewsChannel> mUnselectedChannels = new ArrayList<>();
-    private List<NewsListFragment> mFragments = new ArrayList<>();
     private Gson mGson = new Gson();
     private NewsChannelPagerAdapter mPagerAdapter;
     private String[] mChannelCodes;
-    private ViewPager2 pager2;
 
     @Override
     public void initView(View rootView) {
@@ -71,7 +67,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
         }
         if(TextUtils.isEmpty(selectedChannelJson) || TextUtils.isEmpty(unselectedChannelJson)) {
             for(int i = 0; i < channelCodes.length; ++i)
-                mSelectedChannels.add(new NewsChannel(channels[i], channelCodes[i]));
+                mSelectedChannels.add(new NewsChannel(channels[i], channelCodes[i], i));
             selectedChannelJson = mGson.toJson(mSelectedChannels);
             ConfigManager.putString(Definition.SETTINGS_SELECTED_CHANNEL_JSON, selectedChannelJson);
         } else {
@@ -87,16 +83,6 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             mUnselectedChannels.addAll(unselectedChannel);
         }
         mChannelCodes = getResources().getStringArray(R.array.channel_code);
-        for(NewsChannel ch : mSelectedChannels) {
-            NewsListFragment frag = new NewsListFragment();
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(Definition.IS_RECOMMEND, ch.channelCode.equals(getString(R.string.channel_code_recommend)));
-            bundle.putString(Definition.CHANNEL_NAME, ch.title);
-            bundle.putString(Definition.CHANNEL_CODE, ch.channelCode);
-            bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(getString(R.string.channel_code_video)));
-            frag.setArguments(bundle);
-            mFragments.add(frag);
-        }
     }
 
     @Override
@@ -109,7 +95,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
 
     @Override
     public void initListener() {
-        mPagerAdapter = new NewsChannelPagerAdapter(mFragments, mSelectedChannels, getChildFragmentManager());
+        mPagerAdapter = new NewsChannelPagerAdapter(getContext(), mSelectedChannels, getChildFragmentManager());
         mContentPager.setAdapter(mPagerAdapter);
         int normalColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_normal_text_color);
         int selectedColor = QMUIResHelper.getAttrColor(getActivity(), R.attr.tabbar_selected_text_color);
@@ -127,7 +113,6 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
             ViewGroup vg = (ViewGroup) mTabChannel.getChildAt(0);
             vg.setMinimumWidth(vg.getMeasuredWidth() + mAddChannelIV.getMeasuredWidth());
         });
-        // TODO
     }
 
     public String getCurrentChannelCode() {
@@ -139,7 +124,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.operationImageView:
-                ChannelDialogFragment dialog = ChannelDialogFragment.newInstance(mSelectedChannels, mUnselectedChannels);
+                ChannelDialogFragment dialog = ChannelDialogFragment.newInstance(mPagerAdapter, mSelectedChannels, mUnselectedChannels);
                 dialog.setOnNewsTypeListener(this);
                 dialog.show(getChildFragmentManager(), "CHANNEL");
                 dialog.setOnDismissListener(d -> {
@@ -160,7 +145,6 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     @Override
     public void onItemMove(int start, int end) {
         moveList(mSelectedChannels, start, end);
-        moveList(mFragments, start, end);
     }
 
     @SuppressWarnings("Duplicates")
@@ -168,20 +152,11 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     public void onMoveToMyChannel(int start, int end) {
         NewsChannel ch = mUnselectedChannels.remove(start);
         mSelectedChannels.add(end, ch);
-        NewsListFragment f = new NewsListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(Definition.IS_RECOMMEND, ch.channelCode.equals(getString(R.string.channel_code_recommend)));
-        bundle.putString(Definition.CHANNEL_NAME, ch.title);
-        bundle.putString(Definition.CHANNEL_CODE, ch.channelCode);
-        bundle.putBoolean(Definition.IS_VIDEO_LIST, ch.channelCode.equals(getString(R.string.channel_code_video)));
-        f.setArguments(bundle);
-        mFragments.add(f);
     }
 
     @Override
     public void onMoveToRecommendedChannel(int start, int end) {
         mUnselectedChannels.add(end, mSelectedChannels.remove(start));
-        mFragments.remove(start);
     }
 
     @SuppressWarnings("unchecked")
