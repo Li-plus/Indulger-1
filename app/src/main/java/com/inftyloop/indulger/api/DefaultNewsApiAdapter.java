@@ -2,8 +2,8 @@ package com.inftyloop.indulger.api;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import android.util.Pair;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,8 +13,8 @@ import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.DateUtils;
-
 import com.inftyloop.indulger.util.NetworkUtils;
+
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
@@ -59,7 +59,6 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         put("news_military", "军事");
         put("news_education", "教育");
         put("news_culture", "文化");
-        put("news_search", "");
     }});
 
     // indicates start and end time of channels in memory
@@ -155,9 +154,9 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         List<News> newsList = new ArrayList<>();
         for (NewsEntry newsEntry : entries) {
             newsList.add(new News(newsEntry));
-            if(newsEntry.getPublishTime() > start_time)
+            if (newsEntry.getPublishTime() > start_time)
                 start_time = newsEntry.getPublishTime();
-            if(newsEntry.getPublishTime() < end_time)
+            if (newsEntry.getPublishTime() < end_time)
                 end_time = newsEntry.getPublishTime();
         }
         return new Pair<>(newsList, new Pair<>(start_time, end_time));
@@ -173,14 +172,14 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
             Date currDate = new Date(curr);
             NewsLoadRecord record = getMostRecentNewsLoadRecordOlderThan(channel, curr);
             if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
-                if(record == null) {
+                if (record == null) {
                     // no data and no network, nothing can be loaded
                     mRefreshListener.onNewsListRefresh(new ArrayList<>());
                 } else {
                     // fetch newest data from db, then update the status of adapter
                     List<NewsEntry> res = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15).find(NewsEntry.class);
                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(res);
-                    if(isInitialLoading)
+                    if (isInitialLoading)
                         channelStartTime.put(channel, list.second.first);
                     channelEndTime.put(channel, list.second.second);
                     mRefreshListener.onNewsListRefresh(list.first);
@@ -204,10 +203,10 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             @Override
                             public void onNext(JsonObject jsonObject) {
                                 int total = jsonObject.get("total").getAsInt();
-                                if(total > 0) {
+                                if (total > 0) {
                                     Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
                                     List<NewsEntry> entries = res.first;
-                                    if(record != null && total < 15) {
+                                    if (record != null && total < 15) {
                                         entries.addAll(LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15 - total).find(NewsEntry.class));
                                         // merge with existing record
                                         record.setStartTime(res.second.first);
@@ -221,16 +220,16 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                         record.save();
                                     }
                                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
-                                    if(isInitialLoading)
+                                    if (isInitialLoading)
                                         channelStartTime.put(channel, list.second.first);
                                     channelEndTime.put(channel, list.second.second);
                                     mRefreshListener.onNewsListRefresh(list.first);
-                                } else if(record == null) {
+                                } else if (record == null) {
                                     mRefreshListener.onNewsListRefresh(new ArrayList<>());
                                 } else {
                                     List<NewsEntry> entries = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15).find(NewsEntry.class);
                                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
-                                    if(isInitialLoading)
+                                    if (isInitialLoading)
                                         channelStartTime.put(channel, list.second.first);
                                     channelEndTime.put(channel, list.second.second);
                                     mRefreshListener.onNewsListRefresh(list.first);
@@ -264,12 +263,12 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 int total = jsonObject.get("total").getAsInt();
                                 Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
                                 List<NewsEntry> entries = res.first;
-                                if(total == 0) {
+                                if (total == 0) {
                                     // do not update status if no new data could be loaded
                                     mRefreshListener.onNewsListRefresh(new ArrayList<>());
                                     return;
                                 }
-                                if(total < 15) {
+                                if (total < 15) {
                                     record.setStartTime(res.second.first);
                                     record.save();
                                 } else {
@@ -282,12 +281,52 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 }
                                 Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
                                 channelStartTime.put(channel, list.second.first);
-                                if(total >= 15)
+                                if (total >= 15)
                                     channelEndTime.put(channel, list.second.second);
                                 mRefreshListener.onNewsListRefresh(list.first);
                             }
                         });
             }
         }
+    }
+
+    public void obtainSearchResult(String keyword, boolean isLoadingMore) {
+        // if loading more is true(same keyword), fetch more news with the same keyword.
+        // if loading more is false(keyword changed), reset end time to current time.
+        String channel = "search";
+        if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
+            // TODO: notify view
+            mRefreshListener.onNewsListRefresh(new ArrayList<>());
+            return;
+        }
+        long endTime = isLoadingMore ? channelEndTime.get(channel) - 1000 : new Date().getTime();
+        Date endDate = new Date(endTime);
+        String endDateTime = DateUtils.formatDateTime(endDate, "yyyy-MM-dd HH:mm:ss");
+
+        addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, "", endDateTime, keyword, ""),
+                new Subscriber<JsonObject>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(JsonObject jsonObject) {
+                        int total = jsonObject.get("total").getAsInt();
+                        if (total > 0) {
+                            Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
+                            List<NewsEntry> entries = res.first;
+                            Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
+                            channelEndTime.put(channel, list.second.second);
+                            mRefreshListener.onNewsListRefresh(list.first);
+                        } else {
+                            mRefreshListener.onNewsListRefresh(new ArrayList<>());
+                        }
+                    }
+                });
     }
 }

@@ -1,13 +1,14 @@
 package com.inftyloop.indulger.fragment;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
@@ -32,6 +33,7 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
     private FavoriteItemAdapter mAdapter;
     private DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
     private boolean isLoadingInProgress = false;
+    private boolean isLoadingMore = false;
 
     @Override
     protected View onCreateView() {
@@ -62,7 +64,8 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
             if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress) {
                 mRecyclerView.post(() -> {
                     isLoadingInProgress = true;
-                    api.obtainNewsList("news_search", HomeSearchFragment.keyword, true);
+                    api.obtainSearchResult(HomeSearchFragment.keyword, isLoadingMore);
+                    isLoadingMore = true;
                 });
             }
         });
