@@ -13,13 +13,15 @@ public class NewsChannel implements MultiItemEntity, Serializable {
     transient public String title;
     public String channelCode;
     public int itemType;
+    public int uniqueID;
 
-    public NewsChannel(String t, String c) { this(TYPE_MY_LIST, t, c); }
+    public NewsChannel(String t, String c, int id) { this(TYPE_MY_LIST, t, c, id); }
 
-    public NewsChannel(int type, String t, String c) {
+    public NewsChannel(int type, String t, String c, int id) {
         title = t;
         channelCode = c;
         itemType = type;
+        uniqueID = id;
     }
 
     @Override

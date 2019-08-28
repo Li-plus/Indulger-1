@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.adapter.MutableFragmentPagerAdapter;
 import com.inftyloop.indulger.adapter.NewsChannelAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.ItemDragHelperCallback;
@@ -39,13 +40,23 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
     private ItemTouchHelper mHelper;
     private OnNewsTypeListener mNewsTypeListener;
     private DialogInterface.OnDismissListener mOnDismissListener;
+    private boolean hasChanges = false;
+    private MutableFragmentPagerAdapter mPagerAdapter;
 
-    public static ChannelDialogFragment newInstance(List<NewsChannel> selected, List<NewsChannel> unselected) {
+    @Override
+    public void dismiss() {
+        if(hasChanges && mPagerAdapter != null)
+            mPagerAdapter.notifyDataSetChanged();
+        super.dismiss();
+    }
+
+    public static ChannelDialogFragment newInstance(MutableFragmentPagerAdapter mPA, List<NewsChannel> selected, List<NewsChannel> unselected) {
         ChannelDialogFragment dialogFragment = new ChannelDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Definition.DATA_SELECTED, (Serializable) selected);
         bundle.putSerializable(Definition.DATA_UNSELECTED, (Serializable) unselected);
         dialogFragment.setArguments(bundle);
+        dialogFragment.mPagerAdapter = mPA;
         return dialogFragment;
     }
 
@@ -80,14 +91,14 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         // process
-        mData.add(new NewsChannel(NewsChannel.TYPE_MY, getResources().getString(R.string.home_news_type_my_channel), ""));
+        mData.add(new NewsChannel(NewsChannel.TYPE_MY, getResources().getString(R.string.home_news_type_my_channel), "", -1));
         Bundle bundle = getArguments();
         List<NewsChannel> selected = (List<NewsChannel>) bundle.getSerializable(Definition.DATA_SELECTED);
         List<NewsChannel> unselected = (List<NewsChannel>) bundle.getSerializable(Definition.DATA_UNSELECTED);
         setDataType(selected, NewsChannel.TYPE_MY_LIST);
         setDataType(unselected, NewsChannel.TYPE_RECOMMENDED_LIST);
         mData.addAll(selected);
-        mData.add(new NewsChannel(NewsChannel.TYPE_RECOMMENDED, getResources().getString(R.string.home_news_type_channel_recommend), ""));
+        mData.add(new NewsChannel(NewsChannel.TYPE_RECOMMENDED, getResources().getString(R.string.home_news_type_channel_recommend), "", -2));
         mData.addAll(unselected);
 
         mAdapter = new NewsChannelAdapter(mData, getContext());
@@ -112,7 +123,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        if(mOnDismissListener != null)
+        if(mOnDismissListener != null && hasChanges)
             mOnDismissListener.onDismiss(dialog);
     }
 
@@ -133,6 +144,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
         if(mNewsTypeListener != null)
             mNewsTypeListener.onItemMove(start - 1, end - 1);
         onMove(start, end);
+        hasChanges = true;
     }
 
     @Override
@@ -140,6 +152,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
         onMove(start, end);
         if(mNewsTypeListener != null)
             mNewsTypeListener.onMoveToMyChannel(start - 1 - mAdapter.getMyChannelSize(), end - 1);
+        hasChanges = true;
     }
 
     @Override
@@ -147,5 +160,6 @@ public class ChannelDialogFragment extends DialogFragment implements OnNewsTypeD
         onMove(start, end);
         if(mNewsTypeListener != null)
             mNewsTypeListener.onMoveToRecommendedChannel(start - 1, end - 2 - mAdapter.getMyChannelSize());
+        hasChanges = true;
     }
 }
