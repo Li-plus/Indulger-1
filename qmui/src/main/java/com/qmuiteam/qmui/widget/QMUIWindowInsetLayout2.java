@@ -20,8 +20,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.ViewCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 
 import com.qmuiteam.qmui.util.QMUIWindowInsetHelper;

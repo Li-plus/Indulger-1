@@ -1,10 +1,10 @@
 package com.inftyloop.indulger.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.inftyloop.indulger.fragment.NewsListFragment;
 import com.inftyloop.indulger.model.entity.NewsChannel;
 
@@ -38,6 +38,16 @@ public class NewsChannelPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(@NonNull Object object) {
+        if(object instanceof NewsListFragment) {
+            int idx = -1;
+            for(int i = 0; i < mChannels.size(); ++i) {
+                if(mChannels.get(i).channelCode.equals(((NewsListFragment)object).getChannelCode())) {
+                    idx = i; break;
+                }
+            }
+            if(idx >= 0)
+                return idx;
+        }
         return POSITION_NONE;
     }
 }

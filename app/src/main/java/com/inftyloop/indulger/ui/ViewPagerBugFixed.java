@@ -3,8 +3,9 @@ package com.inftyloop.indulger.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import androidx.viewpager.widget.ViewPager;
 
-public class ViewPagerBugFixed extends android.support.v4.view.ViewPager {
+public class ViewPagerBugFixed extends ViewPager {
 
     public ViewPagerBugFixed(Context context) {
         super(context);

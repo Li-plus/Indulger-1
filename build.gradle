@@ -23,8 +23,8 @@ allprojects {
         minSdkVersion = 24
         targetSdkVersion = 28
         compileSdkVersion = 28
-        supportVersion = "28.0.0"
-        constraintLayoutVersion = "1.1.3"
+        supportVersion = '1.0.0-beta01'
+        constraintLayoutVersion = '1.1.2'
         qmuiArchVersion = "0.6.0"
     }
 }

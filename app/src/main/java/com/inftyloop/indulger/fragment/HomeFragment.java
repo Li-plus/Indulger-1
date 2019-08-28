@@ -1,12 +1,13 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import androidx.viewpager2.widget.ViewPager2;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.gson.Gson;
@@ -42,6 +43,7 @@ public class HomeFragment extends BaseFragment implements OnNewsTypeListener {
     private Gson mGson = new Gson();
     private NewsChannelPagerAdapter mPagerAdapter;
     private String[] mChannelCodes;
+    private ViewPager2 pager2;
 
     @Override
     public void initView(View rootView) {
