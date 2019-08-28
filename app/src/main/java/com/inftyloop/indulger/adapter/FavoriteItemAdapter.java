@@ -1,7 +1,7 @@
 package com.inftyloop.indulger.adapter;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.inftyloop.indulger.R;

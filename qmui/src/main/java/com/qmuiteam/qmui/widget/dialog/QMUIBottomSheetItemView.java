@@ -17,7 +17,7 @@
 package com.qmuiteam.qmui.widget.dialog;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.ViewStub;
 import android.widget.LinearLayout;

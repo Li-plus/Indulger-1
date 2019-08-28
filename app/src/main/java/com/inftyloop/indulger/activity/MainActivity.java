@@ -3,8 +3,8 @@ package com.inftyloop.indulger.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.AboutFragment;

@@ -16,7 +16,7 @@
 
 package com.qmuiteam.qmui.arch.first;
 
-import android.support.annotation.MainThread;
+import androidx.annotation.MainThread;
 import android.util.Log;
 
 import com.qmuiteam.qmui.arch.QMUIFragment;

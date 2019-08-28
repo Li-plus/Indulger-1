@@ -3,7 +3,7 @@ package com.inftyloop.indulger.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.TypedValue;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;

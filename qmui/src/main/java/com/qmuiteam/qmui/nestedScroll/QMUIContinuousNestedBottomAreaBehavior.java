@@ -17,9 +17,9 @@
 package com.qmuiteam.qmui.nestedScroll;
 
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.GravityCompat;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.GravityCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
