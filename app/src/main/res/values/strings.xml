@@ -95,4 +95,8 @@
     <string name="settings_section_title_other">Other configs</string>
     <string name="username_placeholder" translatable="false">Username Placeholder</string>
     <string name="settings_cache_size">Cache Size: %s</string>
+    <string name="share_wechat_not_installed">WeChat is not installed</string>
+    <string name="share_success">Successfully shared</string>
+    <string name="share_cancel">Sharing canceled</string>
+    <string name="share_failure">Failed to share</string>
 </resources>

@@ -14,6 +14,7 @@ import com.inftyloop.indulger.adapter.BaseNewsAdapter;
 import com.inftyloop.indulger.listener.OnNewsDetailCallback;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.ui.NewsDetailHeaderView;
+import com.inftyloop.indulger.util.ShareUtils;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
@@ -34,6 +35,7 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
     @BindView(R.id.fl_content)
     NewsDetailHeaderView mHeaderView;
     private boolean isFav = false;
+    private ShareUtils shareUtils;
 
     private void showSharingView() {
         final int TAG_SHARE_WECHAT_FRIEND = 0;
@@ -50,10 +52,22 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                     int tag = (int) itemView.getTag();
                     switch (tag) {
                         case TAG_SHARE_WECHAT_FRIEND:
-                            Toast.makeText(getActivity(), getString(R.string.share_wechat_friend), Toast.LENGTH_SHORT).show();
+                            if(shareUtils.getIwxapi() != null) {
+                                if(!shareUtils.getIwxapi().isWXAppInstalled()) {
+                                    QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    shareUtils.shareToWeChatFriends("https://www.baidu.com/", "Test", "this is a demo", null);
+                                }
+                            }
                             break;
                         case TAG_SHARE_WECHAT_MOMENT:
-                            Toast.makeText(getActivity(), getString(R.string.share_wechat_moment), Toast.LENGTH_SHORT).show();
+                            if(shareUtils.getIwxapi() != null) {
+                                if(!shareUtils.getIwxapi().isWXAppInstalled()) {
+                                    QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    shareUtils.shareToWeChatMoments("https://www.baidu.com/", "Test", "this is a demo", null);
+                                }
+                            }
                             break;
                         case TAG_SHARE_WEIBO:
                             Toast.makeText(getActivity(), getString(R.string.share_weibo), Toast.LENGTH_SHORT).show();
@@ -81,6 +95,8 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                     Toast.LENGTH_SHORT);
             toast.show();
         });
+        shareUtils = new ShareUtils();
+        shareUtils.regToWX(getContext());
         return root;
     }
 

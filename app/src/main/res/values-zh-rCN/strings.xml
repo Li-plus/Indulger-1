@@ -83,4 +83,8 @@
     <string name="settings_section_title_theme">主题配置</string>
     <string name="settings_section_title_other">其他配置</string>
     <string name="settings_cache_size">缓存大小: %s</string>
+    <string name="share_wechat_not_installed">微信未安装</string>
+    <string name="share_success">分享成功</string>
+    <string name="share_cancel">取消分享</string>
+    <string name="share_failure">分享失败</string>
 </resources>

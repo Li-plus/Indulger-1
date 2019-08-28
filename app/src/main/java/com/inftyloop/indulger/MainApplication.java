@@ -4,18 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.ConfigManager;
-import com.inftyloop.indulger.util.LocaleHelper;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import org.litepal.LitePal;
 import ren.yale.android.cachewebviewlib.WebViewCacheInterceptor;
 import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
-
-import java.util.Locale;
 
 public class MainApplication extends Application {
     @SuppressLint("StaticFieldLeak")

@@ -21,4 +21,6 @@ public class Definition {
    public static final String SETTINGS_APP_NIGHT_MODE_ENABLED = "app_night_mode_enabled";
    public static final String SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS = "app_night_mode_follow_sys";
    public static final String SETTINGS_APP_LANG = "app_lang";
+
+   public static final String WECHAT_APP_ID = "wx2e9b96128669c41e";
 }
