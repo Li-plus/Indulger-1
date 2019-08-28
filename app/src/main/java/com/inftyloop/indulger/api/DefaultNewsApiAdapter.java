@@ -59,6 +59,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         put("news_military", "军事");
         put("news_education", "教育");
         put("news_culture", "文化");
+        put("news_search", "");
     }});
 
     // indicates start and end time of channels in memory
@@ -164,7 +165,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void obtainNewsList(String channel, boolean isLoadingMore) {
+    public void obtainNewsList(String channel, String keyword, boolean isLoadingMore) {
         boolean isInitialLoading = !channelStartTime.containsKey(channel) || !channelEndTime.containsKey(channel);
         if (isInitialLoading || isLoadingMore) {
             // first start, get some new data
@@ -189,7 +190,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 // avoid loading duplicate values by controlling time segments
                 addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1,
                         record == null ? "" : DateUtils.formatDateTime(new Date(record.getStartTime() + 1000), "yyyy-MM-dd HH:mm:ss"),
-                        DateUtils.formatDateTime(currDate, "yyyy-MM-dd HH:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
+                        DateUtils.formatDateTime(currDate, "yyyy-MM-dd HH:mm:ss"), keyword, CHANNEL_NAME_MAPPER.get(channel)),
                         new Subscriber<JsonObject>() {
                             @Override
                             public void onCompleted() {
@@ -247,7 +248,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 NewsLoadRecord record = getMostRecentNewsLoadRecordOlderThan(channel, curr);
                 addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1,
                         DateUtils.formatDateTime(new Date(channelStartTime.get(channel) + 1000), "yyyy-MM-dd HH:mm:ss"),
-                        DateUtils.formatDateTime(currDate, "yyyy-MM-dd HH:mm:ss"), "", CHANNEL_NAME_MAPPER.get(channel)),
+                        DateUtils.formatDateTime(currDate, "yyyy-MM-dd HH:mm:ss"), keyword, CHANNEL_NAME_MAPPER.get(channel)),
                         new Subscriber<JsonObject>() {
                             @Override
                             public void onCompleted() {

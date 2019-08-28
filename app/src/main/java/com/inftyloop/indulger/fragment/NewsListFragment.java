@@ -83,7 +83,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                     mInsertFromTop = false;
                     mRecyclerView.post(() -> {
                         isLoadingInProgress = true;
-                        api.obtainNewsList(mChannelCode, true);
+                        api.obtainNewsList(mChannelCode, "", true);
                     });
                 }
             }
@@ -114,7 +114,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 mRefreshLayout.post(() -> {
                     if (!isLoadingInProgress) {
                         isLoadingInProgress = true;
-                        api.obtainNewsList(mChannelCode, false);
+                        api.obtainNewsList(mChannelCode, "", false);
                         mRefreshLayout.finishRefresh();
                     }
                 });
