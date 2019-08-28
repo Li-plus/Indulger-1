@@ -46,10 +46,6 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
             case News.LOAD_MORE_FOOTER:
                 vh = new BaseRecyclerViewHolder(viewGroup, R.layout.load_more_footer);
                 return vh;
-            case News.NOTIFICATION_HEADER:
-                vh = new BaseRecyclerViewHolder(viewGroup, R.layout.notification_header);
-                ((TextView) vh.findViewById(R.id.notification_header_text)).setText(String.format(mContext.getString(R.string.news_list_notification), ConfigManager.getInt("update_news_num", 35)));
-                return vh;
             default: // footer no more
                 vh = new BaseRecyclerViewHolder(viewGroup, R.layout.no_more_footer);
                 return vh;

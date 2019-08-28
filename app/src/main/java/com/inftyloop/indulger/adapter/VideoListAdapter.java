@@ -13,7 +13,6 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.listener.VideoStateListenerAdapter;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
-import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 
 import java.util.List;
@@ -38,10 +37,6 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
     public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int itemType) {
         BaseRecyclerViewHolder vh;
         switch (itemType) {
-            case News.NOTIFICATION_HEADER:
-                vh = new BaseRecyclerViewHolder(viewGroup, R.layout.notification_header);
-                ((TextView) vh.findViewById(R.id.notification_header_text)).setText(String.format(mContext.getString(R.string.news_list_notification), ConfigManager.getInt("update_news_num", 35)));
-                return vh;
             case News.LOAD_MORE_FOOTER:
                 vh = new BaseRecyclerViewHolder(viewGroup, R.layout.load_more_footer);
                 return vh;

@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.BaseRecyclerViewAdapter;
@@ -19,7 +20,6 @@ import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.ui.BaseFragment;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
-import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
@@ -35,6 +35,8 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
     QMUIPullRefreshLayout mRefreshLayout;
     @BindView(R.id.news_list_recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.notification_header)
+    TextView mNotificationHeader;
 
     BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> mAdapter;
 
@@ -171,11 +173,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         }
 
         isLoadingInProgress = false;
-        if (mInsertFromTop) {
-            if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER) {
-                mAdapter.removeItemImmediately(0);
-            }
-        } else {
+        if (!mInsertFromTop) {
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }
         for (News news : newsList) {
@@ -183,11 +181,10 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
             mAdapter.insertItemImmediately(position, news);
         }
         if (mInsertFromTop) {
-            ConfigManager.putIntNow("update_news_num", newsList.size());
-            mAdapter.insertItemImmediately(0, new News(News.NOTIFICATION_HEADER));
-            mRecyclerView.postDelayed(() -> {
-                if (mAdapter.getData().size() > 0 && mAdapter.getData().get(0).getType() == News.NOTIFICATION_HEADER)
-                    mAdapter.removeItemImmediately(0);
+            mNotificationHeader.setText(String.format(getString(R.string.news_list_notification), newsList.size()));
+            mNotificationHeader.setVisibility(View.VISIBLE);
+            mNotificationHeader.postDelayed(() -> {
+                mNotificationHeader.setVisibility(View.GONE);
             }, 2000);
             mRecyclerView.scrollToPosition(0);
         } else {
