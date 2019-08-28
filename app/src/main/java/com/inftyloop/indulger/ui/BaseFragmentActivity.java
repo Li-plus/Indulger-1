@@ -3,7 +3,7 @@ package com.inftyloop.indulger.ui;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.util.TypedValue;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;

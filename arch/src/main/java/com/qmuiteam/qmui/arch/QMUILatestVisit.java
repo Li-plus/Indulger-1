@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
+import androidx.annotation.MainThread;
 
 import com.qmuiteam.qmui.arch.record.DefaultLatestVisitStorage;
 import com.qmuiteam.qmui.arch.record.LatestVisitArgumentSaver;

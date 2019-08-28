@@ -18,7 +18,7 @@ package com.qmuiteam.qmui.nestedScroll;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 
 import com.qmuiteam.qmui.layout.QMUILinearLayout;

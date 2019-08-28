@@ -3,7 +3,7 @@ package com.inftyloop.indulger.adapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
