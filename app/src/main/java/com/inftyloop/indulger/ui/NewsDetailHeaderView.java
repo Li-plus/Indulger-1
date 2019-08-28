@@ -1,6 +1,7 @@
 package com.inftyloop.indulger.ui;
 
 import android.content.Context;
+import android.webkit.WebSettings;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -15,7 +16,8 @@ import com.inftyloop.indulger.R;
 import butterknife.BindView;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.util.*;
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
+import tech.easily.hybridcache.lib.HybridCacheManager;
+import tech.easily.hybridcache.lib.ImageInterceptor;
 
 public class NewsDetailHeaderView extends FrameLayout {
     private static final String NICK = "Indulger";  // used to bind javascript
@@ -37,6 +39,7 @@ public class NewsDetailHeaderView extends FrameLayout {
     private boolean mHasFollowed;
     private Context mContext;
     private LoadWebListener mWebListener;
+    private HybridCacheManager mHybridCacheMan;
 
     public NewsDetailHeaderView(Context ctx) {
         this(ctx, null);
@@ -52,11 +55,15 @@ public class NewsDetailHeaderView extends FrameLayout {
         initView();
     }
 
-    @SuppressWarnings("deprecation")
     private void initView() {
         inflate(getContext(), R.layout.header_news_detail, this);
         ButterKnife.bind(this, this);
         mHasFollowed = false;
+        mHybridCacheMan = new HybridCacheManager();
+        mHybridCacheMan.addCacheInterceptor(new ImageInterceptor(getContext()));
+        mContent.getSettings().setAppCacheEnabled(true);
+        mContent.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        mContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
     }
 
     private void addJs(WebView wv) {
@@ -113,14 +120,26 @@ public class NewsDetailHeaderView extends FrameLayout {
             @Nullable
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                return WebViewCacheInterceptorInst.getInstance().interceptRequest(request);
+                WebResourceResponse val =  null;
+                try {
+                    val = mHybridCacheMan.interceptWebResRequest(request);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return val;
             }
 
             @SuppressWarnings("deprecation")
             @Nullable
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                return WebViewCacheInterceptorInst.getInstance().interceptRequest(url);
+                WebResourceResponse val =  null;
+                try {
+                    val = mHybridCacheMan.interceptWebResRequest(url);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return val;
             }
         });
     }

@@ -10,8 +10,6 @@ import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import org.litepal.LitePal;
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptor;
-import ren.yale.android.cachewebviewlib.WebViewCacheInterceptorInst;
 
 public class MainApplication extends Application {
     @SuppressLint("StaticFieldLeak")
@@ -70,9 +68,6 @@ public class MainApplication extends Application {
         mHandler = new Handler();
         QMUISwipeBackActivityManager.init(this);
         LitePal.initialize(this);
-        WebViewCacheInterceptor.Builder builder = new WebViewCacheInterceptor.Builder(this);
-        builder.setConnectTimeoutSecond(5).setReadTimeoutSecond(5);
-        WebViewCacheInterceptorInst.getInstance().init(builder);
         // init configs
         if(!ConfigManager.contains(Definition.SETTINGS_APP_THEME)) {
             ConfigManager.putIntNow(Definition.SETTINGS_APP_THEME, 0);
