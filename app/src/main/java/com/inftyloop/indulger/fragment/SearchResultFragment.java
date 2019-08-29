@@ -1,5 +1,6 @@
 package com.inftyloop.indulger.fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,26 +12,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
+import com.inftyloop.indulger.adapter.NewsListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
+import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SearchResultFragment extends QMUIFragment implements OnNewsListRefreshListener {
+    public static final String TAG = SearchResultFragment.class.getSimpleName();
+
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
     @BindView(R.id.search_result_recycler_view)
     RecyclerView mRecyclerView;
 
-    private FavoriteItemAdapter mAdapter;
+    private NewsListAdapter mAdapter;
     private DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
     private boolean isLoadingInProgress = false;
     private boolean isLoadingMore = false;
@@ -49,10 +55,10 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
         ((TextView) searchBar.findViewById(R.id.txt_search)).setText(HomeSearchFragment.keyword);
         mTopBar.addRightView(searchBar, R.id.topbar_search, lp);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         List<News> data = new ArrayList<>();
-        mAdapter = new FavoriteItemAdapter(getActivity(), data);
+        mAdapter = new NewsListAdapter(getActivity(), data);
         mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration divider = new DividerItemDecoration(mRecyclerView.getContext(), layoutManager.getOrientation());
@@ -83,11 +89,22 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
     @Override
     public void onNewsListRefresh(List<News> newsList) {
         isLoadingInProgress = false;
-
         mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+
+        HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCK_KEYS, new HashSet<>());
         for (News news : newsList) {
-            int position = mAdapter.getData().size();
-            mAdapter.insertItemImmediately(position, news);
+            boolean isBlock = false;
+            for (String keyword : news.getNewsEntry().getKeywords()) {
+                if (blockKeys.contains(keyword)) {
+                    isBlock = true;
+                    Log.d(TAG, "blocked news with keyword " + keyword);
+                    break;
+                }
+            }
+            if (!isBlock) {
+                int position = mAdapter.getData().size();
+                mAdapter.insertItemImmediately(position, news);
+            }
         }
 
         if (newsList.size() > 0)

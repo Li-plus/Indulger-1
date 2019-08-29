@@ -7,7 +7,6 @@
     <string name="fav">收藏</string>
     <string name="personal">我</string>
 
-    <!-- begin settings fragment -->
     <string name="settings_title">设置</string>
     <string name="settings_theme">主题</string>
     <string name="settings_clear_cache">清空缓存</string>
@@ -20,9 +19,7 @@
     <string name="me_title">我</string>
     <string name="me_grouplist_settings">设置</string>
     <string name="settings_cache_clearing">正在操作中</string>
-    <!-- end settings fragment -->
 
-    <!-- begin favorite fragment -->
     <string name="favorite_title">收藏</string>
     <string name="favorite_cancel">取消</string>
     <string name="favorite_delete">删除</string>
@@ -47,9 +44,7 @@
     <string name="add_to_fav_success">收藏成功</string>
     <string name="remove_from_fav_success">取消收藏成功</string>
     <string name="search_empty_input_not_allowed">搜索内容不能为空哦</string>
-    <!-- end favorite fragment -->
 
-    <!-- begin news list fragment -->
     <string name="news_list_net_unavailable">无法连接到网络</string>
     <string name="news_list_drag">下拉页面获取推荐</string>
     <string name="news_list_drop">恢复</string>
@@ -65,8 +60,8 @@
     <string name="news_list_fake_news">假新闻</string>
     <string name="news_list_outdated">旧闻</string>
     <string name="news_list_block_reason">选择理由 为您优化</string>
-    <string name="news_list_notification">成功为您推荐%d条新闻</string>
-    <!-- end news list fragment -->
+    <string name="news_list_notification">成功刷新%d条新闻</string>
+
     <string name="short_time_just_now">刚刚</string>
     <string name="short_time_minute_ago">分钟前</string>
     <string name="short_time_minutes_ago">分钟前</string>

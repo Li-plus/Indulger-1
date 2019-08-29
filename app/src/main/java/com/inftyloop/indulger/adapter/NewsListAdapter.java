@@ -3,7 +3,7 @@ package com.inftyloop.indulger.adapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,15 +16,21 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
+import androidx.annotation.NonNull;
+
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.DisplayHelper;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 
+import java.util.HashSet;
 import java.util.List;
 
 
 public class NewsListAdapter extends BaseNewsAdapter {
+    public static final String TAG = NewsListAdapter.class.getSimpleName();
 
     public NewsListAdapter(Activity context, @NonNull List<News> data) {
         super(context, data);
@@ -32,7 +38,8 @@ public class NewsListAdapter extends BaseNewsAdapter {
 
     @Override
     protected void initCrossIcon(BaseRecyclerViewHolder vh) {
-        ImageButton crossIcon = (ImageButton) vh.findViewById(R.id.news_list_clear_icon);
+        ImageButton crossIcon = vh.findViewById(R.id.news_list_clear_icon);
+
         crossIcon.setOnClickListener((View view) -> {
             View popupView = LayoutInflater.from(mContext).inflate(R.layout.block_popup_layout, null);
 
@@ -73,7 +80,13 @@ public class NewsListAdapter extends BaseNewsAdapter {
             Button deleteButton = popupView.findViewById(R.id.popup_delete_button);
             deleteButton.setOnClickListener((View v) -> {
                 popupWindow.dismiss();
+                HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCK_KEYS, new HashSet<>());
+                blockKeys.addAll(getData().get(vh.getAdapterPosition()).getNewsEntry().getKeywords());
+                ConfigManager.putStringSetNow(Definition.BLOCK_KEYS, blockKeys);
                 removeItemImmediately(vh.getAdapterPosition());
+                for (String keyword : blockKeys) {
+                    Log.d(TAG, "add blocking keyword " + keyword);
+                }
             });
         });
 
