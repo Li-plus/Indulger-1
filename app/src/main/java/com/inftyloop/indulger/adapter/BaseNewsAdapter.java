@@ -4,16 +4,14 @@ import android.app.Activity;
 import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.fragment.NewsDetailFragment;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
-import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.DateUtils;
+import com.inftyloop.indulger.util.GlideImageLoader;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.util.QMUIResHelper;
@@ -86,12 +84,12 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         ((TextView) vh.findViewById(R.id.tv_time)).setText(DateUtils.getShortTime(mContext, item.getNewsEntry().getPublishTime()));
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
-                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(0)).into((ImageView) vh.findViewById(R.id.iv_img));
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img)).loadImage(item.getNewsEntry().getImageUrls().get(0),R.color.placeholder_color, null);
                 break;
             case News.THREE_IMAGES_NEWS:
-                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(0)).into((ImageView) vh.findViewById(R.id.iv_img1));
-                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(1)).into((ImageView) vh.findViewById(R.id.iv_img2));
-                Glide.with(vh.getView()).load(item.getNewsEntry().getImageUrls().get(2)).into((ImageView) vh.findViewById(R.id.iv_img3));
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img1)).loadImage(item.getNewsEntry().getImageUrls().get(0),R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img2)).loadImage(item.getNewsEntry().getImageUrls().get(1),R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img3)).loadImage(item.getNewsEntry().getImageUrls().get(2),R.color.placeholder_color, null);
                 break;
             default: // text news
                 break;

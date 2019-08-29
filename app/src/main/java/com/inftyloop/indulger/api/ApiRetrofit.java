@@ -58,7 +58,7 @@ public class ApiRetrofit {
         String content = response.body().string();
         Log.i(TAG, "----------Request Start----------------");
         Log.i(TAG, "| " + request.toString());
-        Log.i(TAG, "| Response:" + content);
+        //Log.i(TAG, "| Response:" + content);
         Log.i(TAG, "----------Request End:" + duration + "ms----------");
         return response.newBuilder()
                 .body(okhttp3.ResponseBody.create(mediaType, content))

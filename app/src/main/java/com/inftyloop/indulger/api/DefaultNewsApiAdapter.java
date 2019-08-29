@@ -177,7 +177,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     mRefreshListener.onNewsListRefresh(new ArrayList<>());
                 } else {
                     // fetch newest data from db, then update the status of adapter
-                    List<NewsEntry> res = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15).find(NewsEntry.class);
+                    List<NewsEntry> res = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15).find(NewsEntry.class);
                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(res);
                     if (isInitialLoading)
                         channelStartTime.put(channel, list.second.first);
@@ -207,7 +207,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                     Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
                                     List<NewsEntry> entries = res.first;
                                     if (record != null && total < 15) {
-                                        entries.addAll(LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15 - total).find(NewsEntry.class));
+                                        entries.addAll(LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15 - total).find(NewsEntry.class));
                                         // merge with existing record
                                         record.setStartTime(res.second.first);
                                         record.save();
@@ -227,7 +227,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 } else if (record == null) {
                                     mRefreshListener.onNewsListRefresh(new ArrayList<>());
                                 } else {
-                                    List<NewsEntry> entries = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).limit(15).find(NewsEntry.class);
+                                    List<NewsEntry> entries = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15).find(NewsEntry.class);
                                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
                                     if (isInitialLoading)
                                         channelStartTime.put(channel, list.second.first);
