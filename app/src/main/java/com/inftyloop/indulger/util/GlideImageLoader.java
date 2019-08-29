@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -34,7 +35,7 @@ public class GlideImageLoader {
 
     private GlideImageLoader(ImageView imageView) {
         imageViewWeakReference = new WeakReference<>(imageView);
-        glideRequest = GlideApp.with(getContext()).asDrawable();
+        glideRequest = GlideApp.with(getContext()).asDrawable().diskCacheStrategy(DiskCacheStrategy.NONE);
     }
 
     public ImageView getImageView() {
@@ -57,7 +58,7 @@ public class GlideImageLoader {
 
     public GlideRequest getGlideRequest() {
         if (glideRequest == null) {
-            glideRequest = GlideApp.with(getContext()).asDrawable();
+            glideRequest = GlideApp.with(getContext()).asDrawable().diskCacheStrategy(DiskCacheStrategy.NONE);
         }
         return glideRequest;
     }
@@ -134,12 +135,12 @@ public class GlideImageLoader {
     public static void loadNormal(Context ctx, String url, ImageView iv, int resId) {
         RequestOptions options = new RequestOptions();
         options.placeholder(resId);
-        GlideApp.with(ctx).load(url).apply(options).into(iv);
+        GlideApp.with(ctx).load(url).apply(options).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
     }
 
     public static void loadRound(Context ctx, String url, ImageView iv, int resId) {
         RequestOptions options = new RequestOptions();
         options.placeholder(resId).centerCrop().circleCrop();
-        GlideApp.with(ctx).load(url).apply(options).into(iv);
+        GlideApp.with(ctx).load(url).apply(options).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
     }
 }

@@ -20,6 +20,27 @@ public class ApiRetrofit {
     public static final String TAG = ApiRetrofit.class.getSimpleName();
     private static Map<String, Object> mApiRetrofitMap = new HashMap<>();
 
+    public static final Interceptor ONLINE_INTERCEPTOR = chain -> {
+        okhttp3.Response response = chain.proceed(chain.request());
+        int maxAge = 60; // read from cache for 60 seconds even if there is internet connection
+        return response.newBuilder()
+                .header("Cache-Control", "public, max-age=" + maxAge)
+                .removeHeader("Pragma")
+                .build();
+    };
+
+    public static final Interceptor OFFLINE_INTERCEPTOR = chain -> {
+        Request request = chain.request();
+        if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
+            int maxStale = 60 * 60 * 24 * 30; // Offline cache available for 30 days
+            request = request.newBuilder()
+                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                    .removeHeader("Pragma")
+                    .build();
+        }
+        return chain.proceed(request);
+    };
+
     public static final Interceptor CACHE_INTERCEPTOR = chain -> {
         CacheControl.Builder cacheBuilder = new CacheControl.Builder();
         cacheBuilder.maxAge(0, TimeUnit.SECONDS);
@@ -87,20 +108,20 @@ public class ApiRetrofit {
     @SuppressWarnings("unchecked")
     public static <T> T getApiInstance(String alias, Class<T> api_class) {
         Object res = mApiRetrofitMap.getOrDefault(alias, null);
-        return (T)res;
+        return (T) res;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T buildOrGet(String alias, String base_server_url, Class<T> api_class, Interceptor ...interceptors) {
+    public static <T> T buildOrGet(String alias, String base_server_url, Class<T> api_class, Interceptor... interceptors) {
         Object res = mApiRetrofitMap.getOrDefault(alias, null);
-        if(res != null)
-            return (T)res;
+        if (res != null)
+            return (T) res;
         else {
             File httpCacheDirectory = new File(MainApplication.getContext().getCacheDir(), "responses");
             int cacheSize = 10 * 1024 * 1024; // 10 MiB
             Cache cache = new Cache(httpCacheDirectory, cacheSize);
             OkHttpClient.Builder mClientBuilder = new OkHttpClient.Builder();
-            for(Interceptor i : interceptors)
+            for (Interceptor i : interceptors)
                 mClientBuilder.addInterceptor(i);
             OkHttpClient mClient = mClientBuilder
                     .cache(cache)

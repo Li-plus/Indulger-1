@@ -2,7 +2,6 @@
 <resources>
     <string-array name="channel">
         <item>Recommended</item>
-        <item>Video</item>
         <item>Society</item>
         <item>Entertainment</item>
         <item>Tech</item>
@@ -16,7 +15,6 @@
     </string-array>
     <string-array name="channel_code">
         <item>@string/channel_code_recommend</item>
-        <item>@string/channel_code_video</item>
         <item>news_society</item>
         <item>news_entertainment</item>
         <item>news_tech</item>

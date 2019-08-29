@@ -2,7 +2,6 @@
 <resources>
     <string-array name="channel">
         <item>推荐</item>
-        <item>视频</item>
         <item>社会</item>
         <item>娱乐</item>
         <item>科技</item>

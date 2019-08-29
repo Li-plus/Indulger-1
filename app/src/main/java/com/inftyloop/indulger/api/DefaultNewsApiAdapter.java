@@ -71,11 +71,9 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
 
     public DefaultNewsApiAdapter(OnNewsListRefreshListener refreshListener) {
         if(BuildConfig.DEBUG) {
-            mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.CACHE_INTERCEPTOR,
-                    ApiRetrofit.LOG_INTERCEPTOR, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
+            mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.LOG_INTERCEPTOR, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
         } else {
-            mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.CACHE_INTERCEPTOR,
-                    ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
+            mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
         }
         mRefreshListener = refreshListener;
     }

@@ -22,13 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class OkHTTPGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        File httpCacheDirectory = new File(MainApplication.getContext().getCacheDir(), "images");
-        int cacheSize = 500 * 1024 * 1024;
-        Cache cache = new Cache(httpCacheDirectory, cacheSize);
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                .connectTimeout(3, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS).cache(cache);
-        OkHttpClient client = clientBuilder.build();
-        OkHttpUrlLoader.Factory factory = new OkHttpUrlLoader.Factory(client);
+        OkHttpUrlLoader.Factory factory = new OkHttpUrlLoader.Factory(OkHTTPImageClient.getInstance());
         glide.getRegistry().replace(GlideUrl.class, InputStream.class, factory);
     }
 
