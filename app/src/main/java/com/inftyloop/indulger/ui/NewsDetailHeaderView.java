@@ -81,7 +81,7 @@ public class NewsDetailHeaderView extends FrameLayout {
             mllInfo.setVisibility(GONE);
         else {
             if(!TextUtils.isEmpty(detail.getPublisherAvatarUrl()))
-                GlideUtils.loadRound(mContext, detail.getPublisherAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
+                GlideImageLoader.loadRound(mContext, detail.getPublisherAvatarUrl(), mAvatar, R.mipmap.ic_circle_default);
             else
                 mAvatar.setVisibility(GONE);
             mAuthor.setText(detail.getPublisherName());

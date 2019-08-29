@@ -104,8 +104,8 @@ public class ApiRetrofit {
                 mClientBuilder.addInterceptor(i);
             OkHttpClient mClient = mClientBuilder
                     .cache(cache)
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(20, TimeUnit.SECONDS)
+                    .connectTimeout(5, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
                     .build();
 
             Retrofit mRetrofit = new Retrofit.Builder()

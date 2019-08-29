@@ -10,12 +10,11 @@ import androidx.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.sunfusheng.progress.GlideApp;
-import com.sunfusheng.progress.GlideRequest;
-import com.sunfusheng.progress.OnProgressListener;
-import com.sunfusheng.progress.ProgressManager;
+import com.inftyloop.indulger.ui.progress.OnProgressListener;
+import com.inftyloop.indulger.ui.progress.ProgressManager;
 
 import java.lang.ref.WeakReference;
 
@@ -130,5 +129,17 @@ public class GlideImageLoader {
             }
             super.onResourceReady(resource, transition);
         }
+    }
+
+    public static void loadNormal(Context ctx, String url, ImageView iv, int resId) {
+        RequestOptions options = new RequestOptions();
+        options.placeholder(resId);
+        GlideApp.with(ctx).load(url).apply(options).into(iv);
+    }
+
+    public static void loadRound(Context ctx, String url, ImageView iv, int resId) {
+        RequestOptions options = new RequestOptions();
+        options.placeholder(resId).centerCrop().circleCrop();
+        GlideApp.with(ctx).load(url).apply(options).into(iv);
     }
 }
