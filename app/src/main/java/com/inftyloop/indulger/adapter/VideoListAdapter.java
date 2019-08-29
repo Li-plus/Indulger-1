@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.listener.VideoStateListenerAdapter;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
+import com.inftyloop.indulger.util.GlideApp;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 
 import java.util.List;
@@ -63,8 +63,8 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
 
         MyJzVideoPlayer videoPlayer = vh.findViewById(R.id.video_player);
 
-        Glide.with(mContext)
-                .setDefaultRequestOptions(new RequestOptions().frame(5000000).centerCrop())
+        GlideApp.with(mContext)
+                .setDefaultRequestOptions(new RequestOptions().centerCrop())
                 .load(news.getNewsEntry().getVideoUrl())
                 .into(videoPlayer.thumbImageView); // pic
 //        Glide.with(mContext).load(news.getNewsEntry().getPublisherAvatarUrl()).into((ImageView) vh.findViewById(R.id.iv_avatar));

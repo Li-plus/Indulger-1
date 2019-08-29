@@ -6,6 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.BuildConfig;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -52,7 +53,11 @@ public class UserApiManager {
 
     public UserApiManager(OnUserApiListener listener) {
         mCallbackListener = listener;
-        mUserApi = ApiRetrofit.buildOrGet("userApi", UserApiService.BASE_URL, UserApiService.class, ApiRetrofit.LOG_INTERCEPTOR);
+        if(BuildConfig.DEBUG) {
+            mUserApi = ApiRetrofit.buildOrGet("userApi", UserApiService.BASE_URL, UserApiService.class, ApiRetrofit.LOG_INTERCEPTOR);
+        } else {
+            mUserApi = ApiRetrofit.buildOrGet("userApi", UserApiService.BASE_URL, UserApiService.class);
+        }
     }
 
     public void addUser(String username, String pwd, String email) {

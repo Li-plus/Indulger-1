@@ -5,8 +5,8 @@ import butterknife.BindView;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.ui.BaseFragment;
+import com.inftyloop.indulger.ui.progress.CircleProgressView;
 import com.inftyloop.indulger.util.GlideImageLoader;
-import com.sunfusheng.progress.CircleProgressView;
 
 public class BigImageFragment extends BaseFragment {
     public static final String IMG_URL = "imgUrl";
