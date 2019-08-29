@@ -1,13 +1,15 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.BaseRecyclerViewAdapter;
@@ -20,10 +22,12 @@ import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.ui.BaseFragment;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
+import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +50,8 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
 
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
     private String mChannelCode;
+    private boolean mIsRecommend = false;
+    private boolean mIsVideoList = false;
 
     public String getChannelCode() {
         return mChannelCode;
@@ -61,17 +67,14 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         super.initView(rootView);
         Bundle bundle = getArguments();
 
-        int flag = 0;
         if (bundle != null) {
             mChannelCode = bundle.getString(Definition.CHANNEL_CODE);
-            if (bundle.getBoolean(Definition.IS_RECOMMEND, false))
-                flag |= 0x01;
-            if (bundle.getBoolean(Definition.IS_VIDEO_LIST, false))
-                flag |= 0x02;
+            mIsRecommend = bundle.getBoolean(Definition.IS_RECOMMEND, false);
+            mIsVideoList = bundle.getBoolean(Definition.IS_VIDEO_LIST, false);
         }
 
         List<News> data = new ArrayList<>();
-        if (mChannelCode.equals(getString(R.string.channel_code_video))) {
+        if (mIsVideoList) {
             mAdapter = new VideoListAdapter(getActivity(), data);
         } else {
             mAdapter = new NewsListAdapter(getActivity(), data);
@@ -115,7 +118,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
 
             @Override
             public void onRefresh() {
-                if(isLoadingInProgress)
+                if (isLoadingInProgress)
                     return;
                 else
                     isLoadingInProgress = true;
@@ -137,7 +140,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if (mChannelCode.equals(getString(R.string.channel_code_video))) {
+        if (mIsVideoList) {
             mRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
                 @Override
                 public void onChildViewAttachedToWindow(@NonNull View view) {
@@ -169,7 +172,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 "https://www.w3schools.com/html/movie.mp4"
         };
 
-        if (mChannelCode.equals(getString(R.string.channel_code_video))) {
+        if (mIsVideoList) {
             newsList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 NewsEntry newsEntry = new NewsEntry();
@@ -186,8 +189,19 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }
         for (News news : newsList) {
-            int position = (mInsertFromTop ? 0 : mAdapter.getData().size());
-            mAdapter.insertItemImmediately(position, news);
+            boolean isBlock = false;
+            HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
+            for (String keyword : news.getNewsEntry().getKeywords()) {
+                if (blockKeys.contains(keyword)) {
+                    isBlock = true;
+                    Log.d(TAG, "blocking news with keyword " + keyword);
+                    break;
+                }
+            }
+            if (!isBlock) {
+                int position = (mInsertFromTop ? 0 : mAdapter.getData().size());
+                mAdapter.insertItemImmediately(position, news);
+            }
         }
         if (mInsertFromTop) {
             mNotificationHeader.setText(newsList.size() > 0 ? getString(R.string.news_list_notification, newsList.size()) : getString(R.string.news_list_notification_already_newest));

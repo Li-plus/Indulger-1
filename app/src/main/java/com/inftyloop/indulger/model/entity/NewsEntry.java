@@ -95,6 +95,22 @@ public class NewsEntry extends LitePalSupport {
         this.videoUrl = videoUrl;
     }
 
+    public boolean getIsFavorite() {
+        return this.isFavorite;
+    }
+
+    public void setIsFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    public long getMarkFavoriteTime() {
+        return this.markFavoriteTime;
+    }
+
+    public void setMarkFavoriteTime(long markFavoriteTime) {
+        this.markFavoriteTime = markFavoriteTime;
+    }
+
     private String publisherName;
     private String publisherAvatarUrl;
     private long publishTime;
@@ -105,6 +121,8 @@ public class NewsEntry extends LitePalSupport {
     private List<String> imageUrls = new ArrayList<>();
     private List<String> keywords = new ArrayList<>();
     private String videoUrl;
+    private boolean isFavorite;
+    private long markFavoriteTime;
     @Column(nullable = false, unique = true)
     private String uuid;
 }

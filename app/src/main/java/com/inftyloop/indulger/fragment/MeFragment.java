@@ -1,19 +1,18 @@
 package com.inftyloop.indulger.fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import com.inftyloop.indulger.R;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MeFragment extends QMUIFragment {
     private static final String TAG = MeFragment.class.getSimpleName();
@@ -36,11 +35,19 @@ public class MeFragment extends QMUIFragment {
 
         QMUICommonListItemView itemSettings = mGroupListView.createItemView(getString(R.string.me_grouplist_settings));
         itemSettings.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        QMUICommonListItemView itemFavorite = mGroupListView.createItemView(getString(R.string.favorite_title));
+        itemFavorite.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
         QMUIGroupListView.newSection(getContext())
                 .addItemView(itemSettings, (View v) -> {
                     QMUIFragment fragment = new SettingsFragment();
                     startFragment(fragment);
-                }).addTo(mGroupListView);
+                })
+                .addItemView(itemFavorite, (View v) -> {
+                    QMUIFragment fragment = new FavoriteFragment();
+                    startFragment(fragment);
+                })
+                .addTo(mGroupListView);
         return root;
     }
 

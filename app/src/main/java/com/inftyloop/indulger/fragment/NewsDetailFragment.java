@@ -1,13 +1,14 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.BaseNewsAdapter;
@@ -19,6 +20,11 @@ import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import org.litepal.LitePal;
+
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,8 +58,8 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                     int tag = (int) itemView.getTag();
                     switch (tag) {
                         case TAG_SHARE_WECHAT_FRIEND:
-                            if(shareUtils.getIwxapi() != null) {
-                                if(!shareUtils.getIwxapi().isWXAppInstalled()) {
+                            if (shareUtils.getIwxapi() != null) {
+                                if (!shareUtils.getIwxapi().isWXAppInstalled()) {
                                     QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
                                 } else {
                                     shareUtils.shareToWeChatFriends("https://www.baidu.com/", "Test", "this is a demo", null);
@@ -61,8 +67,8 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                             }
                             break;
                         case TAG_SHARE_WECHAT_MOMENT:
-                            if(shareUtils.getIwxapi() != null) {
-                                if(!shareUtils.getIwxapi().isWXAppInstalled()) {
+                            if (shareUtils.getIwxapi() != null) {
+                                if (!shareUtils.getIwxapi().isWXAppInstalled()) {
                                     QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
                                 } else {
                                     shareUtils.shareToWeChatMoments("https://www.baidu.com/", "Test", "this is a demo", null);
@@ -88,11 +94,31 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
         });
         mTopBar.setTitle(R.string.news_detail_title);
         mShareBtn.setOnClickListener(v -> showSharingView());
+
+        NewsEntry detail = BaseNewsAdapter.currentNewsEntry;
+        isFav = detail.getIsFavorite();
+        List<NewsEntry> res = LitePal.where("uuid = ?", BaseNewsAdapter.currentNewsEntry.getUuid()).find(NewsEntry.class);
+        for (NewsEntry newsEntry : res) {
+            Log.d(TAG, newsEntry.getUuid() + " " + newsEntry.getIsFavorite());
+        }
+        if (!res.isEmpty()) {
+            isFav = res.get(0).getIsFavorite();
+        }
+        mFavBtn.setImageResource(isFav ? R.drawable.ic_favorite_fill : R.drawable.ic_favorite);
+
         mFavBtn.setOnClickListener(v -> {
-            mFavBtn.setImageResource(isFav ? R.drawable.ic_favorite : R.drawable.ic_favorite_fill);
             isFav = !isFav;
-            Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(isFav ? R.string.add_to_fav_success : R.string.remove_from_fav_success),
-                    Toast.LENGTH_SHORT);
+            mFavBtn.setImageResource(isFav ? R.drawable.ic_favorite_fill : R.drawable.ic_favorite);
+
+            detail.setIsFavorite(isFav);
+            if (isFav) {
+                detail.setMarkFavoriteTime(new Date().getTime());
+            } else {
+                detail.setToDefault("isFavorite");
+            }
+            detail.updateAll("uuid = ?", detail.getUuid());
+
+            Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(isFav ? R.string.add_to_fav_success : R.string.remove_from_fav_success), Toast.LENGTH_SHORT);
             toast.show();
         });
         shareUtils = new ShareUtils();
