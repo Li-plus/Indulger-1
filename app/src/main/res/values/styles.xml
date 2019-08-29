@@ -177,7 +177,7 @@
         <item name="background_text_color">?android:textColor</item>
         <item name="foreground_text_color">@color/qmui_config_color_75_white</item>
         <item name="foreground_text_color_dim">@color/qmui_config_color_gray_8</item>
-        <item name="button_edge_color">@color/qmui_config_color_50_blue</item>
+        <item name="button_edge_color">@color/qmui_config_color_blue</item>
         <item name="ic_search_color">@color/qmui_config_color_gray_8</item>
         <item name="app_content_separator_color">@color/qmui_config_color_gray_4</item>
 

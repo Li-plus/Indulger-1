@@ -85,10 +85,11 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
             public void onScrollChange(View view, int i, int i1, int i2, int i3) {
                 if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress) {
                     mInsertFromTop = false;
-                    mRecyclerView.post(() -> {
-                        isLoadingInProgress = true;
+                    isLoadingInProgress = true;
+                    mRefreshLayout.setEnabled(false);
+                    new Thread(() -> {
                         api.obtainNewsList(mChannelCode, "", true);
-                    });
+                    }).start();
                 }
             }
         });
@@ -114,14 +115,17 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
 
             @Override
             public void onRefresh() {
+                if(isLoadingInProgress)
+                    return;
+                else
+                    isLoadingInProgress = true;
                 mInsertFromTop = true;
-                mRefreshLayout.post(() -> {
-                    if (!isLoadingInProgress) {
-                        isLoadingInProgress = true;
-                        api.obtainNewsList(mChannelCode, "", false);
+                new Thread(() -> {
+                    api.obtainNewsList(mChannelCode, "", false);
+                    mRefreshLayout.post(() -> {
                         mRefreshLayout.finishRefresh();
-                    }
-                });
+                    });
+                }).start();
             }
         });
 
@@ -165,7 +169,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 "https://www.w3schools.com/html/movie.mp4"
         };
 
-        if (mChannelCode.equals("video")) {
+        if (mChannelCode.equals(getString(R.string.channel_code_video))) {
             newsList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 NewsEntry newsEntry = new NewsEntry();
@@ -177,6 +181,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         }
 
         isLoadingInProgress = false;
+        mRefreshLayout.setEnabled(true);
         if (!mInsertFromTop) {
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }
@@ -185,7 +190,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
             mAdapter.insertItemImmediately(position, news);
         }
         if (mInsertFromTop) {
-            mNotificationHeader.setText(String.format(getString(R.string.news_list_notification), newsList.size()));
+            mNotificationHeader.setText(newsList.size() > 0 ? getString(R.string.news_list_notification, newsList.size()) : getString(R.string.news_list_notification_already_newest));
             mNotificationHeader.setVisibility(View.VISIBLE);
             mNotificationHeader.postDelayed(() -> {
                 mNotificationHeader.setVisibility(View.GONE);

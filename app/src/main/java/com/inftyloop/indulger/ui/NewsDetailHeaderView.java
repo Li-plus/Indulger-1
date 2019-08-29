@@ -64,6 +64,7 @@ public class NewsDetailHeaderView extends FrameLayout {
         mContent.getSettings().setAppCacheEnabled(true);
         mContent.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         mContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        mFavBtn.setVisibility(View.GONE);
     }
 
     private void addJs(WebView wv) {
