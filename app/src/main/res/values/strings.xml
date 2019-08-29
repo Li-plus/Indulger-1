@@ -95,4 +95,6 @@
     <string name="share_success">Successfully shared</string>
     <string name="share_cancel">Sharing canceled</string>
     <string name="share_failure">Failed to share</string>
+
+    <string name="video_list_title">Videos</string>
 </resources>

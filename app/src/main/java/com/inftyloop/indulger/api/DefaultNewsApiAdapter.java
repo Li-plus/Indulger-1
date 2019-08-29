@@ -329,4 +329,23 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     }
                 });
     }
+
+    public void obtainFavoriteList(boolean isLoadingMore) {
+        String channel = "favorite";
+        Long endTime = (isLoadingMore ? channelEndTime.get(channel) : new Date().getTime());
+        if (endTime == null)
+            endTime = new Date().getTime();
+
+        List<NewsEntry> res = LitePal.where("isFavorite = ? AND markFavoriteTime < ?", "1", endTime.toString()).order("markFavoriteTime desc").limit(15).find(NewsEntry.class);
+        if (res.isEmpty()) {
+            mRefreshListener.onNewsListRefresh(new ArrayList<>());
+            return;
+        }
+        channelEndTime.put(channel, res.get(res.size() - 1).getPublishTime());
+        List<News> news = new ArrayList<>();
+        for (NewsEntry newsEntry : res) {
+            news.add(new News(newsEntry));
+        }
+        mRefreshListener.onNewsListRefresh(news);
+    }
 }

@@ -1,32 +1,36 @@
 package com.inftyloop.indulger.fragment;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import butterknife.ButterKnife;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.inftyloop.indulger.R;
-import butterknife.BindView;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainTabBarFragment extends QMUIFragment {
     private final static String TAG = MainTabBarFragment.class.getSimpleName();
 
     enum Pager {
-        HOME, FAV, PERSONAL;
+        HOME, VIDEO_LIST, PERSONAL;
 
         public static Pager getPagerFromIndex(int idx) {
             switch (idx) {
                 case 1:
-                    return FAV;
+                    return VIDEO_LIST;
                 case 2:
                     return PERSONAL;
                 default:
@@ -73,21 +77,24 @@ public class MainTabBarFragment extends QMUIFragment {
         QMUITabSegment.Tab fav = new QMUITabSegment.Tab(
                 ContextCompat.getDrawable(getContext(), R.drawable.icon_star),
                 ContextCompat.getDrawable(getContext(), R.drawable.icon_star_fill),
-                getActivity().getResources().getString(R.string.fav), false
+                getActivity().getResources().getString(R.string.video_list_title), false
         );
         QMUITabSegment.Tab personal = new QMUITabSegment.Tab(
                 ContextCompat.getDrawable(getContext(), R.drawable.icon_signal),
                 ContextCompat.getDrawable(getContext(), R.drawable.icon_signal_fill),
                 getActivity().getResources().getString(R.string.personal), false
         );
+
         mTabSegment.addTab(home)
                 .addTab(fav)
                 .addTab(personal);
+
         mPages.put(Pager.HOME, new HomeFragment());
-        mPages.put(Pager.FAV, new FavoriteFragment());
+        mPages.put(Pager.VIDEO_LIST, new VideoListFragment());
         mPages.put(Pager.PERSONAL, new MeFragment());
         mPager.setAdapter(mPagerAdapter);
         mTabSegment.setupWithViewPager(mPager, false);
+
         return layout;
     }
 

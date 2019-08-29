@@ -80,9 +80,9 @@ public class NewsListAdapter extends BaseNewsAdapter {
             Button deleteButton = popupView.findViewById(R.id.popup_delete_button);
             deleteButton.setOnClickListener((View v) -> {
                 popupWindow.dismiss();
-                HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCK_KEYS, new HashSet<>());
+                HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
                 blockKeys.addAll(getData().get(vh.getAdapterPosition()).getNewsEntry().getKeywords());
-                ConfigManager.putStringSetNow(Definition.BLOCK_KEYS, blockKeys);
+                ConfigManager.putStringSetNow(Definition.BLOCKED_KEYS, blockKeys);
                 removeItemImmediately(vh.getAdapterPosition());
                 for (String keyword : blockKeys) {
                     Log.d(TAG, "add blocking keyword " + keyword);

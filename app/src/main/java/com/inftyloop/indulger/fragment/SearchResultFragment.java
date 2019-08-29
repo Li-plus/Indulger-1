@@ -91,7 +91,7 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
         isLoadingInProgress = false;
         mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
 
-        HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCK_KEYS, new HashSet<>());
+        HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
         for (News news : newsList) {
             boolean isBlock = false;
             for (String keyword : news.getNewsEntry().getKeywords()) {

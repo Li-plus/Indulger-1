@@ -5,12 +5,11 @@
     android:background="?attr/app_background_color">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorite_recycler_view"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/qmui_topbar_height"
         android:clickable="true"
-        android:fillViewport="true"
         android:fitsSystemWindows="true"
         android:focusable="true" />
 

@@ -1,14 +1,18 @@
 package com.inftyloop.indulger.fragment;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
+import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
+import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -20,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FavoriteFragment extends QMUIFragment {
+public class FavoriteFragment extends QMUIFragment implements OnNewsListRefreshListener {
     @BindView(R.id.favorite_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.topbar)
@@ -29,6 +33,9 @@ public class FavoriteFragment extends QMUIFragment {
     FavoriteItemAdapter mAdapter;
 
     private final static String TAG = FavoriteFragment.class.getSimpleName();
+    private boolean isLoadingInProgress = false;
+    private DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
+    private boolean isLoadingMore = false;
 
     @Override
     protected View onCreateView() {
@@ -48,42 +55,39 @@ public class FavoriteFragment extends QMUIFragment {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mRecyclerView.setOnScrollChangeListener((View view, int i, int i1, int i2, int i3) -> {
-            if (!view.canScrollVertically(1)) {
-                view.postDelayed(() -> {
-                    onDataLoaded();
-                }, 2000);
+            if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress &&
+                    mAdapter.getItemViewType(mAdapter.getItemCount() - 1) != News.NO_MORE_FOOTER) {
+
+                mRecyclerView.post(() -> {
+                    isLoadingInProgress = true;
+                    api.obtainFavoriteList(isLoadingMore);
+                    isLoadingMore = true;
+                });
             }
         });
 
         mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-        onDataLoaded();
 
         return root;
     }
 
-    public boolean canLoadMore() {
-        return mAdapter.getData().size() < 20;
-    }
+    @Override
+    public void onNewsListRefresh(List<News> newsList) {
+        isLoadingInProgress = false;
+        if (mAdapter.getData().size() > 0 &&
+                (mAdapter.getData().get(mAdapter.getData().size() - 1).getType() == News.LOAD_MORE_FOOTER) ||
+                (mAdapter.getData().get(mAdapter.getData().size() - 1).getType() == News.NO_MORE_FOOTER)) {
+            mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
+        }
 
-    public void onDataLoaded() {
-//        if (!canLoadMore())
-//            return;
-//        mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
-//        int loadSize = 10;
-//        for (int i = 0; i < loadSize; i++) {
-//            double rand = Math.random();
-//            int position = mAdapter.getData().size();
-////            if (rand < 0.33)
-//            mAdapter.insertItemImmediately(position, new News("text news " + Math.random(), "author", "5 minutes ago"));
-////            else if (rand < 0.66)
-////                mAdapter.insertItemImmediately(position, new News("single image news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher));
-////            else
-////                mAdapter.insertItemImmediately(position, new News("three images news " + Math.random(), "author", "4 minutes ago", R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-//        }
-//        if (canLoadMore()) {
-//            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-//        } else {
-//            mAdapter.insertItemImmediately(new News(News.NO_MORE_FOOTER));
-//        }
+        for (News news : newsList) {
+            int position = mAdapter.getData().size();
+            mAdapter.insertItemImmediately(position, news);
+        }
+
+        if (newsList.size() >= 10)
+            mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
+        else
+            mAdapter.insertItemImmediately(new News(News.NO_MORE_FOOTER));
     }
 }

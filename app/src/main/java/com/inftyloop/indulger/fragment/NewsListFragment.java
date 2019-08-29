@@ -190,7 +190,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         }
         for (News news : newsList) {
             boolean isBlock = false;
-            HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCK_KEYS, new HashSet<>());
+            HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
             for (String keyword : news.getNewsEntry().getKeywords()) {
                 if (blockKeys.contains(keyword)) {
                     isBlock = true;

@@ -24,5 +24,6 @@ public class Definition {
 
    public static final String WECHAT_APP_ID = "wx2e9b96128669c41e";
 
-   public static final String BLOCK_KEYS = "block_keys";
+   public static final String BLOCKED_KEYS = "block_keys";
+   public static final String RECOMMENDED_KEYS = "recommended_keys";
 }
