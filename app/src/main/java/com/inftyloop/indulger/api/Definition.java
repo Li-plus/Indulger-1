@@ -26,4 +26,5 @@ public class Definition {
 
    public static final String BLOCKED_KEYS = "block_keys";
    public static final String RECOMMENDED_KEYS = "recommended_keys";
+   public static final String IS_FAV_ADAPTER = "is_fav_adapter";
 }

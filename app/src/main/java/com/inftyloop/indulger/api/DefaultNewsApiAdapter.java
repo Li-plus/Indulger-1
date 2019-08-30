@@ -14,6 +14,7 @@ import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.NewsFavEntry;
 import com.inftyloop.indulger.model.entity.NewsLoadRecord;
 import com.inftyloop.indulger.util.DateUtils;
 import com.inftyloop.indulger.util.NetworkUtils;
@@ -343,14 +344,14 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         if (endTime == null)
             endTime = new Date().getTime();
 
-        List<NewsEntry> res = LitePal.where("isFavorite = ? AND markFavoriteTime < ?", "1", endTime.toString()).order("markFavoriteTime desc").limit(15).find(NewsEntry.class);
+        List<NewsFavEntry> res = LitePal.where("markFavoriteTime < ?", endTime.toString()).order("markFavoriteTime desc").limit(15).find(NewsFavEntry.class);
         if (res.isEmpty()) {
             mRefreshListener.onNewsListRefresh(new ArrayList<>());
             return;
         }
         channelEndTime.put(channel, res.get(res.size() - 1).getPublishTime());
         List<News> news = new ArrayList<>();
-        for (NewsEntry newsEntry : res) {
+        for (NewsFavEntry newsEntry : res) {
             news.add(new News(newsEntry));
         }
         mRefreshListener.onNewsListRefresh(news);

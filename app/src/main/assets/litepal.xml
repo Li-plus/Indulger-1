@@ -6,5 +6,6 @@
         <!-- TODO: add entity class here -->
         <mapping class="com.inftyloop.indulger.model.entity.NewsEntry" />
         <mapping class="com.inftyloop.indulger.model.entity.NewsLoadRecord" />
+        <mapping class="com.inftyloop.indulger.model.entity.NewsFavEntry" />
     </list>
 </litepal>

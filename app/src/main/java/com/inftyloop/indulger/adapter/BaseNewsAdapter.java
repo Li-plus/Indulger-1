@@ -22,6 +22,8 @@ import com.qmuiteam.qmui.util.QMUIResHelper;
 import java.util.HashSet;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> {
     public static NewsEntry currentNewsEntry = new NewsEntry();
     protected Activity mContext;
@@ -90,6 +92,7 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         ((TextView) vh.findViewById(R.id.tv_title)).setText(item.getNewsEntry().getTitle());
         ((TextView) vh.findViewById(R.id.tv_author)).setText(item.getNewsEntry().getPublisherName());
         ((TextView) vh.findViewById(R.id.tv_time)).setText(DateUtils.getShortTime(mContext, item.getNewsEntry().getPublishTime()));
+        vh.findViewById(R.id.tv_fav_time).setVisibility(GONE);
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
                 GlideImageLoader.create(vh.findViewById(R.id.iv_img)).loadImage(item.getNewsEntry().getImageUrls().get(0), R.color.placeholder_color, null);

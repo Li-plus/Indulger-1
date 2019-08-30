@@ -97,4 +97,5 @@
     <string name="share_failure">Failed to share</string>
 
     <string name="video_list_title">Videos</string>
+    <string name="faved_prefix">Added to favorite %s</string>
 </resources>

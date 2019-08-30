@@ -17,10 +17,14 @@ import butterknife.OnClick;
 import com.inftyloop.indulger.R;
 import butterknife.BindView;
 import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.NewsFavEntry;
 import com.inftyloop.indulger.util.*;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewsDetailHeaderView extends FrameLayout {
     private static final String NICK = "Indulger";  // used to bind javascript
