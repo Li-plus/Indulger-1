@@ -18,6 +18,7 @@ import com.inftyloop.indulger.util.GlideImageLoader;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.arch.QMUIFragmentActivity;
 import com.qmuiteam.qmui.util.QMUIResHelper;
+import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class FavoriteItemAdapter extends BaseNewsAdapter {
         vh.findViewById(R.id.news_list_clear_icon).setOnClickListener((View view) -> {
             int position = vh.getAdapterPosition();
             NewsFavEntry newsEntry = getData().get(position).getFavEntry();
-            newsEntry.deleteAsync();
+            LitePal.deleteAll(NewsFavEntry.class, "uuid = ?", newsEntry.getUuid());
             removeItemImmediately(position);
         });
     }

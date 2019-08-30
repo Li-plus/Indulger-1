@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
@@ -68,6 +69,9 @@ public class MainApplication extends Application {
         mMainThread = Thread.currentThread();
         mMainThreadId = android.os.Process.myTid();
         mHandler = new Handler();
+        Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+                Log.e(t.getName(), e.getMessage());
+        });
         QMUISwipeBackActivityManager.init(this);
         LitePal.initialize(this);
         // init configs
