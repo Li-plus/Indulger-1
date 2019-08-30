@@ -98,4 +98,7 @@
 
     <string name="video_list_title">Videos</string>
     <string name="faved_prefix">Added to favorite %s</string>
+    <string name="original_article_link">Original link: %s</string>
+    <string name="no_email_client_installed">No email client is installed</string>
+    <string name="send_email_prompt">Send Email</string>
 </resources>

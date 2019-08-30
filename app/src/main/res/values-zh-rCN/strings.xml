@@ -86,4 +86,7 @@
 
     <string name="video_list_title">视频</string>
     <string name="faved_prefix">收藏于%s</string>
+    <string name="original_article_link">原文链接：%s</string>
+    <string name="no_email_client_installed">没有安装邮件客户端</string>
+    <string name="send_email_prompt">发送邮件</string>
 </resources>

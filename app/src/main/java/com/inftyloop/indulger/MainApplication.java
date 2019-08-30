@@ -9,6 +9,8 @@ import android.os.Looper;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.auth.AuthInfo;
 import org.litepal.LitePal;
 
 public class MainApplication extends Application {
@@ -78,6 +80,8 @@ public class MainApplication extends Application {
         if(!ConfigManager.contains(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED)) {
             ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED, false);
         }
+        // register Weibo SDK
+        WbSdk.install(this, new AuthInfo(this, Definition.WEIBO_APP_ID, Definition.WEIBO_REDIRECT_URL, Definition.WEIBO_SCOPE));
     }
 
     public static void restart() {

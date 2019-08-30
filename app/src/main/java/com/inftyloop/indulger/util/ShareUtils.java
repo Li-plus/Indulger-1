@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import com.inftyloop.indulger.api.Definition;
+import com.sina.weibo.sdk.api.ImageObject;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.share.WbShareHandler;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -53,5 +57,18 @@ public class ShareUtils {
 
     public void shareToWeChatMoments(String url, String shareTitle, String description, @Nullable Bitmap bitmap) {
         shareToWeChatImpl(url, shareTitle, description, bitmap, 1);
+    }
+
+    public void shareToWeibo(WbShareHandler handler, String content, @Nullable Bitmap bitmap) {
+        WeiboMultiMessage weiboMsg = new WeiboMultiMessage();
+        TextObject textObject = new TextObject();
+        textObject.text = content;
+        weiboMsg.textObject = textObject;
+        if(bitmap != null) {
+            ImageObject imageObject = new ImageObject();
+            imageObject.setImageObject(bitmap);
+            weiboMsg.imageObject = imageObject;
+        }
+        handler.shareMessage(weiboMsg, false);
     }
 }

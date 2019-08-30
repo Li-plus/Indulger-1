@@ -1,8 +1,12 @@
 package com.inftyloop.indulger.fragment;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +19,9 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.activity.MainActivity;
 import com.inftyloop.indulger.adapter.BaseNewsAdapter;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
 import com.inftyloop.indulger.api.Definition;
@@ -37,7 +43,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCallback {
     private final static String TAG = NewsDetailFragment.class.getSimpleName();
@@ -62,7 +70,10 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
         final int TAG_SHARE_WECHAT_MOMENT = 1;
         final int TAG_SHARE_WEIBO = 2;
         final int TAG_SHARE_EMAIL = 3;
-        String gist = mEntry.getContent().replaceAll("<.*?>", "").substring(0, Math.min(100, mEntry.getContent().length())).replaceAll("\n", "").trim();
+        String content = isLoadFromFav ?
+                mFavEntry.getContent().replaceAll("<.*?>", "") :
+                mEntry.getContent().replaceAll("<.*?>", "");
+        String gist = content.substring(0, Math.min(100, content.length())).replaceAll("\n", "").trim();
         QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(getActivity());
         builder.addItem(R.mipmap.icon_more_operation_share_friend, getString(R.string.share_wechat_friend), TAG_SHARE_WECHAT_FRIEND, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
                 .addItem(R.mipmap.icon_more_operation_share_moment, getString(R.string.share_wechat_moment), TAG_SHARE_WECHAT_MOMENT, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
@@ -77,7 +88,7 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                                 if (!shareUtils.getIwxapi().isWXAppInstalled()) {
                                     QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    shareUtils.shareToWeChatFriends(mEntry.getUrl(), mEntry.getTitle(), gist, mMainImage);
+                                    shareUtils.shareToWeChatFriends(isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl(), isLoadFromFav ? mFavEntry.getTitle() : mEntry.getTitle(), gist, mMainImage);
                                 }
                             }
                             break;
@@ -86,15 +97,36 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                                 if (!shareUtils.getIwxapi().isWXAppInstalled()) {
                                     QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    shareUtils.shareToWeChatMoments(mEntry.getUrl(), mEntry.getTitle(), gist, mMainImage);
+                                    shareUtils.shareToWeChatMoments(isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl(), isLoadFromFav ? mFavEntry.getTitle() : mEntry.getTitle(), gist, mMainImage);
                                 }
                             }
                             break;
                         case TAG_SHARE_WEIBO:
-                            Toast.makeText(getActivity(), getString(R.string.share_weibo), Toast.LENGTH_SHORT).show();
+                            Activity act = getActivity();
+                            if(act instanceof MainActivity) {
+                                MainActivity ac = (MainActivity)act;
+                                StringBuilder bs = new StringBuilder();
+                                bs.append(isLoadFromFav ? mFavEntry.getTitle() : mEntry.getTitle());
+                                bs.append("\n");
+                                bs.append(getString(R.string.original_article_link, isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl()));
+                                shareUtils.shareToWeibo(ac.shareHandler, bs.toString(), mMainImage);
+                            }
                             break;
                         case TAG_SHARE_EMAIL:
-                            Toast.makeText(getActivity(), getString(R.string.share_email), Toast.LENGTH_SHORT).show();
+                            Intent email = new Intent(Intent.ACTION_SENDTO);
+                            email.setType("text/plain");
+                            email.setData(Uri.parse("mailto:"));
+                            email.putExtra(Intent.EXTRA_SUBJECT, isLoadFromFav ? mFavEntry.getTitle() : mEntry.getTitle());
+                            StringBuilder bs = new StringBuilder();
+                            bs.append(content);
+                            bs.append("\n");
+                            bs.append(getString(R.string.original_article_link, isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl()));
+                            email.putExtra(Intent.EXTRA_TEXT, bs.toString());
+                            try {
+                                startActivity(Intent.createChooser(email, getString(R.string.send_email_prompt)));
+                            } catch (ActivityNotFoundException ex) {
+                                QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.no_email_client_installed), Toast.LENGTH_SHORT).show();
+                            }
                             break;
                     }
                 }).build().show();
@@ -177,14 +209,15 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
             }
             onGetNewsDetailSuccess(mEntry);
         } else {
-            if(mFavEntry.getImageSize().size() > 0) {
-                File temp = new File(FileUtils.getCacheDir(), "__db_file_cache");
-                try(FileOutputStream stream = new FileOutputStream(temp)) {
-                    stream.write(mFavEntry.getImageBuffer(), 0, (int)(long)mFavEntry.getImageSize().get(0));
+            if(mFavEntry.getImgUrls().size() > 0) {
+                try {
+                    String url = mFavEntry.getImgUrls().get(0);
+                    String fname = url.replaceFirst("http://127.0.0.1/", "").replaceFirst(":", "_");
+                    File f = new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs", fname);
+                    mMainImage = BitmapFactory.decodeFile(f.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mMainImage = BitmapFactory.decodeFile(temp.getAbsolutePath());
             }
             onGetNewsDetailSuccess(new NewsEntry(mFavEntry));
         }

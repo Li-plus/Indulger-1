@@ -3,19 +3,15 @@ package com.inftyloop.indulger.model.entity;
 import android.annotation.SuppressLint;
 import com.bumptech.glide.request.FutureTarget;
 import com.inftyloop.indulger.MainApplication;
+import com.inftyloop.indulger.util.FileUtils;
 import com.inftyloop.indulger.util.GlideApp;
 import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class NewsFavEntry extends LitePalSupport {
     public NewsFavEntry() {
@@ -37,7 +33,6 @@ public class NewsFavEntry extends LitePalSupport {
         markFavoriteTime = new Date().getTime();
         uuid = entry.getUuid();
         // download image to buffer
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
         for(int i = 0; i < entry.getImageUrls().size(); ++i) {
             String url = entry.getImageUrls().get(i);
             FutureTarget<File> res = GlideApp.with(MainApplication.getContext()).asFile().load(url).submit();
@@ -45,12 +40,12 @@ public class NewsFavEntry extends LitePalSupport {
                 File r = res.get();
                 if(r == null)
                     continue;
-                FileInputStream fis = new FileInputStream(r);
-                byte[] rr = new byte[(int)r.length()];
-                fis.read(rr);
-                fis.close();
-                output.write(rr);
-                imageSize.add(r.length());
+                String dataDir = MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs";
+                FileUtils.createDirs(dataDir);
+                File dst = new File(dataDir, String.format("%s_%d", uuid, i));
+                if(!dst.exists())
+                    dst.createNewFile();
+                FileUtils.copy(r, dst);
                 imgUrls.add(String.format("http://127.0.0.1/%s:%d", uuid, i));
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -58,7 +53,6 @@ public class NewsFavEntry extends LitePalSupport {
         }
         if(imgUrls.size() > 0)
             content = content.replaceFirst("src=\".*?\"", "src=\"" + imgUrls.get(0) + "\"");
-        imageBuffer = output.toByteArray();
     }
 
     public String getPublisherName() {
@@ -149,22 +143,6 @@ public class NewsFavEntry extends LitePalSupport {
         this.uuid = uuid;
     }
 
-    public byte[] getImageBuffer() {
-        return imageBuffer;
-    }
-
-    public void setImageBuffer(byte[] imageBuffer) {
-        this.imageBuffer = imageBuffer;
-    }
-
-    public List<Long> getImageSize() {
-        return imageSize;
-    }
-
-    public void setImageSize(List<Long> imageSize) {
-        this.imageSize = imageSize;
-    }
-
     public List<String> getImgUrls() {
         return imgUrls;
     }
@@ -180,8 +158,6 @@ public class NewsFavEntry extends LitePalSupport {
     private String url;
     private String content;
     private String category;
-    private byte[] imageBuffer;
-    private List<Long> imageSize = new ArrayList<>();
     private List<String> imgUrls = new ArrayList<>();
     private List<String> keywords = new ArrayList<>();
     private String videoUrl;

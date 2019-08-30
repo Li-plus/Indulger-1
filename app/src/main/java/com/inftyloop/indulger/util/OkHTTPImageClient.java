@@ -13,6 +13,7 @@ import org.litepal.LitePal;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URLConnection;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -31,9 +32,6 @@ public class OkHTTPImageClient {
                     Request req = chain.request();
                     HttpUrl url = req.url();
                     if (url.host().equals("127.0.0.1")) {
-                        if (BuildConfig.DEBUG) {
-                            Log.w(TAG, url.encodedPath() + "#" + url.port());
-                        }
                         String path = url.encodedPath().replaceFirst("/", "");
                         String[] info = path.split(":");
                         try {
@@ -42,14 +40,14 @@ public class OkHTTPImageClient {
                             long time = new Date().getTime();
                             builder.code(200).message("OK").protocol(Protocol.HTTP_1_1)
                                     .receivedResponseAtMillis(time).request(req).sentRequestAtMillis(time);
-                            long offset = 0;
-                            int idx = Integer.parseInt(info[1]);
-                            for(int i = 0; i < idx; ++i)
-                                offset += entry.getImageSize().get(i);
-                            byte[] img = new byte[(int)(long)entry.getImageSize().get(idx)];
-                            System.arraycopy(entry.getImageBuffer(), (int)offset, img, 0, (int)(long)entry.getImageSize().get(idx));
+                            File f = new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs", String.format("%s_%s", info[0], info[1]));
+                            byte[] img = new byte[(int)f.length()];
+                            FileInputStream stream = new FileInputStream(f);
+                            stream.read(img);
                             ByteArrayInputStream in = new ByteArrayInputStream(img);
                             String contentType = URLConnection.guessContentTypeFromStream(in);
+                            in.close();
+                            stream.close();
                             return builder.body(ResponseBody.create(img, MediaType.get(contentType))).build();
                         } catch (Exception e) {
                             return new okhttp3.Response.Builder().code(404).request(req).protocol(Protocol.HTTP_1_1).message("NOT FOUND").body(ResponseBody.create(
