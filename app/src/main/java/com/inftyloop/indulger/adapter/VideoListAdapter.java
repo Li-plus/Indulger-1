@@ -60,6 +60,7 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
         ((TextView) vh.findViewById(R.id.tv_title)).setText(news.getNewsEntry().getTitle());
         ((TextView) vh.findViewById(R.id.tv_duration)).setText("2:00");
         ((TextView) vh.findViewById(R.id.tv_author)).setText(news.getNewsEntry().getPublisherName());
+//        vh.findViewById(R.id.tv_fav_time).setVisibility(GONE);
 
         MyJzVideoPlayer videoPlayer = vh.findViewById(R.id.video_player);
 

@@ -30,7 +30,7 @@ public class FavoriteFragment extends QMUIFragment implements OnNewsListRefreshL
     @BindView(R.id.topbar)
     QMUITopBarLayout mTopBar;
 
-    FavoriteItemAdapter mAdapter;
+    private FavoriteItemAdapter mAdapter;
 
     private final static String TAG = FavoriteFragment.class.getSimpleName();
     private boolean isLoadingInProgress = false;
@@ -43,7 +43,7 @@ public class FavoriteFragment extends QMUIFragment implements OnNewsListRefreshL
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getString(R.string.favorite_title));
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         List<News> data = new ArrayList<>();
         mAdapter = new FavoriteItemAdapter(getActivity(), data);

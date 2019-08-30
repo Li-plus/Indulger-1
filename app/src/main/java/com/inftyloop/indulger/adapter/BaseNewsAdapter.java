@@ -31,6 +31,7 @@ import cn.jzvd.JzvdStd;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+
 abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> {
     public static NewsEntry currentNewsEntry = new NewsEntry();
     protected Activity mContext;
@@ -100,9 +101,12 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
         } else {
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.foreground_text_color));
         }
+
         ((TextView) vh.findViewById(R.id.tv_title)).setText(news.getNewsEntry().getTitle());
         ((TextView) vh.findViewById(R.id.tv_author)).setText(news.getNewsEntry().getPublisherName());
         ((TextView) vh.findViewById(R.id.tv_time)).setText(DateUtils.getShortTime(mContext, news.getNewsEntry().getPublishTime()));
+        vh.findViewById(R.id.tv_fav_time).setVisibility(GONE);
+
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
                 GlideImageLoader.create(vh.findViewById(R.id.iv_img)).loadImage(news.getNewsEntry().getImageUrls().get(0), R.color.placeholder_color, null);

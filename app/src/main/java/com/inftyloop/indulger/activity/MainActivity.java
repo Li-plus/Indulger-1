@@ -3,6 +3,7 @@ package com.inftyloop.indulger.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -18,6 +19,9 @@ import com.qmuiteam.qmui.arch.annotation.FirstFragments;
 import com.qmuiteam.qmui.arch.annotation.LatestVisitRecord;
 
 import cn.jzvd.Jzvd;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.sina.weibo.sdk.share.WbShareCallback;
+import com.sina.weibo.sdk.share.WbShareHandler;
 
 import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_TITLE;
 import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_URL;
@@ -30,7 +34,14 @@ import static com.inftyloop.indulger.fragment.WebViewFragment.EXTRA_URL;
         })
 @DefaultFirstFragment(MainTabBarFragment.class)
 @LatestVisitRecord
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements WbShareCallback {
+    public WbShareHandler shareHandler = new WbShareHandler(this);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        shareHandler.registerApp();
+    }
 
     @Override
     protected int getContextViewId() {
@@ -61,5 +72,26 @@ public class MainActivity extends BaseFragmentActivity {
             return;
         Jzvd.releaseAllVideos();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onWbShareSuccess() {
+        QMUITipDialog.Builder.makeToast(this, QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_success), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWbShareCancel() {
+        QMUITipDialog.Builder.makeToast(this, QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.share_cancel), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWbShareFail() {
+        QMUITipDialog.Builder.makeToast(this, QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.share_failure), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        shareHandler.doResultIntent(intent, this);
     }
 }

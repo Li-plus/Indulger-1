@@ -13,6 +13,7 @@ public class News {
     private int mType;
     private boolean mIsRead = false;
     private NewsEntry mEntry;
+    private NewsFavEntry mFavEntry;
 
     public News(int type) {
         this.mType = type;
@@ -30,8 +31,22 @@ public class News {
         }
     }
 
+    public News(NewsFavEntry entry) {
+        this.mFavEntry = entry;
+        if (entry.getVideoUrl() != null && !entry.getVideoUrl().trim().isEmpty())
+            this.mType = VIDEO_NEWS;
+        else if (entry.getImgUrls().size() >= 3)
+            this.mType = THREE_IMAGES_NEWS;
+        else if (entry.getImgUrls().size() >= 1)
+            this.mType = SINGLE_IMAGE_NEWS;
+    }
+
     public NewsEntry getNewsEntry() {
         return mEntry;
+    }
+
+    public NewsFavEntry getFavEntry() {
+        return mFavEntry;
     }
 
     public int getType() {

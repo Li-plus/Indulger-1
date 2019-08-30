@@ -100,4 +100,9 @@
     <string name="sign_up_has_account_notice">已有账号？点击登录</string>
 
     <string name="log_out">退出登录</string>
+
+    <string name="faved_prefix">收藏于%s</string>
+    <string name="original_article_link">原文链接：%s</string>
+    <string name="no_email_client_installed">没有安装邮件客户端</string>
+    <string name="send_email_prompt">发送邮件</string>
 </resources>

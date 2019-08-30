@@ -29,6 +29,15 @@ public class Definition {
     public static final String BLOCKED_KEYS = "block_keys";
     public static final String RECOMMENDED_KEYS = "recommended_keys";
 
+    public static final String WEIBO_APP_ID = "1722100576";
+    public static final String WEIBO_REDIRECT_URL = "http://www.sina.com";
+    public static final String WEIBO_SCOPE =
+            "email,direct_messages_read,direct_messages_write,"
+                    + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
+                    + "follow_app_official_microblog," + "invitation_write";
+
+    public static final String IS_FAV_ADAPTER = "is_fav_adapter";
+
     public static final int REQUEST_CODE_SETTINGS = 1;
     public static final int REQUEST_CODE_LOGIN = 2;
     public static final int REQUEST_CODE_SIGN_UP = 3;
