@@ -3,7 +3,6 @@ package com.inftyloop.indulger.fragment;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,11 +13,11 @@ import com.inftyloop.indulger.adapter.BaseRecyclerViewAdapter;
 import com.inftyloop.indulger.adapter.VideoListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.ui.BaseFragment;
-import com.inftyloop.indulger.ui.MyJzVideoPlayer;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -28,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.jzvd.Jzvd;
 
 
 public class VideoListFragment extends BaseFragment implements OnNewsListRefreshListener {
@@ -39,7 +37,7 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
 
     BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> mAdapter;
 
-    private final static String TAG = NewsListFragment.class.getSimpleName();
+    private final static String TAG = VideoListFragment.class.getSimpleName();
     private boolean isLoadingInProgress = false;
 
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
@@ -89,24 +87,7 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-            @Override
-            public void onChildViewAttachedToWindow(@NonNull View view) {
-
-            }
-
-            @Override
-            public void onChildViewDetachedFromWindow(@NonNull View view) {
-                MyJzVideoPlayer detachJzvd = view.findViewById(R.id.video_player);
-                Jzvd curJzvd = Jzvd.CURRENT_JZVD;
-                if (detachJzvd != null && detachJzvd.jzDataSource != null &&
-                        curJzvd != null && curJzvd.jzDataSource != null &&
-                        detachJzvd.jzDataSource.containsTheUrl(curJzvd.jzDataSource.getCurrentUrl()) &&
-                        curJzvd.screen != Jzvd.SCREEN_FULLSCREEN) {
-                    Jzvd.releaseAllVideos();
-                }
-            }
-        });
+        mRecyclerView.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeCallback());
     }
 
     @Override
@@ -115,8 +96,8 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
                 "http://vfx.mtime.cn/Video/2017/03/31/mp4/170331093811717750.mp4",
                 "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
                 "https://www.w3school.com.cn/example/html5/mov_bbb.mp4",
-                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-                "https://www.w3schools.com/html/movie.mp4"
+                "https://www.w3schools.com/html/movie.mp4",
+                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
         };
 
         newsList = new ArrayList<>();

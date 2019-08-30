@@ -36,6 +36,7 @@
         <item name="tabbar_normal_text_color">?android:textColor</item>
         <item name="tabbar_selected_text_color">@color/app_color_blue_pressed</item>
         <item name="app_primary_color">?attr/qmui_config_color_blue</item>
+        <item name="app_primary_dim_color">?attr/tabbar_selected_text_color</item>
 
         <item name="app_background_color">@color/color_gray_f</item>
         <item name="app_background_selector">@drawable/selector_white</item>
@@ -166,6 +167,7 @@
         <item name="add_channel_close_button_mipmap">@drawable/category_edit_close_dark</item>
 
         <item name="app_primary_color">@color/color_gray_1</item>
+        <item name="app_primary_dim_color">@color/color_gray_3</item>
         <item name="app_background_color">@color/color_gray_2</item>
         <item name="app_background_color_dark">@color/color_gray_3</item>
         <item name="app_background_selector">@drawable/selector_black</item>

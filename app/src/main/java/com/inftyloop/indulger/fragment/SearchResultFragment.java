@@ -15,6 +15,7 @@ import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.NewsListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.util.ConfigManager;
@@ -75,9 +76,9 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
                 });
             }
         });
+        mRecyclerView.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeCallback());
 
         mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-
         return root;
     }
 

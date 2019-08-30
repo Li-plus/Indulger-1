@@ -22,7 +22,7 @@ public class News {
     public News(NewsEntry newsEntry) {
         this.mEntry = newsEntry;
         List<String> imageUrls = newsEntry.getImageUrls();
-        if (newsEntry.getVideoUrl() != null) {
+        if (newsEntry.getVideoUrl() != null && !newsEntry.getVideoUrl().trim().isEmpty()) {
             this.mType = VIDEO_NEWS;
         } else if (imageUrls.size() >= 3) {
             this.mType = THREE_IMAGES_NEWS;
@@ -33,11 +33,11 @@ public class News {
 
     public News(NewsFavEntry entry) {
         this.mFavEntry = entry;
-        if(entry.getVideoUrl() != null)
+        if (entry.getVideoUrl() != null && !entry.getVideoUrl().trim().isEmpty())
             this.mType = VIDEO_NEWS;
-        else if(entry.getImgUrls().size() >= 3)
+        else if (entry.getImgUrls().size() >= 3)
             this.mType = THREE_IMAGES_NEWS;
-        else if(entry.getImgUrls().size() >= 1)
+        else if (entry.getImgUrls().size() >= 1)
             this.mType = SINGLE_IMAGE_NEWS;
     }
 
@@ -45,7 +45,9 @@ public class News {
         return mEntry;
     }
 
-    public NewsFavEntry getFavEntry() { return mFavEntry; }
+    public NewsFavEntry getFavEntry() {
+        return mFavEntry;
+    }
 
     public int getType() {
         return mType;

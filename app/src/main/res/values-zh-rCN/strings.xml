@@ -85,6 +85,22 @@
     <string name="news_list_notification_already_newest">已是最新了</string>
 
     <string name="video_list_title">视频</string>
+
+    <string name="log_in_or_sign_up">登录/注册</string>
+    <string name="log_in_title">登录</string>
+    <string name="log_in_password">密码</string>
+    <string name="log_in_email">邮箱</string>
+    <string name="log_in_no_account_notice">还没有账号？点击注册</string>
+    <string name="log_in_remember_password">记住密码</string>
+
+    <string name="sign_up_user_name">用户名</string>
+    <string name="sign_up_password">密码</string>
+    <string name="sign_up_password_confirm">确认密码</string>
+    <string name="sign_up_title">注册</string>
+    <string name="sign_up_has_account_notice">已有账号？点击登录</string>
+
+    <string name="log_out">退出登录</string>
+
     <string name="faved_prefix">收藏于%s</string>
     <string name="original_article_link">原文链接：%s</string>
     <string name="no_email_client_installed">没有安装邮件客户端</string>

@@ -70,6 +70,7 @@ public class MainActivity extends BaseFragmentActivity implements WbShareCallbac
     public void onBackPressed() {
         if (Jzvd.backPress())
             return;
+        Jzvd.releaseAllVideos();
         super.onBackPressed();
     }
 

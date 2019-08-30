@@ -1,16 +1,13 @@
 package com.inftyloop.indulger.fragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.NewsLoadRecord;
@@ -26,9 +23,13 @@ import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.suke.widget.SwitchButton;
+
 import org.litepal.LitePal;
 
 import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SettingsFragment extends QMUIFragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
@@ -48,8 +49,8 @@ public class SettingsFragment extends QMUIFragment {
     private SwitchButton mNightModeManualBtn;
 
     private void updateNightModeManualBtn() {
-        if(mNightModeManualBtn != null) {
-            if(night_mode_auto)
+        if (mNightModeManualBtn != null) {
+            if (night_mode_auto)
                 mNightModeManualBtn.setCheckedDirect(ThemeManager.isSystemNightModeEnabled(getContext()));
             else
                 mNightModeManualBtn.setCheckedDirect(night_mode_enabled);
@@ -96,7 +97,8 @@ public class SettingsFragment extends QMUIFragment {
         mNightModeManualBtn.setChecked(night_mode_enabled);
         mNightModeManualBtn.setOnCheckedChangeListener((v, checked) -> {
             // user has flipped btn, we do not need to update its status
-            if(night_mode_auto || getBaseFragmentActivity() == null) return;  // ignore if automatic mode is set
+            if (night_mode_auto || getBaseFragmentActivity() == null)
+                return;  // ignore if automatic mode is set
             night_mode_enabled = checked;
             ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_ENABLED, checked);
             ThemeManager.changeTheme(getBaseFragmentActivity(), theme_checked_idx);
@@ -108,7 +110,7 @@ public class SettingsFragment extends QMUIFragment {
         itemEnableNightModeAuto.setDetailText(getString(R.string.settings_night_mode_follow_sys_prompt));
         itemEnableNightModeAuto.getSwitch().setChecked(night_mode_auto);
         itemEnableNightModeAuto.getSwitch().setOnCheckedChangeListener((v, checked) -> {
-            if(getBaseFragmentActivity() == null) return;
+            if (getBaseFragmentActivity() == null) return;
             night_mode_auto = checked;
             updateNightModeManualBtn();
             ConfigManager.putBooleanNow(Definition.SETTINGS_APP_NIGHT_MODE_FOLLOW_SYS, checked);
@@ -155,7 +157,7 @@ public class SettingsFragment extends QMUIFragment {
         /* Language handler */
 
         lang_checked_idx = ConfigManager.getInt(Definition.SETTINGS_APP_LANG, -1);
-        if(lang_checked_idx < 0)
+        if (lang_checked_idx < 0)
             ConfigManager.putIntNow(Definition.SETTINGS_APP_LANG, 0);
 
         QMUICommonListItemView itemLanguage = mSettingsGroupListView.createItemView(getString(R.string.settings_language));
@@ -168,7 +170,7 @@ public class SettingsFragment extends QMUIFragment {
             new QMUIDialog.CheckableDialogBuilder(getActivity())
                     .setCheckedIndex(lang_checked_idx)
                     .addItems(items, (DialogInterface dialog, int which) -> {
-                        if(lang_checked_idx != which) {
+                        if (lang_checked_idx != which) {
                             lang_checked_idx = which;
                             getActivity().recreate();
                         }
@@ -183,6 +185,12 @@ public class SettingsFragment extends QMUIFragment {
         itemAbout.setOnClickListener((View v) -> {
             QMUIFragment fragment = new AboutFragment();
             startFragment(fragment);
+        });
+
+        QMUICommonListItemView itemLogout = mSettingsGroupListView.createItemView(getString(R.string.log_out));
+        itemLogout.setOnClickListener((View v) -> {
+            setFragmentResult(RESULT_OK, new Intent());
+            popBackStack();
         });
 
         QMUIGroupListView.newSection(getContext())
@@ -201,6 +209,12 @@ public class SettingsFragment extends QMUIFragment {
         QMUIGroupListView.newSection(getContext()).
                 addItemView(itemAbout, null).
                 addTo(mSettingsGroupListView);
+
+        if (MeFragment.isLogin) {
+            QMUIGroupListView.newSection(getContext())
+                    .addItemView(itemLogout, null)
+                    .addTo(mSettingsGroupListView);
+        }
         return root;
     }
 
