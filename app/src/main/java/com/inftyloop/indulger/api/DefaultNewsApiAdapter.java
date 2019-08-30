@@ -87,7 +87,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
             return null;
     }
 
-    private Pair<List<NewsEntry>, Pair<Long, Long>> jsonToNewsEntry(JsonObject obj, String channel) {
+    private Pair<List<NewsEntry>, Pair<Long, Long>> jsonToNewsEntry(JsonObject obj, String channel, boolean save) {
         Pattern pat = Pattern.compile("\\[(.*?)\\]");
         Pattern patCr = Pattern.compile("(\\n)");
         JsonArray data = obj.getAsJsonArray("data");
@@ -150,7 +150,8 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     entry.getKeywords().add(ww.get("word").getAsString());
                     ++curr;
                 }
-                entry.save();
+                if(save)
+                    entry.save();
                 news_entries.add(entry);
             }
         }
@@ -213,7 +214,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             public void onNext(JsonObject jsonObject) {
                                 int total = jsonObject.get("total").getAsInt();
                                 if (total > 0) {
-                                    Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
+                                    Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, true);
                                     List<NewsEntry> entries = res.first;
                                     if (record != null && total < 15) {
                                         entries.addAll(LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15 - total).find(NewsEntry.class));
@@ -270,7 +271,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             @Override
                             public void onNext(JsonObject jsonObject) {
                                 int total = jsonObject.get("total").getAsInt();
-                                Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
+                                Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, true);
                                 List<NewsEntry> entries = res.first;
                                 if (total == 0) {
                                     // do not update status if no new data could be loaded
@@ -327,7 +328,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     public void onNext(JsonObject jsonObject) {
                         int total = jsonObject.get("total").getAsInt();
                         if (total > 0) {
-                            Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel);
+                            Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, false);
                             List<NewsEntry> entries = res.first;
                             Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
                             channelEndTime.put(channel, list.second.second);

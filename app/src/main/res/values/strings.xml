@@ -102,8 +102,9 @@
     <string name="log_in_title">Log in</string>
     <string name="log_in_password">Password</string>
     <string name="log_in_email">Email</string>
+    <string name="log_in_username">Username</string>
     <string name="log_in_no_account_notice">No account yet? Sign up.</string>
-    <string name="log_in_remember_password">Remember Password</string>
+    <string name="log_in_remember_password">\u0020Remember Password</string>
 
     <string name="sign_up_user_name">User Name</string>
     <string name="sign_up_password">Password</string>
@@ -117,4 +118,13 @@
     <string name="original_article_link">Original link: %s</string>
     <string name="no_email_client_installed">No email client is installed</string>
     <string name="send_email_prompt">Send Email</string>
+    <string name="view_original_prompt">View Original</string>
+    <string name="sign_up_fill_all_blanks">Please fill in all the required fields</string>
+    <string name="sign_up_password_discrepancy">Passwords do not match</string>
+    <string name="sign_up_invalid_email">Invalid email, please retry</string>
+    <string name="sign_up_user_exists">Sign up failed. User already exists</string>
+    <string name="sign_up_success">Successfully registered</string>
+    <string name="sign_up_in_progress">Signing up</string>
+    <string name="login_success">Successfully logged in</string>
+    <string name="login_fail">Failed to login</string>
 </resources>

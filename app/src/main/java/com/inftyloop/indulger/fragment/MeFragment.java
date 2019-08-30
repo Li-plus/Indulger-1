@@ -38,7 +38,7 @@ public class MeFragment extends QMUIFragment {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.me, null);
         ButterKnife.bind(this, root);
         mTopBar.setTitle(getResources().getString(R.string.me_title));
-        mUsername.setText(getString(R.string.username_placeholder)); // TODO
+        mUsername.setText(getString(R.string.username_placeholder));
 
         QMUICommonListItemView itemSettings = mGroupListView.createItemView(getString(R.string.me_grouplist_settings));
         itemSettings.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
@@ -74,7 +74,7 @@ public class MeFragment extends QMUIFragment {
         if (resultCode != RESULT_OK)
             return;
         if (requestCode == Definition.REQUEST_CODE_LOGIN) {
-            String userName = data.getStringExtra("username");
+            String userName = data.getStringExtra(Definition.LOGIN_USERNAME);
             mLogin.setVisibility(View.GONE);
             mUsername.setText(userName);
             mUsername.setVisibility(View.VISIBLE);

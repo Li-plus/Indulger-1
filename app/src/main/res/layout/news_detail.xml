@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                android:layout_width="match_parent"
+                                                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                                                 android:layout_height="match_parent">
     <LinearLayout
             android:layout_width="match_parent"
@@ -24,6 +24,16 @@
                 android:layout_gravity="bottom"
                 android:background="?attr/app_primary_color"
                 xmlns:android="http://schemas.android.com/apk/res/android">
+            <TextView
+                    android:id="@+id/tv_view_original"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@drawable/link_text_color"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/view_original_prompt" tools:ignore="RelativeOverlap"/>
             <ImageView
                     android:id="@+id/iv_fav"
                     android:layout_width="25dp"

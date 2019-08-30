@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import butterknife.OnClick;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.inftyloop.indulger.MainApplication;
@@ -58,6 +60,8 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
     ImageView mShareBtn;
     @BindView(R.id.fl_content)
     NewsDetailHeaderView mHeaderView;
+    @BindView(R.id.tv_view_original)
+    TextView mViewOriginal;
     private boolean isFav = false;
     private ShareUtils shareUtils;
     private Bitmap mMainImage;
@@ -237,5 +241,12 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
     @Override
     public TransitionConfig onFetchTransitionConfig() {
         return SCALE_TRANSITION_CONFIG;
+    }
+
+    @OnClick(R.id.tv_view_original)
+    void viewOriginal() {
+        String url = isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 }
