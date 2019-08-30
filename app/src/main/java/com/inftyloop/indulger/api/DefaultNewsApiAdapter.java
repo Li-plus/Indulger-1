@@ -104,6 +104,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                 NewsEntry entry = new NewsEntry();
                 entry.setPublishTime(pubTime);
                 entry.setTitle(dd.get("title").getAsString());
+                entry.setVideoUrl(dd.get("video").getAsString());
 
                 String imgStr = dd.get("image").getAsString();
                 if (!TextUtils.isEmpty(imgStr)) {

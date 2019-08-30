@@ -1,11 +1,11 @@
 package com.inftyloop.indulger.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import android.view.View;
+import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.inftyloop.indulger.R;
@@ -81,19 +81,6 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
                 videoPlayer.setAllControlsVisiblity(GONE, GONE, GONE, VISIBLE, VISIBLE, GONE, GONE);
                 vh.findViewById(R.id.ll_duration).setVisibility(GONE);
                 vh.findViewById(R.id.ll_title).setVisibility(GONE);
-            }
-        });
-
-        // init favorite button
-        ImageView buttonFavorite = vh.findViewById(R.id.iv_fav);
-        buttonFavorite.setOnClickListener(new View.OnClickListener() {
-            boolean isFav = false;
-
-            @Override
-            public void onClick(View view) {
-                isFav = !isFav;
-                int drawableResId = (isFav ? R.drawable.ic_favorite_fill_day_night : R.drawable.ic_favorite_day_night);
-                buttonFavorite.setImageDrawable(mContext.getDrawable(drawableResId));
             }
         });
     }

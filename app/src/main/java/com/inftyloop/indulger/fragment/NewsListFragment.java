@@ -17,6 +17,7 @@ import com.inftyloop.indulger.adapter.NewsListAdapter;
 import com.inftyloop.indulger.adapter.VideoListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
@@ -140,26 +141,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         mRecyclerView.addItemDecoration(divider);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if (mIsVideoList) {
-            mRecyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-                @Override
-                public void onChildViewAttachedToWindow(@NonNull View view) {
-
-                }
-
-                @Override
-                public void onChildViewDetachedFromWindow(@NonNull View view) {
-                    MyJzVideoPlayer detachJzvd = view.findViewById(R.id.video_player);
-                    Jzvd curJzvd = Jzvd.CURRENT_JZVD;
-                    if (detachJzvd != null && detachJzvd.jzDataSource != null &&
-                            curJzvd != null && curJzvd.jzDataSource != null &&
-                            detachJzvd.jzDataSource.containsTheUrl(curJzvd.jzDataSource.getCurrentUrl()) &&
-                            curJzvd.screen != Jzvd.SCREEN_FULLSCREEN) {
-                        Jzvd.releaseAllVideos();
-                    }
-                }
-            });
-        }
+        mRecyclerView.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeCallback());
     }
 
     @Override

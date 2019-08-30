@@ -21,7 +21,7 @@ public class News {
     public News(NewsEntry newsEntry) {
         this.mEntry = newsEntry;
         List<String> imageUrls = newsEntry.getImageUrls();
-        if (newsEntry.getVideoUrl() != null) {
+        if (newsEntry.getVideoUrl() != null && !newsEntry.getVideoUrl().trim().isEmpty()) {
             this.mType = VIDEO_NEWS;
         } else if (imageUrls.size() >= 3) {
             this.mType = THREE_IMAGES_NEWS;

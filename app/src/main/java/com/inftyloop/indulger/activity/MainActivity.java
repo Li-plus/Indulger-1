@@ -59,6 +59,7 @@ public class MainActivity extends BaseFragmentActivity {
     public void onBackPressed() {
         if (Jzvd.backPress())
             return;
+        Jzvd.releaseAllVideos();
         super.onBackPressed();
     }
 }

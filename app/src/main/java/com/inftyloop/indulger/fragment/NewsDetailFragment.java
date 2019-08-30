@@ -98,9 +98,6 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
         NewsEntry detail = BaseNewsAdapter.currentNewsEntry;
         isFav = detail.getIsFavorite();
         List<NewsEntry> res = LitePal.where("uuid = ?", BaseNewsAdapter.currentNewsEntry.getUuid()).find(NewsEntry.class);
-        for (NewsEntry newsEntry : res) {
-            Log.d(TAG, newsEntry.getUuid() + " " + newsEntry.getIsFavorite());
-        }
         if (!res.isEmpty()) {
             isFav = res.get(0).getIsFavorite();
         }

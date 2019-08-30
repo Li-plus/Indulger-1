@@ -1,6 +1,5 @@
 package com.inftyloop.indulger.fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.FavoriteItemAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
+import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.qmuiteam.qmui.arch.QMUIFragment;
@@ -65,9 +65,9 @@ public class FavoriteFragment extends QMUIFragment implements OnNewsListRefreshL
                 });
             }
         });
+        mRecyclerView.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeCallback());
 
         mAdapter.insertItemImmediately(new News(News.LOAD_MORE_FOOTER));
-
         return root;
     }
 
