@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.inftyloop.indulger.BuildConfig;
 import com.inftyloop.indulger.MainApplication;
+import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
@@ -71,7 +72,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     private static Handler handler = new Handler(Looper.getMainLooper());
 
     public DefaultNewsApiAdapter(OnNewsListRefreshListener refreshListener) {
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.LOG_INTERCEPTOR, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
         } else {
             mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
@@ -150,7 +151,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     entry.getKeywords().add(ww.get("word").getAsString());
                     ++curr;
                 }
-                if(save)
+                if (save)
                     entry.save();
                 news_entries.add(entry);
             }
@@ -175,7 +176,51 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     @SuppressWarnings("Duplicates")
     @Override
     public void obtainNewsList(String channel, String keyword, boolean isLoadingMore) {
+        boolean isRecommend = channel.equals(MainApplication.getContext().getString(R.string.channel_code_recommend));
         boolean isInitialLoading = !channelStartTime.containsKey(channel) || !channelEndTime.containsKey(channel);
+        if (isRecommend && (!isLoadingMore || isInitialLoading) && NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
+            // recommend list refresh, if there is new data, reset current records
+            // only hooks iff. there is network
+            Date curr = new Date();
+            addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, "",
+                    DateUtils.formatDateTime(curr, "yyyy-MM-dd HH:mm:ss"), keyword, CHANNEL_NAME_MAPPER.get(channel)),
+                    new Subscriber<JsonObject>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, e.getMessage());
+                            handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                        }
+
+                        @Override
+                        public void onNext(JsonObject jsonObject) {
+                            int total = jsonObject.get("total").getAsInt();
+                            if (total > 0) {
+                                Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, true);
+                                List<NewsEntry> entries = res.first;
+                                if(entries.size() == 0) {
+                                    handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                                    return;
+                                }
+                                LitePal.deleteAll(NewsLoadRecord.class, "channelCode = ?", channel);
+                                LitePal.deleteAll(NewsEntry.class, "category = ?", channel);
+                                NewsLoadRecord record = new NewsLoadRecord();
+                                record.setChannelCode(channel);
+                                record.setStartTime(res.second.first);
+                                record.setEndTime(res.second.second);
+                                record.save();
+                                Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
+                                channelStartTime.put(channel, list.second.first);
+                                channelEndTime.put(channel, list.second.second);
+                                handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
+                            }
+                        }
+                    });
+            return;
+        }
         if (isInitialLoading || isLoadingMore) {
             // first start, get some new data
             long curr = isInitialLoading ? new Date().getTime() : channelEndTime.get(channel) - 1000;
@@ -184,7 +229,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
             if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
                 if (record == null) {
                     // no data and no network, nothing can be loaded
-                    handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                    handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                 } else {
                     // fetch newest data from db, then update the status of adapter
                     List<NewsEntry> res = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15).find(NewsEntry.class);
@@ -192,7 +237,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     if (isInitialLoading)
                         channelStartTime.put(channel, list.second.first);
                     channelEndTime.put(channel, list.second.second);
-                    handler.post(()->mRefreshListener.onNewsListRefresh(list.first));
+                    handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
                 }
             } else {
                 // has network, start to load some new data
@@ -208,6 +253,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             @Override
                             public void onError(Throwable e) {
                                 Log.e(TAG, e.getMessage());
+                                handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                             }
 
                             @Override
@@ -233,16 +279,16 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                     if (isInitialLoading)
                                         channelStartTime.put(channel, list.second.first);
                                     channelEndTime.put(channel, list.second.second);
-                                    handler.post(()->mRefreshListener.onNewsListRefresh(list.first));
+                                    handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
                                 } else if (record == null) {
-                                    handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                                    handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                                 } else {
                                     List<NewsEntry> entries = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15).find(NewsEntry.class);
                                     Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
                                     if (isInitialLoading)
                                         channelStartTime.put(channel, list.second.first);
                                     channelEndTime.put(channel, list.second.second);
-                                    handler.post(()->mRefreshListener.onNewsListRefresh(list.first));
+                                    handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
                                 }
                             }
                         });
@@ -250,7 +296,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         } else {
             // there is some data in the controller and the user want to refresh
             if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
-                handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>())); // do not refresh if no network
+                handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>())); // do not refresh if no network
             } else {
                 Date currDate = new Date();
                 long curr = currDate.getTime();
@@ -266,6 +312,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             @Override
                             public void onError(Throwable e) {
                                 Log.e(TAG, e.getMessage());
+                                handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                             }
 
                             @Override
@@ -275,7 +322,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 List<NewsEntry> entries = res.first;
                                 if (total == 0) {
                                     // do not update status if no new data could be loaded
-                                    handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                                    handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                                     return;
                                 }
                                 if (total < 15) {
@@ -293,7 +340,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                                 channelStartTime.put(channel, list.second.first);
                                 if (total >= 15)
                                     channelEndTime.put(channel, list.second.second);
-                                handler.post(()->mRefreshListener.onNewsListRefresh(list.first));
+                                handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
                             }
                         });
             }
@@ -306,7 +353,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         String channel = "search";
         if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
             // TODO: notify view
-            handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+            handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
             return;
         }
         long endTime = isLoadingMore ? channelEndTime.get(channel) - 1000 : new Date().getTime();
@@ -322,6 +369,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, e.getMessage());
+                        handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                     }
 
                     @Override
@@ -332,9 +380,9 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                             List<NewsEntry> entries = res.first;
                             Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
                             channelEndTime.put(channel, list.second.second);
-                            handler.post(()->mRefreshListener.onNewsListRefresh(list.first));
+                            handler.post(() -> mRefreshListener.onNewsListRefresh(list.first));
                         } else {
-                            handler.post(()->mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                            handler.post(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
                         }
                     }
                 });

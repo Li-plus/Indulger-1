@@ -46,6 +46,7 @@ public class LogInFragment extends QMUIFragment {
     ImageView mPasswordClear;
     @BindView(R.id.btn_login)
     Button mLogin;
+    private QMUITipDialog tipDialog;
     private UserApiManager mUserApiManager;
     private AccountManager mAccountManager;
     private String encodedPwd;
@@ -70,6 +71,11 @@ public class LogInFragment extends QMUIFragment {
         mUserNameClear.setOnClickListener((View v) -> mUserName.setText(""));
         mPassword.addTextChangedListener(new EditTextClearIconCallback(mPasswordClear));
         mPasswordClear.setOnClickListener((View v) -> mPassword.setText(""));
+
+        tipDialog = new QMUITipDialog.Builder(getContext())
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord(getString(R.string.login_in_progress))
+                .create();
 
         mUserApiManager = new UserApiManager(new UserApiManager.OnUserApiListener() {
             @Override
@@ -119,6 +125,11 @@ public class LogInFragment extends QMUIFragment {
                 return;
             }
             encodedPwd = SecurityUtils.getMd5(SecurityUtils.getMd5(mPassword.getText().toString()) + mUserName.getText().toString());
+            tipDialog.show();
+            mTopBar.postDelayed(()-> {
+                if(tipDialog.isShowing())
+                    tipDialog.dismiss();
+            }, 6000);
             mUserApiManager.checkUser(mUserName.getText().toString(), encodedPwd);
         });
         return root;

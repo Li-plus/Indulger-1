@@ -142,4 +142,11 @@
     <string name="edit_info_success">Successfully edited info</string>
     <string name="edit_info_failure">Failed to edit info</string>
     <string name="edit_info_not_logged_in">Not logged in</string>
+    <string name="clear_personal_pref">Clear personal preferences</string>
+    <string name="clear_personal_pref_extra_info">Recommendations/blocked words</string>
+    <string name="settings_section_user_title">User Settings</string>
+    <string name="settings_confirm_logout">Confirm logout? All your perosnal preferences will be cleared</string>
+    <string name="settings_confirm_clear_pref">Confirm clearing preferences?</string>
+    <string name="settings_prefs_cleared">All preferences have been cleared</string>
+    <string name="login_in_progress">Login in progress</string>
 </resources>

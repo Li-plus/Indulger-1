@@ -12,8 +12,7 @@ import android.widget.Toast;
 import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
-import com.inftyloop.indulger.model.entity.NewsEntry;
-import com.inftyloop.indulger.model.entity.NewsLoadRecord;
+import com.inftyloop.indulger.model.entity.*;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.FileUtils;
 import com.inftyloop.indulger.util.ThemeManager;
@@ -33,6 +32,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import org.litepal.crud.LitePalSupport;
 
 public class SettingsFragment extends QMUIFragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
@@ -141,8 +141,10 @@ public class SettingsFragment extends QMUIFragment {
                                         .create();
                                 tipDialog.show();
                                 // delete cache
-                                LitePal.deleteAll(NewsEntry.class, "1");
-                                LitePal.deleteAll(NewsLoadRecord.class, "1");
+                                try {
+                                    LitePal.deleteAll(NewsEntry.class, "1");
+                                    LitePal.deleteAll(NewsLoadRecord.class, "1");
+                                } catch (Exception e) {}
                                 boolean res = FileUtils.deleteDir(new File(MainApplication.getContext().getCacheDir().toString()));
                                 mSettingsGroupListView.postDelayed(() -> {
                                     tipDialog.dismiss();
@@ -191,19 +193,57 @@ public class SettingsFragment extends QMUIFragment {
         });
 
         QMUICommonListItemView itemLogout = mSettingsGroupListView.createItemView(getString(R.string.log_out));
-        itemLogout.setOnClickListener((View v) -> {
-            AccountManager accountManager = (AccountManager) getContext().getSystemService(Context.ACCOUNT_SERVICE);
-            Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
-            for (Account account : accounts) {
-                accountManager.removeAccount(account, null, null);
-            }
-            ConfigManager.putString(Definition.LOGIN_EMAIL, "");
-            ConfigManager.putString(Definition.LOGIN_USERNAME, "");
-            ConfigManager.putString(Definition.LOGIN_ENCODED_PWD, "");
-            QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
-            setFragmentResult(RESULT_OK, new Intent());
-            popBackStack();
-        });
+        itemLogout.setOnClickListener(v->
+                new QMUIDialog.MessageDialogBuilder(getActivity())
+                        .setMessage(getString(R.string.settings_confirm_logout))
+                        .addAction(getString(R.string.settings_cancel), (QMUIDialog dialog, int index) -> {
+                            dialog.dismiss();
+                        })
+                        .addAction(0, getString(R.string.settings_delete), QMUIDialogAction.ACTION_PROP_NEGATIVE,
+                                (QMUIDialog dialog, int index) -> {
+                                    AccountManager accountManager = (AccountManager) getContext().getSystemService(Context.ACCOUNT_SERVICE);
+                                    Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+                                    for (Account account : accounts) {
+                                        accountManager.removeAccount(account, null, null);
+                                    }
+                                    ConfigManager.putString(Definition.LOGIN_EMAIL, "");
+                                    ConfigManager.putString(Definition.LOGIN_USERNAME, "");
+                                    ConfigManager.putString(Definition.LOGIN_ENCODED_PWD, "");
+                                    try {
+                                        LitePal.deleteAll(NewsFavEntry.class, "1");
+                                        LitePal.deleteAll(RecommendWords.class, "1");
+                                        LitePal.deleteAll(BlockedWords.class, "1");
+                                        FileUtils.deleteDir(new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs"));
+                                    } catch (Exception e) {}
+                                    dialog.dismiss();
+                                    QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
+                                    setFragmentResult(RESULT_OK, new Intent());
+                                    popBackStack();
+                                })
+                        .create(R.style.QMUI_Dialog).show());
+
+        QMUICommonListItemView itemClearPref = mSettingsGroupListView.createItemView(getString(R.string.clear_personal_pref));
+        itemClearPref.setOrientation(QMUICommonListItemView.VERTICAL);
+        itemClearPref.setDetailText(getString(R.string.clear_personal_pref_extra_info));
+        itemClearPref.setOnClickListener(v->
+            new QMUIDialog.MessageDialogBuilder(getActivity())
+                    .setMessage(getString(R.string.settings_confirm_clear_pref))
+                    .addAction(getString(R.string.settings_cancel), (QMUIDialog dialog, int index) -> {
+                        dialog.dismiss();
+                    })
+                    .addAction(0, getString(R.string.settings_delete), QMUIDialogAction.ACTION_PROP_NEGATIVE,
+                            (QMUIDialog dialog, int index) -> {
+                                // delete personal prefs
+                                try {
+                                    LitePal.deleteAll(RecommendWords.class, "1");
+                                    LitePal.deleteAll(BlockedWords.class, "1");
+                                } catch (Exception e) {}
+                                QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.settings_prefs_cleared),
+                                        Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                MainApplication.restart();
+                            })
+                    .create(R.style.QMUI_Dialog).show());
 
         QMUIGroupListView.newSection(getContext())
                 .setTitle(getString(R.string.settings_section_title_theme))
@@ -218,15 +258,16 @@ public class SettingsFragment extends QMUIFragment {
                 .addItemView(itemLanguage, null)
                 .addTo(mSettingsGroupListView);
 
-        QMUIGroupListView.newSection(getContext()).
-                addItemView(itemAbout, null).
-                addTo(mSettingsGroupListView);
+        QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext())
+                .setTitle(getString(R.string.settings_section_user_title));
+        section.addItemView(itemClearPref, null);
+        if (MeFragment.isLogin)
+            section.addItemView(itemLogout, null);
+        section.addTo(mSettingsGroupListView);
 
-        if (MeFragment.isLogin) {
-            QMUIGroupListView.newSection(getContext())
-                    .addItemView(itemLogout, null)
-                    .addTo(mSettingsGroupListView);
-        }
+        QMUIGroupListView.newSection(getContext())
+                .addItemView(itemAbout, null)
+                .addTo(mSettingsGroupListView);
         return root;
     }
 

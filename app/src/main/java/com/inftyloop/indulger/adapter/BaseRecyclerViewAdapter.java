@@ -32,6 +32,11 @@ abstract public class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
         return bak;
     }
 
+    public void clearAll() {
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mData.size();

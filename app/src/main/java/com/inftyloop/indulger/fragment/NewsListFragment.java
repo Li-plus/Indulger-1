@@ -21,6 +21,7 @@ import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.RecommendWords;
 import com.inftyloop.indulger.ui.BaseFragment;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
 import com.inftyloop.indulger.util.ConfigManager;
@@ -30,9 +31,11 @@ import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import cn.jzvd.Jzvd;
+import org.litepal.LitePal;
 
 
 public class NewsListFragment extends BaseFragment implements OnNewsListRefreshListener {
@@ -53,6 +56,8 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
     private String mChannelCode;
     private boolean mIsRecommend = false;
     private boolean mIsVideoList = false;
+    private boolean mIsRefreshed = false;
+    private Random rng = new Random(System.currentTimeMillis());
 
     public String getChannelCode() {
         return mChannelCode;
@@ -91,8 +96,22 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                     mInsertFromTop = false;
                     isLoadingInProgress = true;
                     mRefreshLayout.setEnabled(false);
+                    mIsRefreshed = false;
                     new Thread(() -> {
-                        api.obtainNewsList(mChannelCode, "", true);
+                        if(!mIsRecommend)
+                            api.obtainNewsList(mChannelCode, "", true);
+                        else {
+                            try {
+                                List<RecommendWords> words = LitePal.where("1").limit(5).order("cnt desc").find(RecommendWords.class);
+                                if(words.size() > 0) {
+                                    api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), true);
+                                } else {
+                                    api.obtainNewsList(mChannelCode, "", true);
+                                }
+                            } catch (Exception e) {
+                                api.obtainNewsList(mChannelCode, "", true);
+                            }
+                        }
                     }).start();
                 }
             }
@@ -124,11 +143,22 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 else
                     isLoadingInProgress = true;
                 mInsertFromTop = true;
+                mIsRefreshed = true;
                 new Thread(() -> {
-                    api.obtainNewsList(mChannelCode, "", false);
-                    mRefreshLayout.post(() -> {
-                        mRefreshLayout.finishRefresh();
-                    });
+                    if(!mIsRecommend)
+                        api.obtainNewsList(mChannelCode, "", false);
+                    else {
+                        try {
+                            List<RecommendWords> words = LitePal.where("1").limit(20).order("cnt desc").find(RecommendWords.class);
+                            if(words.size() > 0) {
+                                api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), false);
+                            } else {
+                                api.obtainNewsList(mChannelCode, "", false);
+                            }
+                        } catch (Exception e) {
+                            api.obtainNewsList(mChannelCode, "", false);
+                        }
+                    }
                 }).start();
             }
         });
@@ -166,7 +196,11 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         }
 
         isLoadingInProgress = false;
+        mRefreshLayout.finishRefresh();
         mRefreshLayout.setEnabled(true);
+        if(mIsRefreshed && mIsRecommend && newsList.size() > 0) {
+            mAdapter.clearAll();
+        }
         if (!mInsertFromTop) {
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }

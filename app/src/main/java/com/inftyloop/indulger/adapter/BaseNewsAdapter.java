@@ -14,6 +14,7 @@ import com.inftyloop.indulger.fragment.NewsDetailFragment;
 import com.inftyloop.indulger.listener.VideoStateListenerAdapter;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.NewsEntry;
+import com.inftyloop.indulger.model.entity.RecommendWords;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.DateUtils;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import cn.jzvd.JzvdStd;
+import org.litepal.LitePal;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -73,9 +75,20 @@ abstract public class BaseNewsAdapter extends BaseRecyclerViewAdapter<News, Base
             News item = getData().get(vh.getAdapterPosition());
             item.setIsRead(true);
             // update recommendation
-            HashSet<String> recommendedKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.RECOMMENDED_KEYS, new HashSet<>());
-            recommendedKeys.addAll(item.getNewsEntry().getKeywords());
-            ConfigManager.putStringSetNow(Definition.RECOMMENDED_KEYS, recommendedKeys);
+            boolean in = false;
+            for(String word : item.getNewsEntry().getKeywords()) {
+                if(in)
+                    break;
+                in = true;
+                RecommendWords entry = LitePal.where("word = ?", word).findFirst(RecommendWords.class);
+                if(entry == null) {
+                    entry = new RecommendWords();
+                    entry.setCnt(1);
+                    entry.setWord(word);
+                } else
+                    entry.setCnt(entry.getCnt() + 1);
+                entry.save();
+            }
 
             ((TextView) vh.findViewById(R.id.tv_title)).setTextColor(QMUIResHelper.getAttrColor(mContext, R.attr.clicked_text_color));
             currentNewsEntry = item.getNewsEntry();

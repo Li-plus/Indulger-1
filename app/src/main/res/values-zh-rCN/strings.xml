@@ -127,4 +127,11 @@
     <string name="edit_info_success">修改信息成功</string>
     <string name="edit_info_failure">修改信息失败</string>
     <string name="edit_info_not_logged_in">未登录</string>
+    <string name="clear_personal_pref">清除个人喜好信息</string>
+    <string name="clear_personal_pref_extra_info">推荐/关键词屏蔽</string>
+    <string name="settings_section_user_title">用户设置</string>
+    <string name="settings_confirm_logout">确认退出吗？所有个人喜好信息将被清空</string>
+    <string name="settings_confirm_clear_pref">确认清空个人喜好信息吗？</string>
+    <string name="settings_prefs_cleared">个人喜好信息清除完毕</string>
+    <string name="login_in_progress">登录中</string>
 </resources>
