@@ -213,6 +213,7 @@ public class SettingsFragment extends QMUIFragment {
                                         LitePal.deleteAll(NewsFavEntry.class, "1");
                                         LitePal.deleteAll(RecommendWords.class, "1");
                                         LitePal.deleteAll(BlockedWords.class, "1");
+                                        ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, "");
                                         FileUtils.deleteDir(new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs"));
                                     } catch (Exception e) {}
                                     dialog.dismiss();
@@ -237,6 +238,7 @@ public class SettingsFragment extends QMUIFragment {
                                 try {
                                     LitePal.deleteAll(RecommendWords.class, "1");
                                     LitePal.deleteAll(BlockedWords.class, "1");
+                                    ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, "");
                                 } catch (Exception e) {}
                                 QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.settings_prefs_cleared),
                                         Toast.LENGTH_SHORT).show();

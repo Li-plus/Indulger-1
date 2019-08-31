@@ -41,7 +41,6 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
     private boolean isLoadingInProgress = false;
 
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
-    String mChannelCode = "video";
 
     @Override
     protected int getLayoutId() {
@@ -63,7 +62,7 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
                 if (!mRecyclerView.canScrollVertically(1) && !isLoadingInProgress) {
                     isLoadingInProgress = true;
                     new Thread(() -> {
-                        api.obtainNewsList(mChannelCode, "", true);
+                        api.obtainToutiaoVideoList(true);
                     }).start();
                 }
             }
@@ -92,41 +91,12 @@ public class VideoListFragment extends BaseFragment implements OnNewsListRefresh
 
     @Override
     public void onNewsListRefresh(List<News> newsList) {
-        String[] videoUrls = {
-                "http://vfx.mtime.cn/Video/2017/03/31/mp4/170331093811717750.mp4",
-                "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
-                "https://www.w3school.com.cn/example/html5/mov_bbb.mp4",
-                "https://www.w3schools.com/html/movie.mp4",
-                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-        };
-
-        newsList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            NewsEntry newsEntry = new NewsEntry();
-            newsEntry.setTitle("Title");
-            newsEntry.setPublisherName("Publisher");
-            newsEntry.setVideoUrl(videoUrls[i % videoUrls.length]);
-            newsList.add(new News(newsEntry));
-        }
-
         isLoadingInProgress = false;
-
         mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
 
         for (News news : newsList) {
-            boolean isBlock = false;
-            HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
-            for (String keyword : news.getNewsEntry().getKeywords()) {
-                if (blockKeys.contains(keyword)) {
-                    isBlock = true;
-                    Log.d(TAG, "blocking news with keyword " + keyword);
-                    break;
-                }
-            }
-            if (!isBlock) {
-                int position = mAdapter.getData().size();
-                mAdapter.insertItemImmediately(position, news);
-            }
+            int position = mAdapter.getData().size();
+            mAdapter.insertItemImmediately(position, news);
         }
 
         if (newsList.size() > 0)

@@ -18,6 +18,40 @@ public class DateUtils {
         return DateFormat.format(fmt, date).toString();
     }
 
+    public static String unitFormat(int i) {
+        String retStr;
+        if (i >= 0 && i < 10)
+            retStr = "0" + Integer.toString(i);
+        else
+            retStr = "" + i;
+        return retStr;
+    }
+
+    public static String secToTime(int time) {
+        String timeStr;
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        if (time <= 0)
+            return "00:00";
+        else {
+            minute = time / 60;
+            if (minute < 60) {
+                second = time % 60;
+                timeStr = unitFormat(minute) + ":" + unitFormat(second);
+            } else {
+                hour = minute / 60;
+                if (hour > 99)
+                    return "99:59:59";
+                minute = minute % 60;
+                second = time - hour * 3600 - minute * 60;
+                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":"
+                        + unitFormat(second);
+            }
+        }
+        return timeStr;
+    }
+
     public static String getShortTime(Context ctx, String date) {
         String str = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

@@ -134,4 +134,5 @@
     <string name="settings_confirm_clear_pref">确认清空个人喜好信息吗？</string>
     <string name="settings_prefs_cleared">个人喜好信息清除完毕</string>
     <string name="login_in_progress">登录中</string>
+    <string name="video_parse_error">视频URL解析出错</string>
 </resources>

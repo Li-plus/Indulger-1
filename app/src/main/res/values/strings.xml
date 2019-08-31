@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Indulger</string>
     <string name="about_title">About</string>
     <string name="about_github" translatable="false">Github</string>
-    <string name="github_url" translatable="false">https://github.com/zx1239856/</string>
+    <string name="github_url" translatable="false">https://github.com/zx1239856/indulger</string>
     <string name="copyright">inftyloop.tech©2019, All Rights Reserved</string>
 
     <string name="home">Home</string>
@@ -149,4 +149,5 @@
     <string name="settings_confirm_clear_pref">Confirm clearing preferences?</string>
     <string name="settings_prefs_cleared">All preferences have been cleared</string>
     <string name="login_in_progress">Login in progress</string>
+    <string name="video_parse_error">Video URL parse error</string>
 </resources>

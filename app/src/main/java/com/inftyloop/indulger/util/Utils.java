@@ -12,10 +12,19 @@ import androidx.annotation.ColorRes;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import com.inftyloop.indulger.MainApplication;
 
 import java.util.Collection;
 
 public class Utils {
+    public static void postTaskSafely(Runnable task) {
+        int curThreadId = android.os.Process.myTid();
+        if (curThreadId == MainApplication.getMainThreadId()) {
+            task.run();
+        } else {
+            MainApplication.getMainHandler().post(task);
+        }
+    }
 
     private static WindowManager windowManager;
 

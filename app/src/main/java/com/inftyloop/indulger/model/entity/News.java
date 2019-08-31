@@ -14,6 +14,9 @@ public class News {
     private boolean mIsRead = false;
     private NewsEntry mEntry;
     private NewsFavEntry mFavEntry;
+    private String parsedVideoUrl;
+    private String videoThumbUrl;
+    private int videoDuration;
 
     public News(int type) {
         this.mType = type;
@@ -59,5 +62,29 @@ public class News {
 
     public void setIsRead(boolean isRead) {
         mIsRead = isRead;
+    }
+
+    public String getParsedVideoUrl() {
+        return parsedVideoUrl;
+    }
+
+    public void setParsedVideoUrl(String parsedVideoUrl) {
+        this.parsedVideoUrl = parsedVideoUrl;
+    }
+
+    public int getVideoDuration() {
+        return videoDuration;
+    }
+
+    public void setVideoDuration(int videoDuration) {
+        this.videoDuration = videoDuration;
+    }
+
+    public String getVideoThumbUrl() {
+        return videoThumbUrl;
+    }
+
+    public void setVideoThumbUrl(String videoThumbUrl) {
+        this.videoThumbUrl = videoThumbUrl;
     }
 }
