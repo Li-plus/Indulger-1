@@ -45,4 +45,5 @@ public class Definition {
     // user login fields
     public static final String LOGIN_USERNAME = "username";
     public static final String LOGIN_ENCODED_PWD = "encoded_pwd";
+    public static final String LOGIN_EMAIL = "email";
 }

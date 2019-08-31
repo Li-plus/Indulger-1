@@ -1,6 +1,10 @@
 package com.inftyloop.indulger.fragment;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,12 +47,19 @@ public class LogInFragment extends QMUIFragment {
     @BindView(R.id.btn_login)
     Button mLogin;
     private UserApiManager mUserApiManager;
+    private AccountManager mAccountManager;
     private String encodedPwd;
 
     @Override
     public View onCreateView() {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_log_in, null);
         ButterKnife.bind(this, root);
+        mAccountManager = (AccountManager)getContext().getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] accounts = mAccountManager.getAccountsByType(getString(R.string.account_type));
+        if(accounts.length > 0) {
+            QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, getString(R.string.login_account_already_added), Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
         mTopBar.setTitle(getResources().getString(R.string.log_in_title));
         mTopBar.addLeftBackImageButton().setOnClickListener((View v) -> popBackStack());
         mSignUp.setOnClickListener((View view) -> {
@@ -80,6 +91,10 @@ public class LogInFragment extends QMUIFragment {
                         data.putExtra(Definition.LOGIN_ENCODED_PWD, encodedPwd);
                         ConfigManager.putStringNow(Definition.LOGIN_USERNAME, mUserName.getText().toString());
                         ConfigManager.putStringNow(Definition.LOGIN_ENCODED_PWD, encodedPwd);
+                        Account account = new Account(getString(R.string.app_name), getString(R.string.account_type));
+                        Bundle extras = new Bundle();
+                        extras.putString(Definition.LOGIN_USERNAME, mUserName.getText().toString());
+                        mAccountManager.addAccountExplicitly(account, encodedPwd, extras);
                         setFragmentResult(RESULT_OK, data);
                         popBackStack();
                     }, 500);

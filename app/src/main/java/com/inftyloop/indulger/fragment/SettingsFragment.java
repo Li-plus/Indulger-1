@@ -1,5 +1,8 @@
 package com.inftyloop.indulger.fragment;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -189,6 +192,15 @@ public class SettingsFragment extends QMUIFragment {
 
         QMUICommonListItemView itemLogout = mSettingsGroupListView.createItemView(getString(R.string.log_out));
         itemLogout.setOnClickListener((View v) -> {
+            AccountManager accountManager = (AccountManager) getContext().getSystemService(Context.ACCOUNT_SERVICE);
+            Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+            for (Account account : accounts) {
+                accountManager.removeAccount(account, null, null);
+            }
+            ConfigManager.putString(Definition.LOGIN_EMAIL, "");
+            ConfigManager.putString(Definition.LOGIN_USERNAME, "");
+            ConfigManager.putString(Definition.LOGIN_ENCODED_PWD, "");
+            QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.logout_success), Toast.LENGTH_SHORT).show();
             setFragmentResult(RESULT_OK, new Intent());
             popBackStack();
         });

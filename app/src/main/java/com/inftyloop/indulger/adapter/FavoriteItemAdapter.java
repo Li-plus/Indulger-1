@@ -112,12 +112,12 @@ public class FavoriteItemAdapter extends BaseNewsAdapter {
         ((TextView) vh.findViewById(R.id.tv_fav_time)).setText(mContext.getString(R.string.faved_prefix, DateUtils.getShortTime(mContext, news.getFavEntry().getMarkFavoriteTime())).toLowerCase());
         switch (getItemViewType(position)) {
             case News.SINGLE_IMAGE_NEWS:
-                GlideImageLoader.create(vh.findViewById(R.id.iv_img)).loadImage(news.getFavEntry().getImgUrls().get(0), R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img)).loadImage(news.getFavEntry().getImageUrls().get(0), R.color.placeholder_color, null);
                 break;
             case News.THREE_IMAGES_NEWS:
-                GlideImageLoader.create(vh.findViewById(R.id.iv_img1)).loadImage(news.getFavEntry().getImgUrls().get(0), R.color.placeholder_color, null);
-                GlideImageLoader.create(vh.findViewById(R.id.iv_img2)).loadImage(news.getFavEntry().getImgUrls().get(1), R.color.placeholder_color, null);
-                GlideImageLoader.create(vh.findViewById(R.id.iv_img3)).loadImage(news.getFavEntry().getImgUrls().get(2), R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img1)).loadImage(news.getFavEntry().getImageUrls().get(0), R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img2)).loadImage(news.getFavEntry().getImageUrls().get(1), R.color.placeholder_color, null);
+                GlideImageLoader.create(vh.findViewById(R.id.iv_img3)).loadImage(news.getFavEntry().getImageUrls().get(2), R.color.placeholder_color, null);
                 break;
             case News.VIDEO_NEWS:
                 MyJzVideoPlayer videoPlayer = vh.findViewById(R.id.video_player);

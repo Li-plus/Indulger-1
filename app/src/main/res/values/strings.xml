@@ -126,5 +126,10 @@
     <string name="sign_up_success">Successfully registered</string>
     <string name="sign_up_in_progress">Signing up</string>
     <string name="login_success">Successfully logged in</string>
+    <string name="logout_success">Successfully logged out</string>
     <string name="login_fail">Failed to login</string>
+
+    <string name="account_type" translatable="false">com.inftyloop.tech.accountType</string>
+    <string name="content_authority" translatable="false">com.inftyloop.tech.contentAuthority</string>
+    <string name="login_account_already_added">Account already added</string>
 </resources>

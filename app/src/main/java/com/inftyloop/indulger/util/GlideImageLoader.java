@@ -133,14 +133,10 @@ public class GlideImageLoader {
     }
 
     public static void loadNormal(Context ctx, String url, ImageView iv, int resId) {
-        RequestOptions options = new RequestOptions();
-        options.placeholder(resId);
-        GlideApp.with(ctx).load(url).apply(options).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
+        GlideApp.with(ctx).load(url).placeholder(resId).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
     }
 
     public static void loadRound(Context ctx, String url, ImageView iv, int resId) {
-        RequestOptions options = new RequestOptions();
-        options.placeholder(resId).centerCrop().circleCrop();
-        GlideApp.with(ctx).load(url).apply(options).diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
+        GlideApp.with(ctx).load(url).placeholder(resId).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).into(iv);
     }
 }

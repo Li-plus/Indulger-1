@@ -19,7 +19,7 @@ public class NewsEntry extends LitePalSupport {
         url = entry.getUrl();
         content = entry.getContent();
         category = entry.getCategory();
-        imageUrls = entry.getImgUrls();
+        imageUrls = entry.getImageUrls();
         keywords = entry.getKeywords();
         videoUrl = entry.getVideoUrl();
         uuid = entry.getUuid();

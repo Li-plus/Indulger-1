@@ -45,7 +45,7 @@ public class MainActivity extends BaseFragmentActivity implements WbShareCallbac
 
     @Override
     protected int getContextViewId() {
-        return R.id.qmuidemo;
+        return R.id.main_activity;
     }
 
     public static Intent createWebExplorerIntent(Context context, String url, String title) {

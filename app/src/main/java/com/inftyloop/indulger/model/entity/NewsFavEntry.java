@@ -32,6 +32,7 @@ public class NewsFavEntry extends LitePalSupport {
         videoUrl = entry.getVideoUrl();
         markFavoriteTime = new Date().getTime();
         uuid = entry.getUuid();
+        originalImageUrls.addAll(entry.getImageUrls());
         // download image to buffer
         for(int i = 0; i < entry.getImageUrls().size(); ++i) {
             String url = entry.getImageUrls().get(i);
@@ -143,11 +144,11 @@ public class NewsFavEntry extends LitePalSupport {
         this.uuid = uuid;
     }
 
-    public List<String> getImgUrls() {
+    public List<String> getImageUrls() {
         return imgUrls;
     }
 
-    public void setImgUrls(List<String> imgUrls) {
+    public void setImageUrls(List<String> imgUrls) {
         this.imgUrls = imgUrls;
     }
 
@@ -159,6 +160,7 @@ public class NewsFavEntry extends LitePalSupport {
     private String content;
     private String category;
     private List<String> imgUrls = new ArrayList<>();
+    private List<String> originalImageUrls = new ArrayList<>();
     private List<String> keywords = new ArrayList<>();
     private String videoUrl;
     private long markFavoriteTime;

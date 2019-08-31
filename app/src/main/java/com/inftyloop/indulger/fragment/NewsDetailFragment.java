@@ -31,7 +31,6 @@ import com.inftyloop.indulger.listener.OnNewsDetailCallback;
 import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.NewsFavEntry;
 import com.inftyloop.indulger.ui.NewsDetailHeaderView;
-import com.inftyloop.indulger.util.FileUtils;
 import com.inftyloop.indulger.util.GlideApp;
 import com.inftyloop.indulger.util.ShareUtils;
 import com.qmuiteam.qmui.arch.QMUIFragment;
@@ -45,9 +44,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCallback {
     private final static String TAG = NewsDetailFragment.class.getSimpleName();
@@ -213,9 +209,9 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
             }
             onGetNewsDetailSuccess(mEntry);
         } else {
-            if(mFavEntry.getImgUrls().size() > 0) {
+            if(mFavEntry.getImageUrls().size() > 0) {
                 try {
-                    String url = mFavEntry.getImgUrls().get(0);
+                    String url = mFavEntry.getImageUrls().get(0);
                     String fname = url.replaceFirst("http://127.0.0.1/", "").replaceFirst(":", "_");
                     File f = new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs", fname);
                     mMainImage = BitmapFactory.decodeFile(f.getAbsolutePath());

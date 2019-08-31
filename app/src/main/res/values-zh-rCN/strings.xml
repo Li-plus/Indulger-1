@@ -114,5 +114,7 @@
     <string name="sign_up_success">" 注册成功"</string>
     <string name="sign_up_in_progress">注册中</string>
     <string name="login_success">登录成功</string>
+    <string name="logout_success">退出成功</string>
     <string name="login_fail">登录失败</string>
+    <string name="login_account_already_added">账户已添加过</string>
 </resources>
