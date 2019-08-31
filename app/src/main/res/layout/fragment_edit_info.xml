@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/qmui_topbar_height"
+            android:background="?attr/app_background_color"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/activity_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="48dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_news"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="?attr/app_content_separator_color"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="30dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="15dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_email"/>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?attr/app_background_dim_color"/>
+
+                <EditText
+                        android:id="@+id/et_email"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:drawablePadding="5dp"
+                        android:hint="@string/edit_info_email"
+                        android:textColor="?attr/foreground_text_color"
+                        android:textSize="15sp"/>
+
+                <ImageView
+                        android:id="@+id/iv_email_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="20dp"
+                        android:src="@mipmap/add_channels_close_small"
+                        android:visibility="invisible"/>
+            </LinearLayout>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="?attr/app_content_separator_color"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="30dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="15dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_edittextupwd"/>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?attr/app_background_dim_color"/>
+
+                <EditText
+                        android:id="@+id/et_old_pwd"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:drawablePadding="5dp"
+                        android:hint="@string/edit_info_pwd"
+                        android:inputType="textPassword"
+                        android:textColor="?attr/foreground_text_color"
+                        android:textSize="15sp"/>
+
+                <ImageView
+                        android:id="@+id/iv_old_pwd_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="20dp"
+                        android:src="@mipmap/add_channels_close_small"
+                        android:visibility="invisible"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="?attr/app_content_separator_color"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="30dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="15dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_edittextupwd"/>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?attr/app_background_dim_color"/>
+
+                <EditText
+                        android:id="@+id/et_new_pwd"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:drawablePadding="5dp"
+                        android:hint="@string/edit_info_pwd_new"
+                        android:inputType="textPassword"
+                        android:textColor="?attr/foreground_text_color"
+                        android:textSize="15sp"/>
+
+                <ImageView
+                        android:id="@+id/iv_new_pwd_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="20dp"
+                        android:src="@mipmap/add_channels_close_small"
+                        android:visibility="invisible"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="?attr/app_content_separator_color"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="30dp"
+                        android:paddingTop="15dp"
+                        android:paddingEnd="30dp"
+                        android:paddingBottom="15dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_edittextupwd_confirm"/>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?attr/app_background_dim_color"/>
+
+                <EditText
+                        android:id="@+id/et_new_pwd_confirm"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:drawablePadding="5dp"
+                        android:hint="@string/edit_info_pwd_confim"
+                        android:inputType="textPassword"
+                        android:textColor="?attr/foreground_text_color"
+                        android:textSize="15sp"/>
+
+                <ImageView
+                        android:id="@+id/iv_new_pwd_confirm_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="20dp"
+                        android:src="@mipmap/add_channels_close_small"
+                        android:visibility="invisible"/>
+            </LinearLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="?attr/app_content_separator_color"/>
+
+            <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/round_corner_bg"
+                    android:gravity="center"
+                    android:text="@string/edit_info_btn_title"
+                    android:textColor="?attr/background_text_color"
+                    android:textSize="18sp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"/>
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

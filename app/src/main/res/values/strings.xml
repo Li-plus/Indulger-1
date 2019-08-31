@@ -132,4 +132,14 @@
     <string name="account_type" translatable="false">com.inftyloop.tech.accountType</string>
     <string name="content_authority" translatable="false">com.inftyloop.tech.contentAuthority</string>
     <string name="login_account_already_added">Account already added</string>
+    <string name="edit_info_btn_title">Submit</string>
+    <string name="edit_info_pwd">Current password</string>
+    <string name="edit_info_pwd_new">New password(keep current if left blank)</string>
+    <string name="edit_info_pwd_confim">New password confirm</string>
+    <string name="edit_info_email">Email</string>
+    <string name="edit_info_title">Edit Personal Info</string>
+    <string name="edit_info_in_progress">In progress...</string>
+    <string name="edit_info_success">Successfully edited info</string>
+    <string name="edit_info_failure">Failed to edit info</string>
+    <string name="edit_info_not_logged_in">Not logged in</string>
 </resources>

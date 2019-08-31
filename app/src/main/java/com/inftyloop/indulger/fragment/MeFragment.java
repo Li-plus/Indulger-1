@@ -77,6 +77,11 @@ public class MeFragment extends QMUIFragment {
             startFragmentForResult(fragment, Definition.REQUEST_CODE_LOGIN);
         });
 
+        mAvatar.setOnClickListener(v -> {
+            QMUIFragment fragment = new EditInfoFragment();
+            startFragmentForResult(fragment, Definition.REQUEST_CODE_EDIT_INFO);
+        });
+
         // check login status
         accountManager = (AccountManager)getContext().getSystemService(Context.ACCOUNT_SERVICE);
         Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
@@ -90,8 +95,9 @@ public class MeFragment extends QMUIFragment {
             @Override
             public void onGetUser(HashMap<String, String> response, String errMsg) {
                 if(response.containsKey("email")) {
-                    String email = SecurityUtils.getMd5(response.get("email"));
-                    ConfigManager.putString(Definition.LOGIN_EMAIL, email);
+                    String e = response.get("email");
+                    String email = SecurityUtils.getMd5(e);
+                    ConfigManager.putString(Definition.LOGIN_EMAIL, e);
                     GlideImageLoader.loadRound(getContext(), "https://sdn.geekzu.org/avatar/" + email, mAvatar, R.mipmap.ic_launcher_round);
                 }
             }
@@ -131,7 +137,7 @@ public class MeFragment extends QMUIFragment {
             if(TextUtils.isEmpty(email)) {
                 userApiManager.getUser(username, accountManager.getPassword(cnt));
             } else
-                GlideImageLoader.loadRound(getContext(), "https://sdn.geekzu.org/avatar/" + email, mAvatar, R.mipmap.ic_launcher_round);
+                GlideImageLoader.loadRound(getContext(), "https://sdn.geekzu.org/avatar/" + SecurityUtils.getMd5(email), mAvatar, R.mipmap.ic_launcher_round);
         } else {
             mLogin.setVisibility(View.VISIBLE);
             mUsername.setVisibility(View.GONE);
@@ -155,7 +161,7 @@ public class MeFragment extends QMUIFragment {
     protected void onFragmentResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK)
             return;
-        if (requestCode == Definition.REQUEST_CODE_LOGIN) {
+        if (requestCode == Definition.REQUEST_CODE_LOGIN || requestCode == Definition.REQUEST_CODE_EDIT_INFO) {
             String userName = data.getStringExtra(Definition.LOGIN_USERNAME);
             mLogin.setVisibility(View.GONE);
             mUsername.setText(userName);

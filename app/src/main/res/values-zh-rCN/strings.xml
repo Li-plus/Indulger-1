@@ -117,4 +117,14 @@
     <string name="logout_success">退出成功</string>
     <string name="login_fail">登录失败</string>
     <string name="login_account_already_added">账户已添加过</string>
+    <string name="edit_info_btn_title">提交</string>
+    <string name="edit_info_pwd">现在的密码</string>
+    <string name="edit_info_pwd_new">新密码(留空则不修改)</string>
+    <string name="edit_info_pwd_confim">新密码确认</string>
+    <string name="edit_info_email">邮箱地址</string>
+    <string name="edit_info_title">修改个人信息</string>
+    <string name="edit_info_in_progress">操作中...</string>
+    <string name="edit_info_success">修改信息成功</string>
+    <string name="edit_info_failure">修改信息失败</string>
+    <string name="edit_info_not_logged_in">未登录</string>
 </resources>

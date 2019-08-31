@@ -41,6 +41,7 @@ public class Definition {
     public static final int REQUEST_CODE_SETTINGS = 1;
     public static final int REQUEST_CODE_LOGIN = 2;
     public static final int REQUEST_CODE_SIGN_UP = 3;
+    public static final int REQUEST_CODE_EDIT_INFO = 4;
 
     // user login fields
     public static final String LOGIN_USERNAME = "username";
