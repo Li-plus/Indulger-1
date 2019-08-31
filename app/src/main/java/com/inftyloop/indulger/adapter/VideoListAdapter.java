@@ -1,6 +1,12 @@
 package com.inftyloop.indulger.adapter;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.inftyloop.indulger.BuildConfig;
 import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
+import com.inftyloop.indulger.activity.MainActivity;
 import com.inftyloop.indulger.listener.VideoStateListenerAdapter;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.ui.MyJzVideoPlayer;
@@ -23,17 +34,21 @@ import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import java.util.List;
 
 import cn.jzvd.JzvdStd;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.inftyloop.indulger.util.ShareUtils;
 import org.w3c.dom.Text;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.inftyloop.indulger.MainApplication.getContext;
 
 
 public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecyclerViewHolder> {
     public static final String TAG = VideoListAdapter.class.getSimpleName();
 
     private Context mContext;
+    private ShareUtils shareUtils;
 
     public VideoListAdapter(Context context, @NonNull List<News> data) {
         super(data);
@@ -63,6 +78,27 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
             return;
         News news = getData().get(position);
 
+        shareUtils = new ShareUtils();
+        shareUtils.regToWX(mContext);
+
+        MyJzVideoPlayer videoPlayer = vh.findViewById(R.id.video_player);
+        final Bitmap[] mMainImage = new Bitmap[1];
+        if(news.getVideoThumbUrl() != null) {
+            GlideApp.with(mContext)
+                    .asBitmap().load(news.getVideoThumbUrl())
+                    .placeholder(R.color.color_d8d8d8)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            mMainImage[0] = resource;
+                            videoPlayer.thumbImageView.setImageBitmap(resource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {}
+                    });
+        }
+
         vh.findViewById(R.id.ll_title).setVisibility(VISIBLE);
         (vh.findViewById(R.id.iv_share)).setOnClickListener(v->{
             Log.w(TAG, "share!");
@@ -73,11 +109,49 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
             ((TextView) vh.findViewById(R.id.tv_duration)).setText(DateUtils.secToTime(news.getVideoDuration()));
         } else
             vh.findViewById(R.id.ll_duration).setVisibility(GONE);
-
-        MyJzVideoPlayer videoPlayer = vh.findViewById(R.id.video_player);
-        if(news.getVideoThumbUrl() != null) {
-            GlideImageLoader.loadNormal(mContext, news.getVideoThumbUrl(), videoPlayer.thumbImageView, R.color.color_d8d8d8);
-        }
+        vh.findViewById(R.id.iv_share).setOnClickListener((v)->{
+            final int TAG_SHARE_WECHAT_FRIEND = 0;
+            final int TAG_SHARE_WECHAT_MOMENT = 1;
+            final int TAG_SHARE_WEIBO = 2;
+            QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(mContext);
+            builder.addItem(R.mipmap.icon_more_operation_share_friend, mContext.getString(R.string.share_wechat_friend), TAG_SHARE_WECHAT_FRIEND, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
+                    .addItem(R.mipmap.icon_more_operation_share_moment, mContext.getString(R.string.share_wechat_moment), TAG_SHARE_WECHAT_MOMENT, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
+                    .addItem(R.mipmap.icon_more_operation_share_weibo, mContext.getString(R.string.share_weibo), TAG_SHARE_WEIBO, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE)
+                    .setOnSheetItemClickListener((QMUIBottomSheet dialog, View itemView) -> {
+                        dialog.dismiss();
+                        int tag = (int) itemView.getTag();
+                        switch (tag) {
+                            case TAG_SHARE_WECHAT_FRIEND:
+                                if (shareUtils.getIwxapi() != null) {
+                                    if (!shareUtils.getIwxapi().isWXAppInstalled()) {
+                                        QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, mContext.getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        shareUtils.shareToWeChatFriends(news.getNewsEntry().getUrl(), news.getNewsEntry().getTitle(), "", mMainImage[0]);
+                                    }
+                                }
+                                break;
+                            case TAG_SHARE_WECHAT_MOMENT:
+                                if (shareUtils.getIwxapi() != null) {
+                                    if (!shareUtils.getIwxapi().isWXAppInstalled()) {
+                                        QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_NOTHING, mContext.getString(R.string.share_wechat_not_installed), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        shareUtils.shareToWeChatMoments(news.getNewsEntry().getUrl(), news.getNewsEntry().getTitle(), "", mMainImage[0]);
+                                    }
+                                }
+                                break;
+                            case TAG_SHARE_WEIBO:
+                                if(mContext instanceof MainActivity) {
+                                    MainActivity ac = (MainActivity)mContext;
+                                    StringBuilder bs = new StringBuilder();
+                                    bs.append(news.getNewsEntry().getTitle());
+                                    bs.append("\n");
+                                    bs.append(mContext.getString(R.string.original_article_link, news.getNewsEntry().getUrl()));
+                                    ShareUtils.shareToWeibo(ac.shareHandler, bs.toString(), mMainImage[0]);
+                                }
+                                break;
+                        }
+                    }).build().show();
+        });
 
         if(news.getNewsEntry().getPublisherAvatarUrl() != null && !news.getNewsEntry().getPublisherAvatarUrl().isEmpty()) {
             GlideImageLoader.loadRound(mContext, news.getNewsEntry().getPublisherAvatarUrl(), vh.findViewById(R.id.iv_avatar), R.mipmap.ic_launcher_round);
@@ -108,6 +182,17 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
                     return;
                 else
                     isVideoParsing = true;
+                String url = news.getNewsEntry().getVideoUrl();
+                if(BuildConfig.DEBUG) {
+                    Log.e(TAG, url);
+                }
+                if(url.endsWith(".mp4")) {
+                    isVideoParsing = false;
+                    videoPlayer.setUp(url, news.getNewsEntry().getTitle(), JzvdStd.SCREEN_NORMAL);
+                    news.setParsedVideoUrl(url);
+                    videoPlayer.startVideo();
+                    return;
+                }
                 videoPlayer.setAllControlsVisiblity(GONE, GONE, GONE, VISIBLE, VISIBLE, GONE, GONE);
                 vh.findViewById(R.id.ll_duration).setVisibility(View.INVISIBLE);
                 vh.findViewById(R.id.ll_title).setVisibility(View.INVISIBLE);
@@ -130,7 +215,7 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
                                 mContext.getString(R.string.video_parse_error), Toast.LENGTH_SHORT).show();
                     }
                 };
-                decoder.decodePath(news.getNewsEntry().getUrl());
+                decoder.decodePath(url);
             }
         });
     }

@@ -135,4 +135,13 @@
     <string name="settings_prefs_cleared">个人喜好信息清除完毕</string>
     <string name="login_in_progress">登录中</string>
     <string name="video_parse_error">视频URL解析出错</string>
+    <string name="provider_name">新闻收藏</string>
+    <string name="sync_notification_title">同步</string>
+    <string name="sync_notification_title_success">同步成功</string>
+    <string name="sync_notification_title_failure">同步失败</string>
+    <string name="sync_notification_content">正在同步收藏的新闻</string>
+    <string name="sync_notification_success_content">现在您可以查看收藏的新闻了</string>
+    <string name="sync_notification_failure_content">请检查互联网连接并重试</string>
+    <string name="settings_manual_sync">手动同步数据</string>
+    <string name="settings_sync_in_progress">同步中</string>
 </resources>

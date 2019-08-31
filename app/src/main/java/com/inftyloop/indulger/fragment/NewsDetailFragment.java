@@ -209,9 +209,9 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
             }
             onGetNewsDetailSuccess(mEntry);
         } else {
-            if(mFavEntry.getImageUrls().size() > 0) {
+            if(mFavEntry.getImgUrls().size() > 0) {
                 try {
-                    String url = mFavEntry.getImageUrls().get(0);
+                    String url = mFavEntry.getImgUrls().get(0);
                     String fname = url.replaceFirst("http://127.0.0.1/", "").replaceFirst(":", "_");
                     File f = new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs", fname);
                     mMainImage = BitmapFactory.decodeFile(f.getAbsolutePath());

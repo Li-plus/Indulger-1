@@ -13,6 +13,7 @@ import com.inftyloop.indulger.MainApplication;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.model.entity.*;
+import com.inftyloop.indulger.sync.SyncAdapter;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.FileUtils;
 import com.inftyloop.indulger.util.ThemeManager;
@@ -209,11 +210,12 @@ public class SettingsFragment extends QMUIFragment {
                                     ConfigManager.putString(Definition.LOGIN_EMAIL, "");
                                     ConfigManager.putString(Definition.LOGIN_USERNAME, "");
                                     ConfigManager.putString(Definition.LOGIN_ENCODED_PWD, "");
+                                    ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, "");
+                                    ConfigManager.putStringNow(Definition.SYNC_TOKEN, "");
                                     try {
                                         LitePal.deleteAll(NewsFavEntry.class, "1");
                                         LitePal.deleteAll(RecommendWords.class, "1");
                                         LitePal.deleteAll(BlockedWords.class, "1");
-                                        ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, "");
                                         FileUtils.deleteDir(new File(MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs"));
                                     } catch (Exception e) {}
                                     dialog.dismiss();
@@ -247,6 +249,19 @@ public class SettingsFragment extends QMUIFragment {
                             })
                     .create(R.style.QMUI_Dialog).show());
 
+        QMUICommonListItemView itemManualSync = mSettingsGroupListView.createItemView(getString(R.string.settings_manual_sync));
+        itemManualSync.setOnClickListener(v->{
+            itemManualSync.setEnabled(false);
+            SyncAdapter.perforSync(getContext());
+            itemManualSync.setText(getString(R.string.settings_sync_in_progress));
+            itemManualSync.setTextColor(R.attr.foreground_text_color_dim);
+            itemManualSync.postDelayed(()->{
+                itemManualSync.setText(getString(R.string.settings_manual_sync));
+                itemManualSync.resetTextColor();
+                itemManualSync.setEnabled(true);
+            }, 3000);
+        });
+
         QMUIGroupListView.newSection(getContext())
                 .setTitle(getString(R.string.settings_section_title_theme))
                 .addItemView(itemTheme, null)
@@ -263,8 +278,10 @@ public class SettingsFragment extends QMUIFragment {
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext())
                 .setTitle(getString(R.string.settings_section_user_title));
         section.addItemView(itemClearPref, null);
-        if (MeFragment.isLogin)
+        if (MeFragment.isLogin) {
+            section.addItemView(itemManualSync, null);
             section.addItemView(itemLogout, null);
+        }
         section.addTo(mSettingsGroupListView);
 
         QMUIGroupListView.newSection(getContext())

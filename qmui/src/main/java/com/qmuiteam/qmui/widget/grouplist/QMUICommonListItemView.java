@@ -130,6 +130,7 @@ public class QMUICommonListItemView extends RelativeLayout {
     private ImageView mRedDot;
     private ViewStub mNewTipViewStub;
     private View mNewTip;
+    private int initialTitleColorBak;
 
     public QMUICommonListItemView(Context context) {
         this(context, null);
@@ -153,6 +154,7 @@ public class QMUICommonListItemView extends RelativeLayout {
         final int initTitleColor = array.getColor(R.styleable.QMUICommonListItemView_qmui_commonList_titleColor, QMUIResHelper.getAttrColor(getContext(), R.attr.qmui_config_color_gray_1));
         final int initDetailColor = array.getColor(R.styleable.QMUICommonListItemView_qmui_commonList_detailColor, QMUIResHelper.getAttrColor(getContext(), R.attr.qmui_config_color_gray_5));
         array.recycle();
+        initialTitleColorBak = initTitleColor;
 
         mImageView = (ImageView) findViewById(R.id.group_list_item_imageView);
         mTextContainer = (LinearLayout) findViewById(R.id.group_list_item_textContainer);
@@ -210,6 +212,14 @@ public class QMUICommonListItemView extends RelativeLayout {
         } else {
             mTextView.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setTextColor(int color) {
+        mTextView.setTextColor(color);
+    }
+
+    public void resetTextColor() {
+        mTextView.setTextColor(initialTitleColorBak);
     }
 
     /**

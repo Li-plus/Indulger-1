@@ -48,4 +48,5 @@ public class Definition {
     public static final String LOGIN_USERNAME = "username";
     public static final String LOGIN_ENCODED_PWD = "encoded_pwd";
     public static final String LOGIN_EMAIL = "email";
+    public static final String SYNC_TOKEN = "sync_token";
 }

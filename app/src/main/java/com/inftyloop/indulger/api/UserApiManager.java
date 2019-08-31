@@ -8,6 +8,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.BuildConfig;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.observables.BlockingObservable;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -287,6 +288,29 @@ public class UserApiManager {
                 }
             }
         });
+    }
+
+    public JsonObject getJsonBlocking(String username, String pwd, String varname) {
+        HashMap<String, HashMap<String, String>> body = new HashMap<>();
+        HashMap<String, String> req = new HashMap<>();
+        req.put("username", username);
+        req.put("password", pwd);
+        req.put("varname", varname);
+        body.put("payload", req);
+        BlockingObservable<JsonObject> obj = mUserApi.getJson(body).toBlocking();
+        return obj.single();
+    }
+
+    public JsonObject putJsonBlocking(String username, String pwd, String varname, String json) {
+        HashMap<String, HashMap<String, String>> body = new HashMap<>();
+        HashMap<String, String> req = new HashMap<>();
+        req.put("username", username);
+        req.put("password", pwd);
+        req.put("varname", varname);
+        req.put("json", json);
+        body.put("payload", req);
+        BlockingObservable<JsonObject> obj = mUserApi.putJson(body).toBlocking();
+        return obj.single();
     }
 
     @SuppressWarnings("unchecked")

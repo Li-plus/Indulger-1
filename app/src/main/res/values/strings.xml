@@ -150,4 +150,13 @@
     <string name="settings_prefs_cleared">All preferences have been cleared</string>
     <string name="login_in_progress">Login in progress</string>
     <string name="video_parse_error">Video URL parse error</string>
+    <string name="provider_name">Favorite news</string>
+    <string name="sync_notification_title">Syncing</string>
+    <string name="sync_notification_title_success">Syncing succeeded</string>
+    <string name="sync_notification_title_failure">Syncing failed</string>
+    <string name="sync_notification_content">Syncing favorite news in progress.</string>
+    <string name="sync_notification_success_content">Now you can view your favorites.</string>
+    <string name="sync_notification_failure_content">Please check Internet connection and retry.</string>
+    <string name="settings_manual_sync">Manually sync data</string>
+    <string name="settings_sync_in_progress">Syncing</string>
 </resources>

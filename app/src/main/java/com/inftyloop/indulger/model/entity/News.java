@@ -38,9 +38,9 @@ public class News {
         this.mFavEntry = entry;
         if (entry.getVideoUrl() != null && !entry.getVideoUrl().trim().isEmpty())
             this.mType = VIDEO_NEWS;
-        else if (entry.getImageUrls().size() >= 3)
+        else if (entry.getImgUrls().size() >= 3)
             this.mType = THREE_IMAGES_NEWS;
-        else if (entry.getImageUrls().size() >= 1)
+        else if (entry.getImgUrls().size() >= 1)
             this.mType = SINGLE_IMAGE_NEWS;
     }
 

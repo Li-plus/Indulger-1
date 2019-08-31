@@ -12,6 +12,7 @@ public class NewsEntry extends LitePalSupport {
     }
 
     public NewsEntry(NewsFavEntry entry) {
+        super();
         publisherName = entry.getPublisherName();
         publisherAvatarUrl = entry.getPublisherAvatarUrl();
         publishTime = entry.getPublishTime();
@@ -19,7 +20,7 @@ public class NewsEntry extends LitePalSupport {
         url = entry.getUrl();
         content = entry.getContent();
         category = entry.getCategory();
-        imageUrls = entry.getImageUrls();
+        imageUrls = entry.getImgUrls();
         keywords = entry.getKeywords();
         videoUrl = entry.getVideoUrl();
         uuid = entry.getUuid();

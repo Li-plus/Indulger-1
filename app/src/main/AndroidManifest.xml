@@ -64,6 +64,11 @@
             <meta-data android:name="android.content.SyncAdapter"
                        android:resource="@xml/sync_adapter"/>
         </service>
+
+        <provider android:name=".sync.StubProvider"
+                  android:authorities="@string/content_authority"
+                  android:syncable="true"
+                  android:label="@string/provider_name" />
     </application>
 
 </manifest>

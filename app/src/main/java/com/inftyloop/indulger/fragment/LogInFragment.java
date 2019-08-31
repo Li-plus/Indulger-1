@@ -2,6 +2,7 @@ package com.inftyloop.indulger.fragment;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.inftyloop.indulger.api.UserApiManager;
 import com.inftyloop.indulger.listener.EditTextClearIconCallback;
 import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.util.SecurityUtils;
+import com.inftyloop.indulger.util.Utils;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
@@ -90,23 +92,30 @@ public class LogInFragment extends QMUIFragment {
             @Override
             public void onCheckUser(boolean success, String errMsg) {
                 if(success) {
-                    tipDialog.dismiss();
-                    QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                    mTopBar.postDelayed(()->{
-                        Intent data = new Intent();
-                        data.putExtra(Definition.LOGIN_USERNAME, mUserName.getText().toString());
-                        data.putExtra(Definition.LOGIN_ENCODED_PWD, encodedPwd);
-                        ConfigManager.putStringNow(Definition.LOGIN_USERNAME, mUserName.getText().toString());
-                        ConfigManager.putStringNow(Definition.LOGIN_ENCODED_PWD, encodedPwd);
-                        Account account = new Account(getString(R.string.app_name), getString(R.string.account_type));
-                        Bundle extras = new Bundle();
-                        extras.putString(Definition.LOGIN_USERNAME, mUserName.getText().toString());
-                        mAccountManager.addAccountExplicitly(account, encodedPwd, extras);
-                        setFragmentResult(RESULT_OK, data);
-                        popBackStack();
-                    }, 500);
+                    Utils.postTaskSafely(()->{
+                        tipDialog.dismiss();
+                        QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                        mTopBar.postDelayed(()->{
+                            Intent data = new Intent();
+                            data.putExtra(Definition.LOGIN_USERNAME, mUserName.getText().toString());
+                            data.putExtra(Definition.LOGIN_ENCODED_PWD, encodedPwd);
+                            ConfigManager.putStringNow(Definition.LOGIN_USERNAME, mUserName.getText().toString());
+                            ConfigManager.putStringNow(Definition.LOGIN_ENCODED_PWD, encodedPwd);
+                            Account account = new Account(getString(R.string.app_name), getString(R.string.account_type));
+                            Bundle extras = new Bundle();
+                            extras.putString(Definition.LOGIN_USERNAME, mUserName.getText().toString());
+                            mAccountManager.addAccountExplicitly(account, encodedPwd, extras);
+                            ContentResolver.setIsSyncable(account, getString(R.string.content_authority), 1);
+                            ContentResolver.setSyncAutomatically(account, getString(R.string.content_authority), true);
+                            ContentResolver.addPeriodicSync(account, getString(R.string.content_authority), extras, 1800);
+                            setFragmentResult(RESULT_OK, data);
+                            popBackStack();
+                        }, 500);
+                    });
                 } else {
-                    QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+                    Utils.postTaskSafely(()->{
+                        QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+                    });
                 }
             }
 

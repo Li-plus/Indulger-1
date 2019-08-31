@@ -18,6 +18,46 @@ public class NewsFavEntry extends LitePalSupport {
         super();
     }
 
+    public void downloadImageToBuffer(boolean is_first) {
+        // download image to buffer
+        for(int i = 0; i < originalImageUrls.size(); ++i) {
+            String url = originalImageUrls.get(i);
+            FutureTarget<File> res = GlideApp.with(MainApplication.getContext()).asFile().load(url).submit();
+            try{
+                File r = res.get();
+                if(r == null)
+                    continue;
+                String dataDir = MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs";
+                FileUtils.createDirs(dataDir);
+                File dst = new File(dataDir, String.format("%s_%d", uuid, i));
+                if(!dst.exists())
+                    dst.createNewFile();
+                FileUtils.copy(r, dst);
+                if(is_first)
+                    imgUrls.add(String.format("http://127.0.0.1/%s:%d", uuid, i));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public NewsFavEntry(NewsFavEntry other) {
+        super();
+        publisherName = other.publisherName;
+        publisherAvatarUrl = other.publisherAvatarUrl;
+        publishTime = other.publishTime;
+        title = other.title;
+        url = other.url;
+        content = other.content;
+        category = other.category;
+        imgUrls.addAll(other.imgUrls);
+        originalImageUrls.addAll(other.originalImageUrls);
+        keywords.addAll(other.keywords);
+        videoUrl = other.videoUrl;
+        markFavoriteTime = other.markFavoriteTime;
+        uuid = other.uuid;
+    }
+
     @SuppressLint("DefaultLocale")
     public NewsFavEntry(NewsEntry entry){
         super();
@@ -33,25 +73,7 @@ public class NewsFavEntry extends LitePalSupport {
         markFavoriteTime = new Date().getTime();
         uuid = entry.getUuid();
         originalImageUrls.addAll(entry.getImageUrls());
-        // download image to buffer
-        for(int i = 0; i < entry.getImageUrls().size(); ++i) {
-            String url = entry.getImageUrls().get(i);
-            FutureTarget<File> res = GlideApp.with(MainApplication.getContext()).asFile().load(url).submit();
-            try{
-                File r = res.get();
-                if(r == null)
-                    continue;
-                String dataDir = MainApplication.getContext().getDataDir().getAbsolutePath() + "/" + "favImgs";
-                FileUtils.createDirs(dataDir);
-                File dst = new File(dataDir, String.format("%s_%d", uuid, i));
-                if(!dst.exists())
-                    dst.createNewFile();
-                FileUtils.copy(r, dst);
-                imgUrls.add(String.format("http://127.0.0.1/%s:%d", uuid, i));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        downloadImageToBuffer(true);
         if(imgUrls.size() > 0)
             content = content.replaceFirst("src=\".*?\"", "src=\"" + imgUrls.get(0) + "\"");
     }
@@ -144,12 +166,20 @@ public class NewsFavEntry extends LitePalSupport {
         this.uuid = uuid;
     }
 
-    public List<String> getImageUrls() {
+    public List<String> getImgUrls() {
         return imgUrls;
     }
 
-    public void setImageUrls(List<String> imgUrls) {
+    public void setImgUrls(List<String> imgUrls) {
         this.imgUrls = imgUrls;
+    }
+
+    public List<String> getOriginalImageUrls() {
+        return originalImageUrls;
+    }
+
+    public void setOriginalImageUrls(List<String> originalImageUrls) {
+        this.originalImageUrls = originalImageUrls;
     }
 
     private String publisherName;
