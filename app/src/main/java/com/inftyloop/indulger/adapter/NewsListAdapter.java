@@ -12,20 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 
 import com.inftyloop.indulger.R;
-import com.inftyloop.indulger.api.Definition;
+import com.inftyloop.indulger.model.entity.BlockedWords;
 import com.inftyloop.indulger.model.entity.News;
-import com.inftyloop.indulger.util.ConfigManager;
+import com.inftyloop.indulger.ui.AutoNextLineLinearLayout;
 import com.inftyloop.indulger.util.DisplayHelper;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,6 +44,29 @@ public class NewsListAdapter extends BaseNewsAdapter {
 
         crossIcon.setOnClickListener((View view) -> {
             View popupView = LayoutInflater.from(mContext).inflate(R.layout.block_popup_layout, null);
+            List<String> blockKeys = getData().get(vh.getAdapterPosition()).getNewsEntry().getKeywords();
+
+            AutoNextLineLinearLayout layoutBlockKeys = popupView.findViewById(R.id.ll_block_keys);
+            List<ToggleButton> toggleButtons = new ArrayList<>();
+
+            for (String blockKey : blockKeys) {
+                String text = String.format(mContext.getString(R.string.news_list_block_item), blockKey);
+                ToggleButton tb = new ToggleButton(mContext);
+                tb.setBackgroundDrawable(mContext.getDrawable(R.drawable.toggle_button_selector));
+                tb.setTextOff(text);
+                tb.setTextOn(text);
+                tb.setText(text);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                int marginPixel = QMUIDisplayHelper.dp2px(mContext, 5);
+                param.setMargins(marginPixel, marginPixel, marginPixel, marginPixel);
+                tb.setLayoutParams(param);
+                int paddingPixel = QMUIDisplayHelper.dp2px(mContext, 10);
+                tb.setPadding(paddingPixel, paddingPixel, paddingPixel, paddingPixel);
+                tb.setTextColor(mContext.getColorStateList(R.color.s_toggle_text));
+
+                toggleButtons.add(tb);
+                layoutBlockKeys.addView(tb);
+            }
 
             PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
             popupWindow.setTouchable(true);
@@ -77,16 +102,17 @@ public class NewsListAdapter extends BaseNewsAdapter {
                 popupWindow.update(0, top + crossIcon.getHeight(), popupWindow.getWidth(), popupWindow.getHeight());
             }
 
-            Button deleteButton = popupView.findViewById(R.id.popup_delete_button);
-            deleteButton.setOnClickListener((View v) -> {
+            popupView.findViewById(R.id.popup_delete_button).setOnClickListener((View v) -> {
                 popupWindow.dismiss();
-                HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
-                blockKeys.addAll(getData().get(vh.getAdapterPosition()).getNewsEntry().getKeywords());
-                ConfigManager.putStringSetNow(Definition.BLOCKED_KEYS, blockKeys);
-                removeItemImmediately(vh.getAdapterPosition());
-                for (String keyword : blockKeys) {
-                    Log.d(TAG, "add blocking keyword " + keyword);
+                for (int i = 0; i < toggleButtons.size(); i++) {
+                    if (toggleButtons.get(i).isChecked()) {
+                        String keyword = blockKeys.get(i);
+                        Log.d(TAG, "add blocking keyword " + keyword);
+                        BlockedWords blockedWords = new BlockedWords(keyword);
+                        blockedWords.save();
+                    }
                 }
+                removeItemImmediately(vh.getAdapterPosition());
             });
         });
 

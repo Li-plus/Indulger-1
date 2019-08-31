@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,28 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.BaseRecyclerViewAdapter;
 import com.inftyloop.indulger.adapter.NewsListAdapter;
-import com.inftyloop.indulger.adapter.VideoListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
 import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
+import com.inftyloop.indulger.model.entity.BlockedWords;
 import com.inftyloop.indulger.model.entity.News;
-import com.inftyloop.indulger.model.entity.NewsEntry;
 import com.inftyloop.indulger.model.entity.RecommendWords;
 import com.inftyloop.indulger.ui.BaseFragment;
-import com.inftyloop.indulger.ui.MyJzVideoPlayer;
-import com.inftyloop.indulger.util.ConfigManager;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
+import org.litepal.LitePal;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
-import cn.jzvd.Jzvd;
-import org.litepal.LitePal;
 
 
 public class NewsListFragment extends BaseFragment implements OnNewsListRefreshListener {
@@ -55,7 +50,6 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
     DefaultNewsApiAdapter api = new DefaultNewsApiAdapter(this);
     private String mChannelCode;
     private boolean mIsRecommend = false;
-    private boolean mIsVideoList = false;
     private boolean mIsRefreshed = false;
     private Random rng = new Random(System.currentTimeMillis());
 
@@ -76,15 +70,10 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         if (bundle != null) {
             mChannelCode = bundle.getString(Definition.CHANNEL_CODE);
             mIsRecommend = bundle.getBoolean(Definition.IS_RECOMMEND, false);
-            mIsVideoList = bundle.getBoolean(Definition.IS_VIDEO_LIST, false);
         }
 
         List<News> data = new ArrayList<>();
-        if (mIsVideoList) {
-            mAdapter = new VideoListAdapter(getActivity(), data);
-        } else {
-            mAdapter = new NewsListAdapter(getActivity(), data);
-        }
+        mAdapter = new NewsListAdapter(getActivity(), data);
     }
 
     @Override
@@ -98,12 +87,12 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                     mRefreshLayout.setEnabled(false);
                     mIsRefreshed = false;
                     new Thread(() -> {
-                        if(!mIsRecommend)
+                        if (!mIsRecommend)
                             api.obtainNewsList(mChannelCode, "", true);
                         else {
                             try {
                                 List<RecommendWords> words = LitePal.where("1").limit(5).order("cnt desc").find(RecommendWords.class);
-                                if(words.size() > 0) {
+                                if (words.size() > 0) {
                                     api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), true);
                                 } else {
                                     api.obtainNewsList(mChannelCode, "", true);
@@ -145,12 +134,12 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 mInsertFromTop = true;
                 mIsRefreshed = true;
                 new Thread(() -> {
-                    if(!mIsRecommend)
+                    if (!mIsRecommend)
                         api.obtainNewsList(mChannelCode, "", false);
                     else {
                         try {
                             List<RecommendWords> words = LitePal.where("1").limit(20).order("cnt desc").find(RecommendWords.class);
-                            if(words.size() > 0) {
+                            if (words.size() > 0) {
                                 api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), false);
                             } else {
                                 api.obtainNewsList(mChannelCode, "", false);
@@ -176,29 +165,10 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
 
     @Override
     public void onNewsListRefresh(List<News> newsList) {
-        String[] videoUrls = {
-                "http://vfx.mtime.cn/Video/2017/03/31/mp4/170331093811717750.mp4",
-                "http://jzvd.nathen.cn/c6e3dc12a1154626b3476d9bf3bd7266/6b56c5f0dc31428083757a45764763b0-5287d2089db37e62345123a1be272f8b.mp4",
-                "https://www.w3school.com.cn/example/html5/mov_bbb.mp4",
-                "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-                "https://www.w3schools.com/html/movie.mp4"
-        };
-
-        if (mIsVideoList) {
-            newsList = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                NewsEntry newsEntry = new NewsEntry();
-                newsEntry.setTitle("Title");
-                newsEntry.setPublisherName("Publisher");
-                newsEntry.setVideoUrl(videoUrls[i % videoUrls.length]);
-                newsList.add(new News(newsEntry));
-            }
-        }
-
         isLoadingInProgress = false;
         mRefreshLayout.finishRefresh();
         mRefreshLayout.setEnabled(true);
-        if(mIsRefreshed && mIsRecommend && newsList.size() > 0) {
+        if (mIsRefreshed && mIsRecommend && newsList.size() > 0) {
             mAdapter.clearAll();
         }
         if (!mInsertFromTop) {
@@ -206,9 +176,8 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         }
         for (News news : newsList) {
             boolean isBlock = false;
-            HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
             for (String keyword : news.getNewsEntry().getKeywords()) {
-                if (blockKeys.contains(keyword)) {
+                if (!LitePal.where("word = ?", keyword).find(BlockedWords.class).isEmpty()) {
                     isBlock = true;
                     Log.d(TAG, "blocking news with keyword " + keyword);
                     break;
