@@ -94,13 +94,13 @@ public class NewsListAdapter extends BaseNewsAdapter {
 
             int top = DisplayHelper.getLocationOnScreen(crossIcon).y;
 
-            popupWindow.showAtLocation(crossIcon, Gravity.TOP | Gravity.START, 0, 100);
+            popupWindow.showAtLocation(crossIcon, Gravity.CENTER, 0, 100);
 
-            if (top + crossIcon.getHeight() + DisplayHelper.getMeasuredHeight(popupView) > DisplayHelper.getScreenHeight(mContext)) {
-                popupWindow.update(0, top - DisplayHelper.getMeasuredHeight(popupView), popupWindow.getWidth(), popupWindow.getHeight());
-            } else {
-                popupWindow.update(0, top + crossIcon.getHeight(), popupWindow.getWidth(), popupWindow.getHeight());
-            }
+//            if (top + crossIcon.getHeight() + DisplayHelper.getMeasuredHeight(popupView) > DisplayHelper.getScreenHeight(mContext)) {
+//                popupWindow.update(0, top - DisplayHelper.getMeasuredHeight(popupView), popupWindow.getWidth(), popupWindow.getHeight());
+//            } else {
+//                popupWindow.update(0, top + crossIcon.getHeight(), popupWindow.getWidth(), popupWindow.getHeight());
+//            }
 
             popupView.findViewById(R.id.popup_delete_button).setOnClickListener((View v) -> {
                 popupWindow.dismiss();
