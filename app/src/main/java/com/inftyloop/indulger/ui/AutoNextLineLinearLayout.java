@@ -17,6 +17,7 @@ import java.util.Hashtable;
 public class AutoNextLineLinearLayout extends LinearLayout {
     int mLeft, mRight, mTop, mBottom;
     Hashtable map = new Hashtable();
+    int margin = 20;
 
     public AutoNextLineLinearLayout(Context context) {
         super(context);
@@ -63,18 +64,18 @@ public class AutoNextLineLinearLayout extends LinearLayout {
                 j = i;
                 mLeft = 0;
                 mRight = mLeft + child.getMeasuredWidth();
-                mTop = mY + 5;
+                mTop = mY + margin;
 // PS：如果发现高度还是有问题就得自己再细调了
             }
             mBottom = mTop + child.getMeasuredHeight();
             mY = mTop; // 每次的高度必须记录 否则控件会叠加到一起
             position.left = mLeft;
-            position.top = mTop + 3;
+            position.top = mTop;
             position.right = mRight;
             position.bottom = mBottom;
             map.put(child, position);
         }
-        setMeasuredDimension(mWidth, mBottom);
+        setMeasuredDimension(mWidth, mBottom + margin);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class AutoNextLineLinearLayout extends LinearLayout {
 
     public int getPosition(int IndexInRow, int childIndex) {
         if (IndexInRow > 0) {
-            return getPosition(IndexInRow - 1, childIndex - 1) + getChildAt(childIndex - 1).getMeasuredWidth() + 8;
+            return getPosition(IndexInRow - 1, childIndex - 1) + getChildAt(childIndex - 1).getMeasuredWidth() + margin;
         }
         return getPaddingLeft();
     }
