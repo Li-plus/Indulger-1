@@ -1,5 +1,8 @@
 package com.inftyloop.indulger.model.entity;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class TipEntity {
     public String display_info;
     public String open_url;

@@ -1,5 +1,8 @@
 package com.inftyloop.indulger.model.entity;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class Video {
 
     /**

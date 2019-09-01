@@ -8,10 +8,10 @@ import retrofit2.http.*;
 import rx.Observable;
 
 public interface ToutiaoApiService {
-    String GET_ARTICLE_LIST = "api/news/feed/v62/?refer=1&count=20&loc_mode=4&device_id=34960436458&iid=13136511752";
+    String GET_ARTICLE_LIST = "api/news/feed/v62/?iid=5034850950&device_id=6096495334&refer=1&count=20&aid=13";
 
     @GET(GET_ARTICLE_LIST)
-    Observable<NewsResponse> getNewsList(@Query("category") String category, @Query("min_behot_time") long lastTime, @Query("last_refresh_sub_entrance_interval") long currentTime);
+    Observable<NewsResponse> getNewsList(@Query("category") String category, @Query("max_behot_time") long maxBeHotTime, @Query("min_behot_time") long minBeHotTime);
 
     @GET
     Observable<String> getVideoHtml(@Url String url);

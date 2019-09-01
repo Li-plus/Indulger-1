@@ -31,6 +31,7 @@ import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class NewsListAdapter extends BaseNewsAdapter {

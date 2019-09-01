@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import java.io.File;
+
+import static android.view.View.GONE;
 
 public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCallback {
     private final static String TAG = NewsDetailFragment.class.getSimpleName();
@@ -188,6 +191,9 @@ public class NewsDetailFragment extends QMUIFragment implements OnNewsDetailCall
                 toggleNewsFav(mEntry, !isFav);
             });
         }
+        String url = isLoadFromFav ? mFavEntry.getUrl() : mEntry.getUrl();
+        if(TextUtils.isEmpty(url.trim()))
+            mViewOriginal.setVisibility(GONE);
         shareUtils = new ShareUtils();
         shareUtils.regToWX(getContext());
         return root;

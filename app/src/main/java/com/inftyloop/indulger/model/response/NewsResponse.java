@@ -1,11 +1,13 @@
 package com.inftyloop.indulger.model.response;
 
+import androidx.annotation.Keep;
 import com.google.gson.Gson;
 import com.inftyloop.indulger.model.entity.NewsData;
 import com.inftyloop.indulger.model.entity.TipEntity;
 
 import java.util.List;
 
+@Keep
 public class NewsResponse {
     public int login_status;
     public int total_number;

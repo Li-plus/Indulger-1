@@ -1,7 +1,10 @@
 package com.inftyloop.indulger.model.entity;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
+@Keep
 public class VideoEntity {
     /**
      * group_flags : 32832

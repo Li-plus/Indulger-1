@@ -26,6 +26,7 @@ import com.qmuiteam.qmui.util.QMUIResHelper;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import cn.jzvd.JzvdStd;
 import org.litepal.LitePal;

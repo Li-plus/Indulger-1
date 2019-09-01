@@ -1,5 +1,8 @@
 package com.inftyloop.indulger.model.entity;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class VideoModel {
 
     /**
@@ -22,6 +25,7 @@ public class VideoModel {
 
     public VideoListBean video_list;
 
+    @Keep
     public static class VideoListBean {
         public Video video_1;
         public Video video_2;

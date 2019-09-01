@@ -3,6 +3,8 @@ package com.inftyloop.indulger.model.entity;
 import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
+import java.util.Locale;
+
 public class RecommendWords extends LitePalSupport {
     public String getWord() {
         return word;

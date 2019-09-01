@@ -28,6 +28,7 @@ import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import butterknife.BindView;

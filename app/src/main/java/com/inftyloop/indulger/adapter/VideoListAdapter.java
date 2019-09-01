@@ -85,13 +85,16 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
         final Bitmap[] mMainImage = new Bitmap[1];
         if(news.getVideoThumbUrl() != null) {
             GlideApp.with(mContext)
-                    .asBitmap().load(news.getVideoThumbUrl())
+                    .load(news.getVideoThumbUrl())
                     .placeholder(R.color.color_d8d8d8)
+                    .into(videoPlayer.thumbImageView);
+            GlideApp.with(mContext)
+                    .asBitmap()
+                    .load(news.getVideoThumbUrl())
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             mMainImage[0] = resource;
-                            videoPlayer.thumbImageView.setImageBitmap(resource);
                         }
 
                         @Override
@@ -183,11 +186,10 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
                 else
                     isVideoParsing = true;
                 String url = news.getNewsEntry().getVideoUrl();
-                if(BuildConfig.DEBUG) {
-                    Log.e(TAG, url);
-                }
+                Log.e(TAG, url);
                 if(url.endsWith(".mp4")) {
                     isVideoParsing = false;
+                    Log.e(TAG, "Can directly play, not parsing");
                     videoPlayer.setUp(url, news.getNewsEntry().getTitle(), JzvdStd.SCREEN_NORMAL);
                     news.setParsedVideoUrl(url);
                     videoPlayer.startVideo();
@@ -210,6 +212,7 @@ public class VideoListAdapter extends BaseRecyclerViewAdapter<News, BaseRecycler
                     @Override
                     public void onDecodeError(String errorMsg) {
                         isVideoParsing = false;
+                        Log.e(TAG, url);
                         videoPlayer.setAllControlsVisiblity(GONE, GONE, VISIBLE, GONE, VISIBLE, GONE, GONE);
                         QMUITipDialog.Builder.makeToast(mContext, QMUITipDialog.Builder.ICON_TYPE_FAIL,
                                 mContext.getString(R.string.video_parse_error), Toast.LENGTH_SHORT).show();

@@ -50,25 +50,23 @@ public class AutoNextLineLinearLayout extends LinearLayout {
             final View child = getChildAt(i);
 
             child.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-// 此处增加onlayout中的换行判断，用于计算所需的高度
             int childw = child.getMeasuredWidth();
             int childh = child.getMeasuredHeight();
-            mX += childw; // 将每次子控件宽度进行统计叠加，如果大于设定的高度则需要换行，高度即Top坐标也需重新设置
+            mX += childw;
 
             Position position = new Position();
             mLeft = getPosition(i - j, i);
             mRight = mLeft + child.getMeasuredWidth();
-            if (mX >= mWidth) {
+            if (mRight >= mWidth) {
                 mX = childw;
                 mY += childh;
                 j = i;
                 mLeft = 0;
                 mRight = mLeft + child.getMeasuredWidth();
                 mTop = mY + margin;
-// PS：如果发现高度还是有问题就得自己再细调了
             }
             mBottom = mTop + child.getMeasuredHeight();
-            mY = mTop; // 每次的高度必须记录 否则控件会叠加到一起
+            mY = mTop;
             position.left = mLeft;
             position.top = mTop;
             position.right = mRight;

@@ -1,7 +1,10 @@
 package com.inftyloop.indulger.model.entity;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
+@Keep
 public class ImageEntity {
     /**
      * url : http://p3.pstatp.com/list/300x196/2c23000095ae9f56b15f.webp
@@ -17,11 +20,8 @@ public class ImageEntity {
     public int height;
     public List<UrlListBeanX> url_list;
 
+    @Keep
     public static class UrlListBeanX {
-        /**
-         * url : http://p3.pstatp.com/list/300x196/2c23000095ae9f56b15f.webp
-         */
-
         public String url;
     }
 }

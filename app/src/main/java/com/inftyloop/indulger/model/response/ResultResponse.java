@@ -1,5 +1,8 @@
 package com.inftyloop.indulger.model.response;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class ResultResponse<T> {
 
     public String has_more;

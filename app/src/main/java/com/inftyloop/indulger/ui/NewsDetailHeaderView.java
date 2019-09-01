@@ -169,7 +169,6 @@ public class NewsDetailHeaderView extends FrameLayout {
     public void onFollowBtnClick(View view) {
         mFavBtn.setText(getContext().getString(mHasFollowed ? R.string.follow : R.string.followed));
         mHasFollowed = !mHasFollowed;
-        // TODO
     }
 
     public interface LoadWebListener {

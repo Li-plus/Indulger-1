@@ -20,21 +20,13 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class org.litepal.** {
-    *;
-}
+-keep class org.litepal.** { *; }
 
--keep class * extends org.litepal.crud.DataSupport {
-    *;
-}
+-keep class * extends org.litepal.crud.DataSupport { *; }
 
--keep class * extends org.litepal.crud.LitePalSupport {
-    *;
-}
+-keep class * extends org.litepal.crud.LitePalSupport { *;}
 
--keep class com.qmuiteam.qmui.arch.** {
-    *;
-}
+-keep class com.qmuiteam.qmui.arch.** { *;}
 
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
@@ -54,7 +46,6 @@
 ########--------Retrofit + RxJava--------#########
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
--dontwarn sun.misc.Unsafe
 -dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
 -dontwarn retrofit.appengine.UrlFetchClient
 -keepattributes Signature
@@ -62,43 +53,46 @@
 -keepclasseswithmembers class * {
     @retrofit.http.* <methods>;
 }
--keep class com.google.gson.** { *; }
--keep class com.google.inject.** { *; }
--keep class org.apache.http.** { *; }
--keep class org.apache.james.mime4j.** { *; }
--keep class javax.inject.** { *; }
--keep class retrofit.** { *; }
--dontwarn org.apache.http.**
+
 -dontwarn android.net.http.AndroidHttpClient
--dontwarn retrofit.**
+-dontwarn sun.misc.**
 
- -dontwarn sun.misc.**
-
- -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;
 }
 
- -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
    long producerNode;
    long consumerNode;
 }
 
--keep class com.tencent.mm.opensdk.** {
-    *;
-}
-
--keep class com.tencent.wxop.** {
-    *;
-}
-
--keep class com.tencent.mm.sdk.** {
-    *;
-}
-
+### share SDKs
+-keep class com.tencent.mm.opensdk.** { *;}
+-keep class com.tencent.wxop.** { *;}
+-keep class com.tencent.mm.sdk.** { *;}
 -keep class com.sina.weibo.sdk.** { *; }
 
+### Jzvd Video Player
 -keep public class cn.jzvd.JZMediaSystem {*; }
 -keep public class cn.jzvd.demo.CustomMedia.CustomMedia {*; }
 -keep public class cn.jzvd.demo.CustomMedia.JZMediaIjk {*; }
 -keep public class cn.jzvd.demo.CustomMedia.JZMediaSystemAssertFolder {*; }
+
+## GSON
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+-assumenosideeffects class android.util.Log {
+    public static boolean isLoggable(java.lang.String, int);
+    public static int v(...);
+    public static int i(...);
+    public static int w(...);
+    public static int d(...);
+    public static int e(...);
+}

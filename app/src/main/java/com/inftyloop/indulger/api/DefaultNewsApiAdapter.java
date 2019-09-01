@@ -75,8 +75,7 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         } else {
             mApiService = ApiRetrofit.buildOrGet("THUDefault", DefaultNewsApiService.BASE_URL, DefaultNewsApiService.class, ApiRetrofit.COMMON_HEADER_INTERCEPTOR);
         }
-        mToutiaoApiService = ApiRetrofit.buildOrGet("toutiao_video", Definition.TOUTIAO_BASE_SERVER_URL, ToutiaoApiService.class,
-                ApiRetrofit.TOUTIAO_HEADER_INTERCEPTOR, ApiRetrofit.LOG_INTERCEPTOR);
+        mToutiaoApiService = ApiRetrofit.buildOrGet("toutiao_video", Definition.TOUTIAO_BASE_SERVER_URL, ToutiaoApiService.class, ApiRetrofit.TOUTIAO_HEADER_INTERCEPTOR);
         mRefreshListener = refreshListener;
     }
 
@@ -352,7 +351,6 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
         // if loading more is false(keyword changed), reset end time to current time.
         String channel = "search";
         if (!NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
-            // TODO: notify view
             Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
             return;
         }
@@ -408,10 +406,10 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     }
 
     public void obtainToutiaoVideoList(boolean isLoadingMore) {
-        Long last = channelStartTime.get("video");
+        Long last = channelStartTime.get("toutiao_video");
         if(last == null)
             last = System.currentTimeMillis() / 1000;
-        addSubscription(mToutiaoApiService.getNewsList("video", last, System.currentTimeMillis() / 1000),
+        addSubscription(mToutiaoApiService.getNewsList("video", 0, last),
                 new Subscriber<NewsResponse>() {
                     @Override
                     public void onCompleted() {}
@@ -425,16 +423,17 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
                     @Override
                     public void onNext(NewsResponse newsResponse) {
                         Long last = System.currentTimeMillis() / 1000;
-                        channelStartTime.put("video", last);
+                        channelStartTime.put("toutiao_video", last);
                         List<NewsData> data = newsResponse.data;
                         List<News> newsList = new ArrayList<>();
                         Gson gson = new Gson();
                         if(data != null) {
+                            Log.e(TAG, "Toutiao loaded " + data.size());
                             for(NewsData item : data) {
                                 try {
                                     JsonObject obj = gson.fromJson(item.content, JsonObject.class);
                                     NewsEntry entry = new NewsEntry();
-                                    entry.setCategory("video");
+                                    entry.setCategory("toutiao_video");
                                     entry.setContent("");
                                     JsonObject publisher = obj.getAsJsonObject("media_info");
                                     entry.setPublisherName(publisher.get("name").getAsString());
