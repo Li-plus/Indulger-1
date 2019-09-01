@@ -98,21 +98,12 @@ public class HomeSearchFragment extends QMUIFragment {
                         return false;
                     }
                     // start search !
-                    Toast.makeText(getContext(), mSearch.getText(), Toast.LENGTH_SHORT).show();
                     mSearchHistory.pushFront(mSearch.getText().toString());
                     String[] arr = mSearchHistory.getItemArray();
                     String temp = mGson.toJson(arr);
                     ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
                     if (arr.length > 0)
                         mSearchHistoryBar.setVisibility(View.VISIBLE);
-                    /*List<String> mUrls = new ArrayList<>();
-                    mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555038&di=2710a60131cf092d7869e258954bc099&imgtype=0&src=http%3A%2F%2Fattachments.gfan.com%2Fforum%2Fattachments2%2Fattachments2%2Fday_110120%2F11012008485012851f3b754fad.jpg");
-                    mUrls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565699555042&di=8bdd3ab58e346c969e5f8b1a15cde3be&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2FImg%2F20120227%2F2012022709150416.jpg");
-                    Intent intent = new Intent(getContext(), ImageViewPagerActivity.class);
-                    intent.putExtra(ImageViewPagerActivity.POSITION, 0);
-                    intent.putStringArrayListExtra(ImageViewPagerActivity.IMG_URLS, (ArrayList<String>) mUrls);
-                    getContext().startActivity(intent);*/
-
                     keyword = mSearch.getText().toString();
                     SearchResultFragment res = new SearchResultFragment();
                     startFragment(res);

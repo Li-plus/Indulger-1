@@ -177,47 +177,69 @@ public class DefaultNewsApiAdapter extends BaseNewsApiAdapter {
     public void obtainNewsList(String channel, String keyword, boolean isLoadingMore) {
         boolean isRecommend = channel.equals(MainApplication.getContext().getString(R.string.channel_code_recommend));
         boolean isInitialLoading = !channelStartTime.containsKey(channel) || !channelEndTime.containsKey(channel);
-        if (isRecommend && (!isLoadingMore || isInitialLoading) && NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
+        if (isRecommend && (!isLoadingMore || isInitialLoading)) {
             // recommend list refresh, if there is new data, reset current records
             // only hooks iff. there is network
-            Date curr = new Date();
-            addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, "",
-                    DateUtils.formatDateTime(curr, "yyyy-MM-dd HH:mm:ss"), keyword, CHANNEL_NAME_MAPPER.get(channel)),
-                    new Subscriber<JsonObject>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.e(TAG, e.getMessage());
-                            Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
-                        }
-
-                        @Override
-                        public void onNext(JsonObject jsonObject) {
-                            int total = jsonObject.get("total").getAsInt();
-                            if (total > 0) {
-                                Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, true);
-                                List<NewsEntry> entries = res.first;
-                                if(entries.size() == 0) {
-                                    Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
-                                    return;
-                                }
-                                LitePal.deleteAll(NewsLoadRecord.class, "channelCode = ?", channel);
-                                LitePal.deleteAll(NewsEntry.class, "category = ?", channel);
-                                NewsLoadRecord record = new NewsLoadRecord();
-                                record.setChannelCode(channel);
-                                record.setStartTime(res.second.first);
-                                record.setEndTime(res.second.second);
-                                record.save();
-                                Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
-                                channelStartTime.put(channel, list.second.first);
-                                channelEndTime.put(channel, list.second.second);
-                                Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(list.first));
+            if(NetworkUtils.isNetworkAvailable(MainApplication.getContext())) {
+                Date curr = new Date();
+                addSubscription(mApiService.getNewsInfo(NUM_ELEM_PER_PAGE, 1, "",
+                        DateUtils.formatDateTime(curr, "yyyy-MM-dd HH:mm:ss"), keyword, CHANNEL_NAME_MAPPER.get(channel)),
+                        new Subscriber<JsonObject>() {
+                            @Override
+                            public void onCompleted() {
                             }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, e.getMessage());
+                                Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                            }
+
+                            @Override
+                            public void onNext(JsonObject jsonObject) {
+                                int total = jsonObject.get("total").getAsInt();
+                                if (total > 0) {
+                                    Pair<List<NewsEntry>, Pair<Long, Long>> res = jsonToNewsEntry(jsonObject, channel, true);
+                                    List<NewsEntry> entries = res.first;
+                                    if(entries.size() == 0) {
+                                        Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                                        return;
+                                    }
+                                    LitePal.deleteAll(NewsLoadRecord.class, "channelCode = ?", channel);
+                                    LitePal.deleteAll(NewsEntry.class, "category = ?", channel);
+                                    NewsLoadRecord record = new NewsLoadRecord();
+                                    record.setChannelCode(channel);
+                                    record.setStartTime(res.second.first);
+                                    record.setEndTime(res.second.second);
+                                    record.save();
+                                    Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(entries);
+                                    channelStartTime.put(channel, list.second.first);
+                                    channelEndTime.put(channel, list.second.second);
+                                    Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(list.first));
+                                }
+                            }
+                        });
+            } else {
+                if(isInitialLoading) {
+                    // no network, try to read from db
+                    long curr = new Date().getTime();
+                    NewsLoadRecord record = getMostRecentNewsLoadRecordOlderThan(channel, curr);
+                    if(record == null) {
+                        Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                    } else {
+                        List<NewsEntry> res = LitePal.where("publishTime <= ? AND category = ? ", Long.valueOf(record.getStartTime()).toString(), channel).order("publishTime desc").limit(15).find(NewsEntry.class);
+                        Pair<List<News>, Pair<Long, Long>> list = sortThruNewsEntries(res);
+                        if(list.first.size() > 0) {
+                            channelStartTime.put(channel, list.second.first);
+                            channelEndTime.put(channel, list.second.second);
                         }
-                    });
+                        Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(list.first));
+                    }
+                } else {
+                    // do not refresh
+                    Utils.postTaskSafely(() -> mRefreshListener.onNewsListRefresh(new ArrayList<>()));
+                }
+            }
             return;
         }
         if (isInitialLoading || isLoadingMore) {
