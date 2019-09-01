@@ -61,6 +61,7 @@
     <string name="news_list_outdated">旧闻</string>
     <string name="news_list_block_reason">选择理由 为您优化</string>
     <string name="news_list_notification">成功刷新%d条新闻</string>
+    <string name="news_list_block_item">包含：%s</string>
 
     <string name="short_time_just_now">刚刚</string>
     <string name="short_time_minute_ago">分钟前</string>

@@ -14,16 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.adapter.NewsListAdapter;
 import com.inftyloop.indulger.api.DefaultNewsApiAdapter;
-import com.inftyloop.indulger.api.Definition;
 import com.inftyloop.indulger.listener.OnChildAttachStateChangeCallback;
 import com.inftyloop.indulger.listener.OnNewsListRefreshListener;
+import com.inftyloop.indulger.model.entity.BlockedWords;
 import com.inftyloop.indulger.model.entity.News;
-import com.inftyloop.indulger.util.ConfigManager;
 import com.qmuiteam.qmui.arch.QMUIFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
+import org.litepal.LitePal;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -92,13 +92,12 @@ public class SearchResultFragment extends QMUIFragment implements OnNewsListRefr
         isLoadingInProgress = false;
         mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
 
-        HashSet<String> blockKeys = (HashSet<String>) ConfigManager.getStringSet(Definition.BLOCKED_KEYS, new HashSet<>());
         for (News news : newsList) {
             boolean isBlock = false;
             for (String keyword : news.getNewsEntry().getKeywords()) {
-                if (blockKeys.contains(keyword)) {
+                if (!LitePal.where("word = ?", keyword).find(BlockedWords.class).isEmpty()) {
                     isBlock = true;
-                    Log.d(TAG, "blocked news with keyword " + keyword);
+                    Log.d(TAG, "blocking news with keyword " + keyword);
                     break;
                 }
             }

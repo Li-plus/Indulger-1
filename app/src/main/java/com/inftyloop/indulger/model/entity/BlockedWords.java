@@ -5,5 +5,17 @@ import org.litepal.crud.LitePalSupport;
 
 public class BlockedWords extends LitePalSupport {
     @Column(nullable = false, unique = true)
-    String word;
+    private String word;
+
+    public BlockedWords(String word) {
+        this.word = word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public String getWord() {
+        return this.word;
+    }
 }

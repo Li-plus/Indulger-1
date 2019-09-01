@@ -7,42 +7,46 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <LinearLayout
+    <com.inftyloop.indulger.ui.AutoNextLineLinearLayout
+        android:id="@+id/ll_block_keys"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/toggle_button_selector"
-            android:padding="10dp"
-            android:textColor="@color/s_toggle_text"
-            android:textOff="@string/news_list_not_interested"
-            android:textOn="@string/news_list_not_interested" />
+        <!--<ToggleButton-->
+            <!--android:id="@+id/tb_keyword_1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:background="@drawable/toggle_button_selector"-->
+            <!--android:padding="10dp"-->
+            <!--android:textColor="@color/s_toggle_text"-->
+            <!--android:textOff="@string/news_list_not_interested"-->
+            <!--android:textOn="@string/news_list_not_interested" />-->
 
-        <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/toggle_button_selector"
-            android:padding="10dp"
-            android:textColor="@color/s_toggle_text"
-            android:textOff="@string/news_list_fake_news"
-            android:textOn="@string/news_list_fake_news" />
+        <!--<ToggleButton-->
+            <!--android:id="@+id/tb_keyword_2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:background="@drawable/toggle_button_selector"-->
+            <!--android:padding="10dp"-->
+            <!--android:textColor="@color/s_toggle_text"-->
+            <!--android:textOff="@string/news_list_fake_news"-->
+            <!--android:textOn="@string/news_list_fake_news" />-->
 
-        <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/toggle_button_selector"
-            android:padding="10dp"
-            android:textColor="@color/s_toggle_text"
-            android:textOff="@string/news_list_outdated"
-            android:textOn="@string/news_list_outdated" />
+        <!--<ToggleButton-->
+            <!--android:id="@+id/tb_keyword_3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:background="@drawable/toggle_button_selector"-->
+            <!--android:padding="10dp"-->
+            <!--android:textColor="@color/s_toggle_text"-->
+            <!--android:textOff="@string/news_list_outdated"-->
+            <!--android:textOn="@string/news_list_outdated" />-->
 
-    </LinearLayout>
+    </com.inftyloop.indulger.ui.AutoNextLineLinearLayout>
 
     <View
         android:layout_width="match_parent"
