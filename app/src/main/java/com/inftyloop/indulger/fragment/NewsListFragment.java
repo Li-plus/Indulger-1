@@ -91,7 +91,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                             api.obtainNewsList(mChannelCode, "", true);
                         else {
                             try {
-                                List<RecommendWords> words = LitePal.where("1").limit(5).order("cnt desc").find(RecommendWords.class);
+                                List<RecommendWords> words = LitePal.where("1").limit(10).order("cnt desc").find(RecommendWords.class);
                                 if (words.size() > 0) {
                                     api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), true);
                                 } else {
@@ -138,7 +138,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                         api.obtainNewsList(mChannelCode, "", false);
                     else {
                         try {
-                            List<RecommendWords> words = LitePal.where("1").limit(20).order("cnt desc").find(RecommendWords.class);
+                            List<RecommendWords> words = LitePal.where("1").limit(10).order("cnt desc").find(RecommendWords.class);
                             if (words.size() > 0) {
                                 api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), false);
                             } else {

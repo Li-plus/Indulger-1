@@ -22,10 +22,12 @@ import androidx.annotation.NonNull;
 import com.inftyloop.indulger.R;
 import com.inftyloop.indulger.model.entity.BlockedWords;
 import com.inftyloop.indulger.model.entity.News;
+import com.inftyloop.indulger.model.entity.RecommendWords;
 import com.inftyloop.indulger.ui.AutoNextLineLinearLayout;
 import com.inftyloop.indulger.util.DisplayHelper;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,8 +110,10 @@ public class NewsListAdapter extends BaseNewsAdapter {
                     if (toggleButtons.get(i).isChecked()) {
                         String keyword = blockKeys.get(i);
                         Log.d(TAG, "add blocking keyword " + keyword);
-                        BlockedWords blockedWords = new BlockedWords(keyword);
-                        blockedWords.save();
+                        BlockedWords get = LitePal.where("word = ?", keyword).findFirst(BlockedWords.class);
+                        if(get == null)
+                            new BlockedWords(keyword).save();
+                        LitePal.deleteAll(RecommendWords.class, "word = ?", keyword);
                     }
                 }
                 removeItemImmediately(vh.getAdapterPosition());

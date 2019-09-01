@@ -91,9 +91,9 @@ public class LogInFragment extends QMUIFragment {
 
             @Override
             public void onCheckUser(boolean success, String errMsg) {
+                Utils.postTaskSafely(tipDialog::dismiss);
                 if(success) {
                     Utils.postTaskSafely(()->{
-                        tipDialog.dismiss();
                         QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_SUCCESS, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                         mTopBar.postDelayed(()->{
                             Intent data = new Intent();
