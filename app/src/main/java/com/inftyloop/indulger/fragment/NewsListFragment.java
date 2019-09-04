@@ -1,6 +1,7 @@
 package com.inftyloop.indulger.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.inftyloop.indulger.model.entity.BlockedWords;
 import com.inftyloop.indulger.model.entity.News;
 import com.inftyloop.indulger.model.entity.RecommendWords;
 import com.inftyloop.indulger.ui.BaseFragment;
+import com.inftyloop.indulger.util.Utils;
 import com.inftyloop.indulger.viewholder.BaseRecyclerViewHolder;
 import com.qmuiteam.qmui.widget.pullRefreshLayout.QMUIPullRefreshLayout;
 
@@ -53,6 +55,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
     private boolean mIsRecommend = false;
     private boolean mIsRefreshed = false;
     private Random rng = new Random(System.currentTimeMillis());
+    private String lastRecommendedWord = "";
 
     public String getChannelCode() {
         return mChannelCode;
@@ -94,7 +97,10 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                             try {
                                 List<RecommendWords> words = LitePal.where("1").limit(10).order("cnt desc").find(RecommendWords.class);
                                 if (words.size() > 0) {
-                                    api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), true);
+                                    String word = words.get(rng.nextInt(words.size())).getWord();
+                                    if(TextUtils.isEmpty(lastRecommendedWord))
+                                        lastRecommendedWord = word;
+                                    api.obtainNewsList(mChannelCode, word, true);
                                 } else {
                                     api.obtainNewsList(mChannelCode, "", true);
                                 }
@@ -139,9 +145,14 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                         api.obtainNewsList(mChannelCode, "", false);
                     else {
                         try {
-                            List<RecommendWords> words = LitePal.where("1").limit(10).order("cnt desc").find(RecommendWords.class);
+                            List<RecommendWords> words = LitePal.where("1").limit(5).order("cnt desc").find(RecommendWords.class);
                             if (words.size() > 0) {
-                                api.obtainNewsList(mChannelCode, words.get(Math.abs(rng.nextInt()) % words.size()).getWord(), false);
+                                String rr = words.get(rng.nextInt(words.size())).getWord();
+                                while(words.size() > 1 && lastRecommendedWord.equals(rr)) {
+                                    rr = words.get(rng.nextInt(words.size())).getWord();
+                                }
+                                // avoid duplication
+                                api.obtainNewsList(mChannelCode, rr, false);
                             } else {
                                 api.obtainNewsList(mChannelCode, "", false);
                             }
@@ -171,10 +182,12 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
         mRefreshLayout.setEnabled(true);
         if (mIsRefreshed && mIsRecommend && newsList.size() > 0) {
             mAdapter.clearAll();
+            mIsRefreshed = false;
         }
         if (!mInsertFromTop) {
             mAdapter.removeItemImmediately(mAdapter.getData().size() - 1);
         }
+        int count = 0;
         for (News news : newsList) {
             boolean isBlock = false;
             for (String keyword : news.getNewsEntry().getKeywords()) {
@@ -185,7 +198,7 @@ public class NewsListFragment extends BaseFragment implements OnNewsListRefreshL
                 }
             }
             if (!isBlock) {
-                int position = (mInsertFromTop ? 0 : mAdapter.getData().size());
+                int position = (mInsertFromTop ? count++ : mAdapter.getData().size());
                 mAdapter.insertItemImmediately(position, news);
             }
         }

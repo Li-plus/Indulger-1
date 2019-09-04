@@ -33,8 +33,10 @@ abstract public class BaseRecyclerViewAdapter<T, VH extends RecyclerView.ViewHol
     }
 
     public void clearAll() {
-        mData.clear();
-        notifyDataSetChanged();
+        while(mData.size() > 0) {
+            mData.remove(mData.size() - 1);
+            notifyItemRemoved(mData.size());
+        }
     }
 
     @Override
