@@ -23,6 +23,11 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "Indulger_${variant.buildType.name}_${defaultConfig.versionName}.apk"
+                }
+            }
         }
         debug {
             signingConfig signingConfigs.release
