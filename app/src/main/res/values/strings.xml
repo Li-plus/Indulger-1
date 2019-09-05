@@ -46,6 +46,7 @@
     <string name="settings_lang_auto">Automatic</string>
     <string name="home_search_submit">Submit</string>
     <string name="search_history">Search History</string>
+    <string name="search_search">Search</string>
     <string name="confirm_clear_search_history">Are you sure to clear all search history?</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>

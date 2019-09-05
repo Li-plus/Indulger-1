@@ -1,41 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_gravity="top"
-        android:layout_margin="8dp"
-        android:background="@drawable/border_search"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:layout_gravity="top"
+    android:layout_margin="8dp"
+    android:background="@drawable/border_search">
 
     <ImageButton
-            android:id="@+id/img_search"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_back"/>
+        android:id="@+id/img_search"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_back" />
 
     <EditText
-            android:id="@+id/edit_search"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:background="@null"
-            android:textCursorDrawable="@null"
-            android:hint="@string/home_search_prompt"
-            android:layout_toEndOf="@id/img_search"
-            android:textColorHint="?attr/foreground_text_color"
-            android:textColor="?attr/foreground_text_color"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textSize="16sp" android:layout_width="310dp"/>
+        android:id="@+id/edit_search"
+        android:layout_width="310dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/img_search"
+        android:background="@null"
+        android:hint="@string/home_search_prompt"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="?attr/foreground_text_color"
+        android:textColorHint="?attr/foreground_text_color"
+        android:textCursorDrawable="@null"
+        android:textSize="16sp" />
 
     <ImageView
-            android:id="@+id/icon_clear"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:layout_toEndOf="@id/edit_search"
-            android:src="@mipmap/add_channels_close_small" />
+        android:id="@+id/icon_clear"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/view_separator"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/add_channels_close_small" />
+
+    <View
+        android:id="@+id/view_separator"
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toStartOf="@id/tv_search"
+        android:background="?attr/app_content_separator_color" />
+
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/search_search"
+        android:textSize="16sp" />
 </RelativeLayout>
