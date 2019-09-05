@@ -1,6 +1,12 @@
 # Indulger
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/Indulger/blob/master/LICENSE) [![CodeFactor](https://www.codefactor.io/repository/github/zx1239856/indulger/badge)](https://www.codefactor.io/repository/github/zx1239856/indulger)
+
 Indulger is a simple news app intended for those who enjoy an immersive style of reading. Unlike the name suggests, we don't want you to become a real indulger, yet instead you are encouraged to cultivate a good habit of reading and become more inquisitive about everything around you. Hope this app can get you well informed at least to some extent.
+
+## Build
+
+You can build this app via Android Studio/Idea, simply import the Gradle project
 
 ## Features
 
