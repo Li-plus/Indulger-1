@@ -34,6 +34,7 @@
     <string name="settings_lang_auto">自动</string>
     <string name="home_search_submit">提交</string>
     <string name="search_history">搜索历史</string>
+    <string name="search_search">搜索</string>
     <string name="confirm_clear_search_history">确定清除所有搜索记录吗？</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>

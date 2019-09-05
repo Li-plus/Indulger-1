@@ -2,8 +2,6 @@ package com.inftyloop.indulger.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,10 +9,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
 import android.view.View;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +32,9 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class HomeSearchFragment extends QMUIFragment {
     private static final String TAG = HomeSearchFragment.class.getSimpleName();
@@ -43,6 +50,7 @@ public class HomeSearchFragment extends QMUIFragment {
     ImageButton mTopImgButton;
     ImageView mClearEditText;
     EditText mSearch;
+    TextView mSearchButton;
     Gson mGson = new Gson();
 
     public static String keyword = "";
@@ -79,7 +87,7 @@ public class HomeSearchFragment extends QMUIFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (mSearch.hasFocus() && !mSearch.getText().toString().isEmpty())
+                if (!mSearch.getText().toString().isEmpty())
                     mClearEditText.setVisibility(View.VISIBLE);
                 else
                     mClearEditText.setVisibility(View.INVISIBLE);
@@ -92,32 +100,21 @@ public class HomeSearchFragment extends QMUIFragment {
         mSearch.setOnKeyListener((v, keyCode, evt) -> {
             if (evt.getAction() == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if (mSearch.getText().toString().isEmpty()) {
-                        Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.search_empty_input_not_allowed), Toast.LENGTH_SHORT);
-                        toast.show();
-                        return false;
-                    }
-                    // start search !
-                    mSearchHistory.pushFront(mSearch.getText().toString());
-                    String[] arr = mSearchHistory.getItemArray();
-                    String temp = mGson.toJson(arr);
-                    ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
-                    if (arr.length > 0)
-                        mSearchHistoryBar.setVisibility(View.VISIBLE);
-                    keyword = mSearch.getText().toString();
-                    SearchResultFragment res = new SearchResultFragment();
-                    startFragment(res);
-                    return true;
+                    return startSearch();
                 }
             }
             return false;
+        });
+        mSearchButton = view.findViewById(R.id.tv_search);
+        mSearchButton.setOnClickListener((View v) -> {
+            startSearch();
         });
         mSearchHistory.setSizeLimit(20); // search history limit
         mClearEditText.setVisibility(View.INVISIBLE);
         mClearEditText.setOnClickListener(v -> mSearch.setText(""));
         mSearch.setOnFocusChangeListener((v, hasFocus) -> {
             mClearEditText.setVisibility(hasFocus && !mSearch.getText().toString().isEmpty() ? View.VISIBLE : View.INVISIBLE);
-            if(hasFocus)
+            if (hasFocus)
                 DisplayHelper.showKeyboard(getContext(), mSearch);
             else
                 DisplayHelper.hideKeyboard(getContext(), mSearch);
@@ -162,6 +159,25 @@ public class HomeSearchFragment extends QMUIFragment {
                     .create(R.style.QMUI_Dialog).show();
         });
         return root;
+    }
+
+    private boolean startSearch() {
+        if (mSearch.getText().toString().isEmpty()) {
+            Toast toast = QMUITipDialog.Builder.makeToast(getContext(), QMUITipDialog.Builder.ICON_TYPE_FAIL, getString(R.string.search_empty_input_not_allowed), Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        // start search !
+        mSearchHistory.pushFront(mSearch.getText().toString());
+        String[] arr = mSearchHistory.getItemArray();
+        String temp = mGson.toJson(arr);
+        ConfigManager.putStringNow(Definition.SETTINGS_SEARCH_HISTORY, temp);
+        if (arr.length > 0)
+            mSearchHistoryBar.setVisibility(View.VISIBLE);
+        keyword = mSearch.getText().toString();
+        SearchResultFragment res = new SearchResultFragment();
+        startFragment(res);
+        return true;
     }
 
     @Override
