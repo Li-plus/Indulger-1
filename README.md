@@ -4,9 +4,13 @@
 
 Indulger is a simple news app intended for those who enjoy an immersive style of reading. Unlike the name suggests, we don't want you to become a real indulger, yet instead you are encouraged to cultivate a good habit of reading and become more inquisitive about everything around you. Hope this app can get you well informed at least to some extent.
 
+## Prerequisites
+
+Android API Level 24 (Android 7.0) at minimum is required. Some functions, i.e. automatic night mode and smooth transition when changing themes need API Level 28 (Android 9).
+
 ## Build
 
-You can build this app via Android Studio/Idea, simply import the Gradle project
+You can build this app via Android Studio/Idea, simply import the Gradle project. You might need to provide a signing keystore beforehand. Unfortunately we are unable to publish our own key, so signing-dependent functions such as WeChat/Weibo sharing would not work. You MUST download our compiled APK to use them.
 
 ## Features
 
