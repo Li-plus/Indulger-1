@@ -4,6 +4,9 @@
 
 Indulger is a simple news app intended for those who enjoy an immersive style of reading. Unlike the name suggests, we don't want you to become a real indulger, yet instead you are encouraged to cultivate a good habit of reading and become more inquisitive about everything around you. Hope this app can get you well informed at least to some extent.
 
+## API Server
+The server is based on Django and needs MySQL(or SQLite if you prefer, but remember to edit settings.py beforehand). You can serve it with uWSGI for better performance. Nginx(as a reverse proxy) is recommended if you want to enable HTTPS support.
+
 ## Prerequisites
 
 Android API Level 24 (Android 7.0) at minimum is required. Some functions, i.e. automatic night mode and smooth transition when changing themes need API Level 28 (Android 9).
